@@ -1,0 +1,28 @@
+{
+  "name": "company-portal-web",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "deploy": "bash deploy.sh",
+    "deploy:win": "powershell -ExecutionPolicy Bypass -File deploy.ps1",
+    "deploy:build": "bash deploy.sh --build-only",
+    "deploy:ecs": "bash deploy.sh --ecs-only",
+    "deploy:oss": "bash deploy.sh --oss-only",
+    "deploy:cdn": "bash deploy.sh --cdn-only"
+  },
+  "dependencies": {
+    "@unocss/nuxt": "^66.6.7",
+    "@unocss/preset-attributify": "^66.6.7",
+    "@unocss/preset-icons": "^66.6.7",
+    "@unocss/preset-uno": "^66.6.7",
+    "nuxt": "^4.4.2",
+    "sass": "^1.98.0",
+    "vue": "^3.5.30",
+    "vue-router": "^5.0.4"
+  }
+}

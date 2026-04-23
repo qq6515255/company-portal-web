@@ -1,0 +1,36 @@
+User-Agent: *
+Allow: /
+Disallow: /api/
+Disallow: /_nuxt/
+Disallow: /200.html
+Disallow: /404.html
+
+# Baidu
+User-Agent: Baiduspider
+Allow: /
+Disallow: /api/
+
+# Google
+User-Agent: Googlebot
+Allow: /
+Disallow: /api/
+
+# Sogou
+User-Agent: Sogou Spider
+Allow: /
+Disallow: /api/
+
+# 360
+User-Agent: 360Spider
+Allow: /
+Disallow: /api/
+
+# Shenma
+User-Agent: ShenmaSpider
+Allow: /
+Disallow: /api/
+
+# Sitemap
+Sitemap: https://suntaizh.cn/sitemap.xml
+
+Crawl-delay: 1
