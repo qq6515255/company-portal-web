@@ -4,8 +4,8 @@
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         <!-- Company Info Column -->
         <div>
-          <h3 class="text-xl font-bold mb-4">某某企业</h3>
-          <p class="text-gray-400 mb-4">专业企业门户解决方案，为您提供优质的产品和服务。</p>
+          <h3 class="text-xl font-bold mb-4">珠海市顺泰包装材料有限公司</h3>
+          <p class="text-gray-400 mb-4">专业生产珍珠棉、泡沫棉、透明胶、双面胶、海绵胶、打包带、保护膜、制袋等包装材料，15年行业经验。</p>
           <div class="flex gap-4">
             <a href="#" class="text-gray-400 hover:text-white transition-colors" aria-label="QQ">
               <span class="i-carbon-logo-qq text-2xl" />
@@ -33,6 +33,9 @@
               <NuxtLink to="/about" class="text-gray-400 hover:text-white transition-colors">关于我们</NuxtLink>
             </li>
             <li>
+              <NuxtLink to="/news" class="text-gray-400 hover:text-white transition-colors">新闻资讯</NuxtLink>
+            </li>
+            <li>
               <NuxtLink to="/contact" class="text-gray-400 hover:text-white transition-colors">联系我们</NuxtLink>
             </li>
           </ul>
@@ -48,11 +51,11 @@
             </li>
             <li class="flex items-center gap-3">
               <span class="i-carbon-email text-lg" />
-              <span>邮箱: info@example.com</span>
+              <span>邮箱: info@suntaizh.cn</span>
             </li>
             <li class="flex items-start gap-3">
               <span class="i-carbon-location text-lg mt-1" />
-              <span>地址: 某某省某某市某某区某某路123号</span>
+              <span>地址: 广东省珠海市金湾区创业北路20号厂房(三期)2层</span>
             </li>
           </ul>
         </div>
@@ -60,7 +63,7 @@
 
       <!-- Copyright -->
       <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-        <p>© 2024 某某企业 版权所有</p>
+        <p>© 2026 珠海市顺泰包装材料有限公司 版权所有</p>
       </div>
     </div>
   </footer>

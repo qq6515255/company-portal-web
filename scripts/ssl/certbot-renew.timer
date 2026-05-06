@@ -1,0 +1,14 @@
+[Unit]
+Description=Run Certbot Renewal twice daily
+Documentation=https://certbot.eff.org/docs
+
+[Timer]
+# 每天运行两次（certbot 推荐），随机偏移避免所有服务器同时请求
+OnCalendar=*-*-* 00,12:00:00
+# 启动后 5 分钟内随机偏移
+RandomizedDelaySec=300
+# 如果上次运行错过了，立即补跑
+Persistent=true
+
+[Install]
+WantedBy=timers.target

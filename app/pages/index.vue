@@ -1,204 +1,218 @@
 <template>
-  <div class="min-h-screen">
-    <!-- JSON-LD Structured Data -->
-    <Head>
-      <Script type="application/ld+json" v-html="organizationSchema" />
-      <Script type="application/ld+json" v-html="localBusinessSchema" />
-    </Head>
+  <div class="min-h-screen bg-[#ECFDF5] text-[#064E3B] font-sans selection:bg-[#F97316] selection:text-white">
+    <!-- Hero Section (Factory Video Background) -->
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#064E3B]">
+      <!-- Background Video with Overlay -->
+      <div class="absolute inset-0 z-0">
+        <!-- Temporary placeholder video. Replace with your actual factory/production line video -->
+        <video
+          autoplay
+          loop
+          muted
+          playsinline
+          class="w-full h-full object-cover object-center opacity-50 mix-blend-luminosity"
+          poster="/images/products/hero-factory.jpg"
+        >
+          <!-- Using a sample stock video of an industrial machine/factory process -->
+          <source src="https://cdn.pixabay.com/video/2019/04/10/22699-330456185_large.mp4" type="video/mp4" />
+        </video>
+        <div class="absolute inset-0 bg-gradient-to-r from-[#064E3B]/90 via-[#064E3B]/60 to-[#064E3B]/40"></div>
+        <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+      </div>
 
-    <!-- Hero Section -->
-    <section class="relative bg-gradient-to-r from-primary to-blue-600 text-white py-24 md:py-32">
-      <div class="container-base text-center">
-        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-          珠海包装材料厂家_专业珍珠棉_透明胶_双面胶_打包带
-        </h1>
-        <p class="text-xl md:text-2xl text-white/90 mb-10 max-w-3xl mx-auto">
-          珠海市顺泰包装材料有限公司 - 15年专业生产珍珠棉、泡沫棉、透明胶、双面胶、海绵胶、打包带、保护膜、制袋等包装材料，厂家直销，品质保障
-        </p>
-        <div class="flex flex-wrap justify-center gap-4">
-          <NuxtLink to="/products" class="btn bg-white text-primary px-8 py-3 rounded-lg font-medium hover:bg-gray-100 transition">
-            查看产品
-          </NuxtLink>
-          <NuxtLink to="/contact" class="btn bg-primary/20 border-2 border-white px-8 py-3 rounded-lg font-medium hover:bg-white/10 transition">
-            立即咨询
-          </NuxtLink>
+      <!-- Creative UI: Industrial Tape Animation -->
+      <div class="absolute bottom-52 -right-40 w-[120%] max-w-5xl h-20 bg-[#F97316]/90 backdrop-blur-md z-20 animate-tape-seal-right origin-right border-y border-white/30 shadow-[0_10px_30px_rgba(249,115,22,0.3)] flex items-center overflow-hidden mix-blend-overlay transform -rotate-45">
+        <div class="animate-marquee whitespace-nowrap text-white font-heading font-black tracking-[0.3em] uppercase text-4xl flex items-center gap-8">
+          <span><span class="i-carbon-warning-alt mr-2"></span>STRONG ADHESION</span>
+          <span><span class="i-carbon-warning-alt mr-2"></span>INDUSTRIAL TAPE</span>
+          <span><span class="i-carbon-warning-alt mr-2"></span>SUNTAI PACKAGING</span>
+          <span><span class="i-carbon-warning-alt mr-2"></span>MAXIMUM SECURITY</span>
+          <span><span class="i-carbon-warning-alt mr-2"></span>STRONG ADHESION</span>
+          <span><span class="i-carbon-warning-alt mr-2"></span>INDUSTRIAL TAPE</span>
+          <span><span class="i-carbon-warning-alt mr-2"></span>SUNTAI PACKAGING</span>
+          <span><span class="i-carbon-warning-alt mr-2"></span>MAXIMUM SECURITY</span>
         </div>
       </div>
-    </section>
 
-    <!-- Products Overview Section -->
-    <section class="py-16 md:py-24 bg-gray-50">
-      <div class="container-base">
-        <div class="text-center mb-12">
-          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">包装材料产品中心</h2>
-          <p class="text-gray-600 max-w-xl mx-auto">专业生产各类包装材料，满足珠三角企业多样化需求</p>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <NuxtLink to="/products" class="group bg-white rounded-xl shadow-sm hover:shadow-lg transition p-6">
-            <div class="bg-gray-200 border-2 border-dashed rounded-xl w-full h-40 mb-4 flex-center">
-              <span class="text-gray-400 text-lg">产品图片</span>
-            </div>
-            <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition">珍珠棉/泡沫棉</h3>
-            <p class="text-gray-600 mb-4 text-sm">缓冲防震包装材料，适用于电子、家具、玻璃等产品的防护包装</p>
-            <span class="text-primary font-medium group-hover:underline">查看详情 →</span>
-          </NuxtLink>
-          <NuxtLink to="/products" class="group bg-white rounded-xl shadow-sm hover:shadow-lg transition p-6">
-            <div class="bg-gray-200 border-2 border-dashed rounded-xl w-full h-40 mb-4 flex-center">
-              <span class="text-gray-400 text-lg">产品图片</span>
-            </div>
-            <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition">透明胶/双面胶</h3>
-            <p class="text-gray-600 mb-4 text-sm">工业级胶带，粘性强、不残胶，适用于包装、固定、密封等多种用途</p>
-            <span class="text-primary font-medium group-hover:underline">查看详情 →</span>
-          </NuxtLink>
-          <NuxtLink to="/products" class="group bg-white rounded-xl shadow-sm hover:shadow-lg transition p-6">
-            <div class="bg-gray-200 border-2 border-dashed rounded-xl w-full h-40 mb-4 flex-center">
-              <span class="text-gray-400 text-lg">产品图片</span>
-            </div>
-            <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition">海绵胶/保护膜</h3>
-            <p class="text-gray-600 mb-4 text-sm">高密度海绵胶，柔韧防震；PE保护膜，表面防护专家</p>
-            <span class="text-primary font-medium group-hover:underline">查看详情 →</span>
-          </NuxtLink>
-          <NuxtLink to="/products" class="group bg-white rounded-xl shadow-sm hover:shadow-lg transition p-6">
-            <div class="bg-gray-200 border-2 border-dashed rounded-xl w-full h-40 mb-4 flex-center">
-              <span class="text-gray-400 text-lg">产品图片</span>
-            </div>
-            <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition">打包带/制袋</h3>
-            <p class="text-gray-600 mb-4 text-sm">PP/PET打包带，韧性强；自立袋、复合袋等定制制袋服务</p>
-            <span class="text-primary font-medium group-hover:underline">查看详情 →</span>
-          </NuxtLink>
-        </div>
-      </div>
-    </section>
-
-    <!-- Advantages Section -->
-    <section class="py-16 md:py-24">
-      <div class="container-base">
-        <div class="text-center mb-12">
-          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">为什么选择顺泰包装</h2>
-          <p class="text-gray-600">15年专业包装材料厂家，珠三角1000+企业的共同选择</p>
-        </div>
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
-          <div class="text-center p-6">
-            <div class="text-5xl mb-4">🏭</div>
-            <h3 class="text-xl font-bold text-gray-900 mb-2">厂家直销</h3>
-            <p class="text-gray-600 text-sm">自有工厂，无中间商赚差价，价格更优惠</p>
+      <div class="container-base relative z-10 pt-32 pb-20">
+        <div class="max-w-4xl">
+          <div class="inline-flex items-center gap-2 px-4 py-2 mb-8 bg-[#059669]/30 backdrop-blur-md border border-[#10B981]/50 text-white font-medium tracking-widest text-sm rounded-sm uppercase">
+            <span class="w-2 h-2 rounded-full bg-[#F97316] animate-pulse"></span>
+            15年源头实力工厂 · 占地 5000㎡
           </div>
-          <div class="text-center p-6">
-            <div class="text-5xl mb-4">📦</div>
-            <h3 class="text-xl font-bold text-gray-900 mb-2">品种齐全</h3>
-            <p class="text-gray-600 text-sm">珍珠棉、胶带、海绵、打包带等全系列包装材料</p>
-          </div>
-          <div class="text-center p-6">
-            <div class="text-5xl mb-4">🚚</div>
-            <h3 class="text-xl font-bold text-gray-900 mb-2">交货准时</h3>
-            <p class="text-gray-600 text-sm">珠海、中山、江门等珠三角地区免费送货</p>
-          </div>
-          <div class="text-center p-6">
-            <div class="text-5xl mb-4">🔧</div>
-            <h3 class="text-xl font-bold text-gray-900 mb-2">定制服务</h3>
-            <p class="text-gray-600 text-sm">根据客户需求定制各种规格尺寸的包装材料</p>
+          <h1 class="text-5xl md:text-7xl lg:text-[80px] font-heading font-bold leading-tight text-white mb-8 tracking-tight">
+            打造工业级<br/>
+            <span class="text-[#10B981]">包装防护体系</span>
+          </h1>
+          <p class="text-xl md:text-2xl text-emerald-100 mb-12 max-w-2xl font-light tracking-wide leading-relaxed">
+            专业生产珍珠棉、泡沫棉、透明胶、双面胶、海绵胶、打包带、保护膜、制袋。从源头把控品质，为您提供极具性价比的包装解决方案。
+          </p>
+          <div class="flex flex-col sm:flex-row items-start gap-4">
+            <NuxtLink to="/products" class="btn-peel px-10 py-4 bg-[#F97316] text-white font-heading font-semibold tracking-wider text-lg uppercase hover:bg-[#ea580c] transition-all duration-300 w-full sm:w-auto text-center shadow-lg flex items-center justify-center gap-2 group relative overflow-hidden">
+              探索产品矩阵
+              <span class="i-carbon-arrow-right text-xl group-hover:translate-x-1 transition-transform"></span>
+            </NuxtLink>
+            <a href="#location" class="btn-peel px-10 py-4 bg-white/10 backdrop-blur-md border border-white/20 text-white font-heading font-medium tracking-wider text-lg uppercase hover:bg-white/20 transition-all duration-300 w-full sm:w-auto text-center flex items-center justify-center gap-2 relative overflow-hidden">
+              <span class="i-carbon-location text-xl"></span>
+              参观工厂
+            </a>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 企业简介 Section -->
-    <section class="py-16 md:py-24 bg-white">
-      <div class="container-base">
-        <h2 class="text-2xl md:text-3xl font-bold text-center mb-12">关于珠海市顺泰包装材料有限公司</h2>
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-          <!-- Image Placeholder -->
-          <div>
-            <div class="bg-gray-200 border-2 border-dashed rounded-xl w-full h-64 md:h-80 lg:h-96 flex-center">
-              <span class="text-gray-400 text-lg">企业图片</span>
+    <!-- Products Overview ("Industrial Product Matrix") -->
+    <section class="py-24 bg-white relative">
+      <div class="container-base relative z-10">
+        <div class="text-center mb-16">
+          <div class="inline-block px-4 py-1.5 mb-4 bg-[#059669]/10 text-[#059669] font-semibold tracking-wider text-sm rounded-sm uppercase">核心产品线</div>
+          <h2 class="text-4xl md:text-5xl font-heading font-bold text-[#064E3B] mb-6">全品类<span class="text-[#10B981]">包装材料</span>供应</h2>
+          <p class="text-[#064E3B]/70 text-lg max-w-2xl mx-auto">高强度、高韧性，满足电子、五金、家具等各行业的极限防护挑战。</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <!-- Card 1 -->
+          <NuxtLink to="/products" class="group flex flex-col sm:flex-row overflow-hidden bg-[#ECFDF5] rounded-lg shadow-sm border border-[#10B981]/20 transition-all duration-300 hover:shadow-xl hover:-translate-y-2 relative">
+            <!-- Creative UI: Transparent Tape Piece -->
+            <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-24 h-8 bg-white/50 backdrop-blur-md border border-white/40 shadow-[0_2px_5px_rgba(0,0,0,0.05)] -rotate-2 z-30 transition-all duration-500 group-hover:rotate-1 group-hover:bg-white/70 group-hover:w-28 group-hover:shadow-[0_5px_15px_rgba(0,0,0,0.1)]"></div>
+            <div class="w-full sm:w-2/5 bg-[#064E3B] relative overflow-hidden flex items-center justify-center">
+              <img src="/images/products/pearl-cotton.jpg" alt="珍珠棉/泡沫棉" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500" />
             </div>
-          </div>
-          <!-- Text Content -->
-          <div>
-            <p class="text-gray-600 leading-relaxed">
-              <strong>珠海市顺泰包装材料有限公司</strong>成立于2010年，是一家专注于包装材料研发、生产、销售的现代化企业。
-              位于珠海市金湾区，专业生产<strong>珍珠棉、泡沫棉、透明胶、双面胶、海绵胶、打包带、保护膜，制袋</strong>等各类包装材料。
-            </p>
-            <p class="text-gray-600 leading-relaxed mt-4">
-              公司拥有标准化的生产车间和完善的检测设备，产品广泛应用于电子、家具、建材、食品、医药等行业。
-              我们秉承"质量第一、诚信经营"的理念，为珠三角地区的企业提供优质的包装材料和解决方案。
-            </p>
-            <div class="flex flex-wrap gap-4 mt-8">
-              <div class="text-center px-6 py-4 bg-gray-50 rounded-lg flex-1 min-w-24">
-                <div class="text-2xl md:text-3xl font-bold text-primary">1000+</div>
-                <div class="text-gray-500 text-sm mt-1">服务企业</div>
-              </div>
-              <div class="text-center px-6 py-4 bg-gray-50 rounded-lg flex-1 min-w-24">
-                <div class="text-2xl md:text-3xl font-bold text-primary">15</div>
-                <div class="text-gray-500 text-sm mt-1">年行业经验</div>
-              </div>
-              <div class="text-center px-6 py-4 bg-gray-50 rounded-lg flex-1 min-w-24">
-                <div class="text-2xl md:text-3xl font-bold text-primary">50+</div>
-                <div class="text-gray-500 text-sm mt-1">种产品</div>
+            <div class="p-8 w-full sm:w-3/5 flex flex-col justify-center relative z-20">
+              <h3 class="text-2xl font-heading font-bold text-[#064E3B] mb-3">珍珠棉 / 泡沫棉</h3>
+              <p class="text-[#064E3B]/70 mb-6 leading-relaxed">极致缓冲防震，适用于电子、家具、玻璃等高价值产品的防护包装。</p>
+              <div class="mt-auto flex items-center text-[#F97316] font-semibold text-sm uppercase tracking-wider">
+                了解详情 <span class="i-carbon-arrow-right ml-2 text-lg group-hover:translate-x-2 transition-transform duration-300"></span>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 联系我们 Section -->
-    <section class="py-16 md:py-20 bg-gray-50">
-      <div class="container-base">
-        <div class="text-center mb-12">
-          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">联系我们</h2>
-          <p class="text-gray-600">专业团队，随时为您解答包装材料相关问题</p>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div class="bg-white rounded-xl shadow-sm p-6 text-center">
-            <span class="text-4xl mb-4 block">📍</span>
-            <h3 class="font-semibold text-gray-900 mb-2">公司地址</h3>
-            <p class="text-gray-600 text-sm">广东省珠海市金湾区创业北路20号厂房(三期)2层</p>
-          </div>
-          <div class="bg-white rounded-xl shadow-sm p-6 text-center">
-            <span class="text-4xl mb-4 block">📞</span>
-            <h3 class="font-semibold text-gray-900 mb-2">联系电话</h3>
-            <p class="text-gray-600 text-sm">400-888-8888</p>
-          </div>
-          <div class="bg-white rounded-xl shadow-sm p-6 text-center">
-            <span class="text-4xl mb-4 block">✉️</span>
-            <h3 class="font-semibold text-gray-900 mb-2">电子邮箱</h3>
-            <p class="text-gray-600 text-sm">info@suntaizh.cn</p>
-          </div>
-          <div class="bg-white rounded-xl shadow-sm p-6 text-center">
-            <span class="text-4xl mb-4 block">🕐</span>
-            <h3 class="font-semibold text-gray-900 mb-2">营业时间</h3>
-            <p class="text-gray-600 text-sm">周一至周六 8:30-18:00</p>
-          </div>
-        </div>
-        <!-- 地图 -->
-        <div class="bg-white rounded-xl shadow-sm overflow-hidden">
-          <MapEmbed height="400px" />
-        </div>
-        <div class="text-center mt-10">
-          <NuxtLink to="/contact" class="btn bg-primary text-white px-8 py-3 rounded-lg font-medium hover:bg-primary/90 transition">
-            在线咨询
+          </NuxtLink>
+          
+          <!-- Card 2 -->
+          <NuxtLink to="/products" class="group flex flex-col sm:flex-row overflow-hidden bg-[#ECFDF5] rounded-lg shadow-sm border border-[#10B981]/20 transition-all duration-300 hover:shadow-xl hover:-translate-y-2 relative">
+            <!-- Creative UI: Transparent Tape Piece -->
+            <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-24 h-8 bg-white/50 backdrop-blur-md border border-white/40 shadow-[0_2px_5px_rgba(0,0,0,0.05)] rotate-2 z-30 transition-all duration-500 group-hover:-rotate-1 group-hover:bg-white/70 group-hover:w-28 group-hover:shadow-[0_5px_15px_rgba(0,0,0,0.1)]"></div>
+            <div class="w-full sm:w-2/5 bg-[#064E3B] relative overflow-hidden flex items-center justify-center">
+              <img src="/images/products/adhesive-tape.jpg" alt="透明胶/双面胶" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500" />
+            </div>
+            <div class="p-8 w-full sm:w-3/5 flex flex-col justify-center relative z-20">
+              <h3 class="text-2xl font-heading font-bold text-[#064E3B] mb-3">透明胶 / 双面胶</h3>
+              <p class="text-[#064E3B]/70 mb-6 leading-relaxed">工业级强力胶带，持久粘性不残胶，应对各种严苛密封与固定需求。</p>
+              <div class="mt-auto flex items-center text-[#F97316] font-semibold text-sm uppercase tracking-wider">
+                了解详情 <span class="i-carbon-arrow-right ml-2 text-lg group-hover:translate-x-2 transition-transform duration-300"></span>
+              </div>
+            </div>
+          </NuxtLink>
+          
+          <!-- Card 3 -->
+          <NuxtLink to="/products" class="group flex flex-col sm:flex-row overflow-hidden bg-[#ECFDF5] rounded-lg shadow-sm border border-[#10B981]/20 transition-all duration-300 hover:shadow-xl hover:-translate-y-2 relative">
+            <!-- Creative UI: Transparent Tape Piece -->
+            <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-24 h-8 bg-white/50 backdrop-blur-md border border-white/40 shadow-[0_2px_5px_rgba(0,0,0,0.05)] -rotate-1 z-30 transition-all duration-500 group-hover:rotate-2 group-hover:bg-white/70 group-hover:w-28 group-hover:shadow-[0_5px_15px_rgba(0,0,0,0.1)]"></div>
+            <div class="w-full sm:w-2/5 bg-[#064E3B] relative overflow-hidden flex items-center justify-center">
+              <img src="/images/products/protective-film.jpg" alt="海绵胶/保护膜" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500" />
+            </div>
+            <div class="p-8 w-full sm:w-3/5 flex flex-col justify-center relative z-20">
+              <h3 class="text-2xl font-heading font-bold text-[#064E3B] mb-3">海绵胶 / 保护膜</h3>
+              <p class="text-[#064E3B]/70 mb-6 leading-relaxed">高密度海绵胶柔韧抗震；PE保护膜化身表面防护盾牌。</p>
+              <div class="mt-auto flex items-center text-[#F97316] font-semibold text-sm uppercase tracking-wider">
+                了解详情 <span class="i-carbon-arrow-right ml-2 text-lg group-hover:translate-x-2 transition-transform duration-300"></span>
+              </div>
+            </div>
+          </NuxtLink>
+          
+          <!-- Card 4 -->
+          <NuxtLink to="/products" class="group flex flex-col sm:flex-row overflow-hidden bg-[#ECFDF5] rounded-lg shadow-sm border border-[#10B981]/20 transition-all duration-300 hover:shadow-xl hover:-translate-y-2 relative">
+            <!-- Creative UI: Transparent Tape Piece -->
+            <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-24 h-8 bg-white/50 backdrop-blur-md border border-white/40 shadow-[0_2px_5px_rgba(0,0,0,0.05)] rotate-1 z-30 transition-all duration-500 group-hover:-rotate-2 group-hover:bg-white/70 group-hover:w-28 group-hover:shadow-[0_5px_15px_rgba(0,0,0,0.1)]"></div>
+            <div class="w-full sm:w-2/5 bg-[#064E3B] relative overflow-hidden flex items-center justify-center">
+              <img src="/images/products/packaging-boxes.jpg" alt="打包带/定制制袋" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500" />
+            </div>
+            <div class="p-8 w-full sm:w-3/5 flex flex-col justify-center relative z-20">
+              <h3 class="text-2xl font-heading font-bold text-[#064E3B] mb-3">打包带 / 定制制袋</h3>
+              <p class="text-[#064E3B]/70 mb-6 leading-relaxed">高韧性PP/PET打包带，极限拉力。自立袋、复合袋等硬核定制。</p>
+              <div class="mt-auto flex items-center text-[#F97316] font-semibold text-sm uppercase tracking-wider">
+                了解详情 <span class="i-carbon-arrow-right ml-2 text-lg group-hover:translate-x-2 transition-transform duration-300"></span>
+              </div>
+            </div>
           </NuxtLink>
         </div>
       </div>
     </section>
 
-    <!-- CTA Section -->
-    <section class="py-16 md:py-20 bg-gray-900 text-white">
-      <div class="container-base text-center">
-        <h2 class="text-3xl md:text-4xl font-bold mb-4">一站式包装材料解决方案</h2>
-        <p class="text-gray-300 mb-8">从咨询到售后，我们全程为您提供专业的包装材料服务</p>
-        <NuxtLink to="/contact" class="btn bg-primary text-white px-8 py-3 rounded-lg font-medium hover:bg-primary/90 transition">
-          立即咨询
-        </NuxtLink>
+    <!-- Location & Contact Info ("Corporate Location") -->
+    <section id="location" class="py-24 bg-[#ECFDF5] relative">
+      <div class="container-base relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+          <div class="order-2 lg:order-1 bg-white p-2 rounded-xl shadow-lg border border-[#10B981]/20">
+            <!-- Simulated Map Area -->
+            <div class="aspect-video bg-gray-100 rounded-lg relative overflow-hidden flex items-center justify-center">
+              <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+              <div class="absolute inset-0 bg-gradient-to-br from-[#059669]/10 to-transparent"></div>
+              <div class="text-center relative z-10">
+                <div class="w-16 h-16 bg-[#F97316] rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg shadow-[#F97316]/40 animate-bounce">
+                  <span class="i-carbon-location text-3xl text-white"></span>
+                </div>
+                <p class="font-heading font-bold text-[#064E3B] text-lg">珠海市顺泰包装材料有限公司</p>
+                <p class="text-[#064E3B]/60 text-sm mt-1">立足珠海，辐射珠三角</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="order-1 lg:order-2">
+            <div class="inline-block px-4 py-1.5 mb-4 bg-[#059669]/10 text-[#059669] font-semibold tracking-wider text-sm rounded-sm uppercase">联系我们</div>
+            <h2 class="text-4xl md:text-5xl font-heading font-bold text-[#064E3B] mb-6">快速响应，<span class="text-[#10B981]">高效交付</span></h2>
+            <p class="text-[#064E3B]/70 text-lg mb-10">自有生产基地，成熟物流配送体系，为您的生产线保驾护航。</p>
+            
+            <div class="space-y-6">
+              <!-- Location Info -->
+              <div class="flex items-start gap-4">
+                <div class="w-12 h-12 shrink-0 bg-white rounded-lg border border-[#10B981]/20 flex items-center justify-center text-[#10B981]">
+                  <span class="i-carbon-building text-2xl"></span>
+                </div>
+                <div>
+                  <h4 class="text-xl font-heading font-bold text-[#064E3B] mb-1">工厂地址</h4>
+                  <p class="text-[#064E3B]/70">广东省珠海市[详细地址待补充]</p>
+                </div>
+              </div>
+              
+              <!-- Contact Info -->
+              <div class="flex items-start gap-4">
+                <div class="w-12 h-12 shrink-0 bg-white rounded-lg border border-[#10B981]/20 flex items-center justify-center text-[#10B981]">
+                  <span class="i-carbon-phone text-2xl"></span>
+                </div>
+                <div>
+                  <h4 class="text-xl font-heading font-bold text-[#064E3B] mb-1">服务热线</h4>
+                  <p class="text-[#064E3B]/70">400-888-8888 <span class="text-sm ml-2 bg-[#F97316]/10 text-[#F97316] px-2 py-0.5 rounded">24/7 响应</span></p>
+                </div>
+              </div>
+              
+              <!-- Business Hours -->
+              <div class="flex items-start gap-4">
+                <div class="w-12 h-12 shrink-0 bg-white rounded-lg border border-[#10B981]/20 flex items-center justify-center text-[#10B981]">
+                  <span class="i-carbon-time text-2xl"></span>
+                </div>
+                <div>
+                  <h4 class="text-xl font-heading font-bold text-[#064E3B] mb-1">营业时间</h4>
+                  <p class="text-[#064E3B]/70">周一至周六 08:00 - 18:00</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="mt-10">
+              <NuxtLink to="/contact" class="inline-flex items-center gap-2 px-8 py-3 bg-[#064E3B] text-white font-heading font-semibold tracking-wider text-base uppercase hover:bg-[#059669] transition-all duration-300 rounded shadow-md group">
+                在线获取报价
+                <span class="i-carbon-arrow-right text-lg group-hover:translate-x-1 transition-transform"></span>
+              </NuxtLink>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   </div>
 </template>
 
 <script setup lang="ts">
-// SEO Structured Data
-const organizationSchema = computed(() => JSON.stringify({
+// SEO Structured Data - use useHead for JSON-LD
+const organizationSchema = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "Organization",
   "name": "珠海市顺泰包装材料有限公司",
@@ -216,9 +230,9 @@ const organizationSchema = computed(() => JSON.stringify({
     "contactType": "customer service",
     "availableLanguage": ["Chinese", "Mandarin"]
   }
-}))
+})
 
-const localBusinessSchema = computed(() => JSON.stringify({
+const localBusinessSchema = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
   "name": "珠海市顺泰包装材料有限公司",
@@ -251,7 +265,7 @@ const localBusinessSchema = computed(() => JSON.stringify({
     "ratingValue": "4.8",
     "reviewCount": "126"
   }
-}))
+})
 
 useHead({
   title: '珠海包装材料厂家_专业生产珍珠棉_透明胶_打包带_保护膜-顺泰包装',
@@ -262,6 +276,77 @@ useHead({
     { property: 'og:description', content: '专业生产珍珠棉、泡沫棉、透明胶、双面胶、海绵胶、打包带、保护膜、制袋等包装材料，厂家直销，品质保障' },
     { property: 'og:url', content: 'https://suntaizh.cn/' },
     { property: 'og:type', content: 'website' }
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      children: organizationSchema
+    },
+    {
+      type: 'application/ld+json',
+      children: localBusinessSchema
+    }
   ]
 })
 </script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&family=Source+Sans+3:wght@300;400;500;600;700&display=swap');
+
+.font-heading {
+  font-family: 'Lexend', sans-serif;
+}
+.font-sans {
+  font-family: 'Source Sans 3', sans-serif;
+}
+
+/* Creative Tape Animations */
+@keyframes tape-seal-right {
+  0% { transform: rotate(-45deg) scaleX(0); opacity: 0; }
+  100% { transform: rotate(-45deg) scaleX(1); opacity: 1; }
+}
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-tape-seal-right {
+  animation: tape-seal-right 1.2s cubic-bezier(0.86, 0, 0.07, 1) forwards;
+  transform: rotate(-45deg) scaleX(0);
+}
+.animate-marquee {
+  animation: marquee 15s linear infinite;
+  width: max-content;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Button Tape Peel Effect */
+.btn-peel {
+  position: relative;
+}
+.btn-peel::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  background: linear-gradient(135deg, transparent 50%, rgba(255,255,255,0.6) 50%);
+  box-shadow: -2px -2px 4px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+.btn-peel:hover::after {
+  width: 20px;
+  height: 20px;
+}
+</style>

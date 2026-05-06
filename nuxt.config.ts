@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
-  devtools: { enabled: true },
+  devtools: { enabled: false },
 
   // UnoCSS module
   modules: ['@unocss/nuxt'],
@@ -50,6 +50,14 @@ export default defineNuxtConfig({
         { property: 'og:site_name', content: '珠海市顺泰包装材料有限公司' },
         { name: 'twitter:card', content: 'summary_large_image' }
       ],
+      script: [
+        // 百度统计
+        {
+          src: 'https://hm.baidu.com/hm.js?YOUR_BAIDU_TONGJI_ID',
+          async: true,
+          defer: true
+        }
+      ],
       link: [
         { rel: 'canonical', href: 'https://www.suntaizh.cn' },
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
@@ -70,7 +78,36 @@ export default defineNuxtConfig({
     preset: 'static',
     prerender: {
       crawlLinks: true,
-      routes: ['/', '/products', '/about', '/contact']
+      routes: [
+        '/',
+        '/products',
+        '/about',
+        '/contact',
+        '/news',
+        // Product detail pages
+        '/products/zhenzhumian',
+        '/products/paomomian',
+        '/products/eva-paomian',
+        '/products/touming-jiaodai',
+        '/products/shuangmian-jiaodai',
+        '/products/meiwenzhi-jiaodai',
+        '/products/pp-dabaodai',
+        '/products/pet-sugangdai',
+        '/products/chanraomo',
+        '/products/pe-baohumo',
+        '/products/haimian-jiaotiao',
+        '/products/qipao-mo',
+        '/products/fuhedai',
+        '/products/zilidai',
+        '/products/fangjingdian-dai',
+        // News detail pages
+        '/news/epe-foam-guide',
+        '/news/packaging-tape-comparison',
+        '/news/green-packaging-trend',
+        '/news/company-expansion',
+        '/news/packaging-cost-control',
+        '/news/pe-film-guide'
+      ]
     }
   }
 })

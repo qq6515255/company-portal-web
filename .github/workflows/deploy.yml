@@ -1,0 +1,152 @@
+# ============================================
+# 顺泰包装 - GitHub Actions 自动化部署
+# 构建 → 上传阿里云 OSS → 刷新 CDN
+# ============================================
+name: Deploy to OSS + CDN
+
+on:
+  push:
+    branches: [main, master]
+    paths-ignore:
+      - 'README.md'
+      - '.env.example'
+      - 'scripts/**'
+      - '.github/**'
+  workflow_dispatch:
+    inputs:
+      invalidate_all:
+        description: '强制刷新全部 CDN 缓存'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      # ========== 1. 拉取代码 ==========
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # ========== 2. 安装 Node.js ==========
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      # ========== 3. 安装依赖 ==========
+      - name: Install dependencies
+        run: npm ci
+
+      # ========== 4. 构建静态站点 ==========
+      - name: Build static site
+        run: npm run generate
+        env:
+          NUXT_PUBLIC_AMAP_API_KEY: ${{ secrets.AMAP_API_KEY }}
+          NUXT_PUBLIC_AMAP_SECURITY_JS_CODE: ${{ secrets.AMAP_SECURITY_JS_CODE }}
+
+      # ========== 5. 预压缩静态资源 ==========
+      - name: Compress assets
+        run: |
+          # Gzip
+          find .output/public -type f \( \
+            -name "*.js" -o -name "*.css" -o -name "*.html" -o \
+            -name "*.json" -o -name "*.xml" -o -name "*.svg" -o \
+            -name "*.txt" \
+          \) -exec gzip -kf9 {} \;
+          echo "Gzip done"
+
+          # Brotli (ubuntu-latest 已预装 brotli)
+          if command -v brotli &> /dev/null; then
+            find .output/public -type f \( \
+              -name "*.js" -o -name "*.css" -o -name "*.html" -o \
+              -name "*.json" -o -name "*.xml" -o -name "*.svg" -o \
+              -name "*.txt" \
+            \) -exec brotli -kfZ {} \;
+            echo "Brotli done"
+          fi
+
+      # ========== 6. 安装阿里云 CLI ==========
+      - name: Install Aliyun CLI
+        run: |
+          wget -q https://aliyuncli.alicdn.com/aliyun-cli-linux-latest-amd64.tgz
+          tar -xzf aliyun-cli-linux-latest-amd64.tgz
+          sudo mv aliyun /usr/local/bin/
+          aliyun --version
+
+      # ========== 7. 配置阿里云凭证 ==========
+      - name: Configure Aliyun credentials
+        run: |
+          aliyun configure set \
+            --profile default \
+            --mode AK \
+            --access-key-id ${{ secrets.ALIYUN_ACCESS_KEY_ID }} \
+            --access-key-secret ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }} \
+            --region ${{ secrets.ALIYUN_REGION || 'cn-hangzhou' }}
+
+      # ========== 8. 上传 OSS (增量同步) ==========
+      - name: Upload to OSS
+        run: |
+          BUCKET="${{ secrets.OSS_BUCKET }}"
+          ENDPOINT="${{ secrets.OSS_ENDPOINT || 'oss-cn-hangzhou.aliyuncs.com' }}"
+
+          echo "Uploading to oss://${BUCKET}/ ..."
+
+          # 使用 ossutil 方式（通过 aliyun CLI 安装）
+          # 先安装 ossutil
+          wget -q https://gosspublic.alicdn.com/ossutil/1.7.19/ossutil64
+          chmod +x ossutil64
+
+          # 配置 ossutil
+          ./ossutil64 config -e ${ENDPOINT} -i ${{ secrets.ALIYUN_ACCESS_KEY_ID }} -k ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
+
+          # 上传（覆盖式，.output/public 下所有文件）
+          ./ossutil64 cp -r -f \
+            --acl public-read \
+            --jobs 10 \
+            .output/public/ \
+            oss://${BUCKET}/
+
+          echo "Upload complete"
+
+      # ========== 9. 刷新 CDN 缓存 ==========
+      - name: Purge CDN cache
+        run: |
+          DOMAIN="${{ secrets.CDN_DOMAIN }}"
+          if [ -z "$DOMAIN" ]; then
+            echo "CDN_DOMAIN not set, skipping CDN purge"
+            exit 0
+          fi
+
+          echo "Purging CDN cache for ${DOMAIN} ..."
+
+          # 调用阿里云 CDN PushObjectCache API 刷新目录
+          aliyun cdn PushObjectCache \
+            --ObjectPath "https://${DOMAIN}/" \
+            --ObjectType Directory \
+            --region cn-hangzhou || true
+
+          # 如果勾选了强制刷新，额外刷新所有 URL
+          if [ "${{ github.event.inputs.invalidate_all }}" = "true" ]; then
+            echo "Force invalidating all..."
+            aliyun cdn RefreshObjectCaches \
+              --ObjectPath "https://${DOMAIN}/" \
+              --ObjectType Directory \
+              --region cn-hangzhou || true
+          fi
+
+          echo "CDN purge done"
+
+      # ========== 10. 部署结果通知 ==========
+      - name: Notify deploy result
+        if: always()
+        run: |
+          echo "::notice:: Deploy ${{ job.status }} at $(date)"

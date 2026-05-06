@@ -1,52 +1,58 @@
 <template>
-  <div class="min-h-screen">
+  <div class="min-h-screen bg-[#FAFAFA] font-sans text-[#064E3B]">
     <!-- Hero Section -->
-    <section class="bg-gradient-to-br from-primary to-secondary py-16 md:py-24">
-      <div class="container-base text-center text-white">
-        <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">关于顺泰包装</h1>
-        <p class="text-lg md:text-xl text-white/80 max-w-2xl mx-auto">
-          15年专业包装材料生产厂家，为珠三角企业提供优质包装解决方案
+    <section class="relative bg-[#064E3B] py-20 md:py-32 overflow-hidden">
+      <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+      <div class="absolute inset-0 bg-gradient-to-b from-[#064E3B] to-transparent"></div>
+      <div class="container-base relative z-10 text-center text-white">
+        <div class="inline-flex items-center gap-2 px-4 py-2 mb-6 bg-[#059669]/30 backdrop-blur-md border border-[#10B981]/50 text-white font-medium tracking-widest text-sm rounded-sm uppercase">
+          <span class="w-2 h-2 rounded-full bg-[#F97316] animate-pulse"></span>
+          ABOUT SUNTAI
+        </div>
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-6 tracking-tight">关于顺泰包装</h1>
+        <p class="text-lg md:text-xl text-emerald-100 max-w-2xl mx-auto font-light leading-relaxed">
+          15年专业包装材料生产厂家，为珠三角企业提供工业级优质包装解决方案。
         </p>
       </div>
     </section>
 
     <!-- Company Story Section -->
-    <section class="py-16 md:py-24 bg-white">
+    <section class="py-20 md:py-32 bg-white">
       <div class="container-base">
-        <h2 class="text-2xl md:text-3xl font-bold text-center mb-12">企业简介</h2>
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           <!-- Image Placeholder -->
-          <div>
-            <div class="bg-gray-200 border-2 border-dashed rounded-xl w-full h-64 md:h-80 lg:h-96 flex-center">
-              <span class="text-gray-400 text-lg">企业厂区图片</span>
+          <div class="relative group">
+            <div class="absolute -inset-4 bg-[#ECFDF5] rounded-lg transform rotate-2 group-hover:rotate-1 transition-transform duration-500"></div>
+            <div class="bg-[#064E3B] relative rounded-lg w-full h-[400px] flex items-center justify-center overflow-hidden shadow-xl border border-[#10B981]/20">
+              <span class="i-carbon-building-large text-8xl text-[#10B981]/40 group-hover:scale-110 transition-transform duration-700"></span>
+              <div class="absolute inset-0 bg-gradient-to-tr from-[#064E3B] to-transparent opacity-80"></div>
+              <span class="absolute bottom-6 right-6 text-white/50 font-heading font-bold tracking-widest">SUNTAI FACTORY</span>
             </div>
           </div>
           <!-- Text Content -->
           <div>
-            <p class="text-gray-600 leading-relaxed">
-              <strong>珠海市顺泰包装材料有限公司</strong>成立于2010年，是一家专业从事包装材料生产、销售的企业。
-              公司位于广东省珠海市金湾区，拥有标准化的生产车间和完善的检测设备。
+            <h2 class="text-3xl md:text-4xl font-heading font-bold text-[#064E3B] mb-8">企业<span class="text-[#10B981]">简介</span></h2>
+            <p class="text-[#064E3B]/80 leading-relaxed text-lg mb-6">
+              <strong>珠海市顺泰包装材料有限公司</strong>成立于2010年，是一家专业从事包装材料生产、销售的企业。公司位于广东省珠海市金湾区，拥有标准化的生产车间和完善的检测设备。
             </p>
-            <p class="text-gray-600 leading-relaxed mt-4">
-              公司主要产品包括：<strong>珍珠棉、泡沫棉</strong>（缓冲防震材料）、<strong>透明胶、双面胶、海绵胶</strong>（粘接密封材料）、
-              <strong>打包带、保护膜</strong>（捆扎防护材料）以及<strong>各种规格制袋</strong>（包装袋定制）等。
-              产品广泛应用于电子、家具、建材、食品、医药等行业的包装需求。
+            <p class="text-[#064E3B]/80 leading-relaxed text-lg mb-6">
+              我们主要产品包括：<strong>珍珠棉、泡沫棉</strong>（缓冲防震材料）、<strong>透明胶、双面胶、海绵胶</strong>（粘接密封材料）、<strong>打包带、保护膜</strong>（捆扎防护材料）以及<strong>各种规格制袋</strong>等。广泛应用于电子、家具、建材、食品、医药等行业的包装需求。
             </p>
-            <p class="text-gray-600 leading-relaxed mt-4">
-              我们秉承"质量第一、客户至上"的经营理念，为<strong>珠海、中山、江门</strong>等珠三角地区的企业提供优质的包装材料和解决方案。
+            <p class="text-[#064E3B]/80 leading-relaxed text-lg">
+              秉承“质量第一、客户至上”的经营理念，我们为<strong>珠海、中山、江门</strong>等珠三角地区企业提供极具性价比的包装解决方案。
             </p>
-            <div class="flex flex-wrap gap-4 mt-8">
-              <div class="text-center px-6 py-4 bg-gray-50 rounded-lg flex-1 min-w-24">
-                <div class="text-2xl md:text-3xl font-bold text-primary">1000+</div>
-                <div class="text-gray-500 text-sm mt-1">服务企业</div>
+            <div class="flex flex-wrap gap-4 mt-10">
+              <div class="px-6 py-5 bg-[#ECFDF5] rounded-sm flex-1 min-w-[120px] border-l-4 border-[#10B981]">
+                <div class="text-3xl font-heading font-bold text-[#064E3B]">1000<span class="text-[#10B981]">+</span></div>
+                <div class="text-[#064E3B]/60 text-sm mt-1 uppercase tracking-wider">服务企业</div>
               </div>
-              <div class="text-center px-6 py-4 bg-gray-50 rounded-lg flex-1 min-w-24">
-                <div class="text-2xl md:text-3xl font-bold text-primary">15</div>
-                <div class="text-gray-500 text-sm mt-1">年行业经验</div>
+              <div class="px-6 py-5 bg-[#ECFDF5] rounded-sm flex-1 min-w-[120px] border-l-4 border-[#F97316]">
+                <div class="text-3xl font-heading font-bold text-[#064E3B]">15<span class="text-[#F97316]">Y</span></div>
+                <div class="text-[#064E3B]/60 text-sm mt-1 uppercase tracking-wider">行业经验</div>
               </div>
-              <div class="text-center px-6 py-4 bg-gray-50 rounded-lg flex-1 min-w-24">
-                <div class="text-2xl md:text-3xl font-bold text-primary">50+</div>
-                <div class="text-gray-500 text-sm mt-1">种产品</div>
+              <div class="px-6 py-5 bg-[#ECFDF5] rounded-sm flex-1 min-w-[120px] border-l-4 border-[#059669]">
+                <div class="text-3xl font-heading font-bold text-[#064E3B]">50<span class="text-[#059669]">+</span></div>
+                <div class="text-[#064E3B]/60 text-sm mt-1 uppercase tracking-wider">产品矩阵</div>
               </div>
             </div>
           </div>
@@ -55,73 +61,43 @@
     </section>
 
     <!-- Company Timeline -->
-    <section class="py-16 md:py-24 bg-gray-50">
+    <section class="py-20 md:py-32 bg-[#FAFAFA] border-y border-gray-200">
       <div class="container-base">
-        <h2 class="text-2xl md:text-3xl font-bold text-center mb-12">发展历程</h2>
+        <div class="text-center mb-16">
+          <h2 class="text-3xl md:text-4xl font-heading font-bold text-[#064E3B] mb-4">发展<span class="text-[#10B981]">历程</span></h2>
+          <p class="text-[#064E3B]/60 uppercase tracking-widest text-sm">Milestones & History</p>
+        </div>
         
         <!-- Desktop Timeline -->
-        <div class="hidden md:block relative">
-          <div class="absolute left-1/2 top-0 bottom-0 w-0.5 bg-primary/30 transform -translate-x-1/2"></div>
+        <div class="hidden md:block relative max-w-4xl mx-auto">
+          <div class="absolute left-1/2 top-0 bottom-0 w-0.5 bg-[#10B981]/30 transform -translate-x-1/2"></div>
           
-          <div class="space-y-12">
-            <div class="relative flex items-center">
-              <div class="w-1/2 pr-8 text-right">
-                <div class="bg-white p-6 rounded-lg shadow-sm">
-                  <span class="text-primary font-bold text-xl">2010</span>
-                  <h3 class="text-lg font-semibold mt-2">企业成立</h3>
-                  <p class="text-gray-500 text-sm mt-2">珠海市顺泰包装材料有限公司正式成立</p>
+          <div class="space-y-16">
+            <div class="relative flex items-center group" v-for="(event, index) in timeline" :key="event.year">
+              <div class="w-1/2 pr-12 text-right" :class="index % 2 === 0 ? '' : 'order-3 text-left pr-0 pl-12'">
+                <div class="bg-white p-8 rounded-sm shadow-sm border border-gray-100 group-hover:border-[#10B981]/50 group-hover:shadow-md transition-all duration-300">
+                  <span class="text-[#10B981] font-heading font-bold text-3xl">{{ event.year }}</span>
+                  <h3 class="text-xl font-heading font-bold text-[#064E3B] mt-2">{{ event.title }}</h3>
+                  <p class="text-[#064E3B]/70 mt-3 leading-relaxed">{{ event.desc }}</p>
                 </div>
               </div>
-              <div class="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-primary rounded-full border-4 border-white shadow z-10"></div>
-              <div class="w-1/2 pl-8"></div>
-            </div>
-            
-            <div class="relative flex items-center">
-              <div class="w-1/2 pr-8"></div>
-              <div class="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-primary rounded-full border-4 border-white shadow z-10"></div>
-              <div class="w-1/2 pl-8">
-                <div class="bg-white p-6 rounded-lg shadow-sm">
-                  <span class="text-primary font-bold text-xl">2015</span>
-                  <h3 class="text-lg font-semibold mt-2">规模扩张</h3>
-                  <p class="text-gray-500 text-sm mt-2">新建厂房，扩大产能</p>
-                </div>
-              </div>
-            </div>
-            
-            <div class="relative flex items-center">
-              <div class="w-1/2 pr-8 text-right">
-                <div class="bg-white p-6 rounded-lg shadow-sm">
-                  <span class="text-primary font-bold text-xl">2018</span>
-                  <h3 class="text-lg font-semibold mt-2">产品升级</h3>
-                  <p class="text-gray-500 text-sm mt-2">新增珍珠棉生产线，产品线更加丰富</p>
-                </div>
-              </div>
-              <div class="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-primary rounded-full border-4 border-white shadow z-10"></div>
-              <div class="w-1/2 pl-8"></div>
-            </div>
-            
-            <div class="relative flex items-center">
-              <div class="w-1/2 pr-8"></div>
-              <div class="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-primary rounded-full border-4 border-white shadow z-10"></div>
-              <div class="w-1/2 pl-8">
-                <div class="bg-white p-6 rounded-lg shadow-sm">
-                  <span class="text-primary font-bold text-xl">2021</span>
-                  <h3 class="text-lg font-semibold mt-2">服务深化</h3>
-                  <p class="text-gray-500 text-sm mt-2">为珠三角1000+企业提供包装解决方案</p>
-                </div>
-              </div>
+              <div class="absolute left-1/2 transform -translate-x-1/2 w-5 h-5 bg-[#F97316] rounded-full border-4 border-white shadow-md z-10 group-hover:scale-125 transition-transform duration-300" :class="index % 2 === 0 ? '' : 'order-2'"></div>
+              <div class="w-1/2 pl-12" :class="index % 2 === 0 ? '' : 'order-1 pr-12 pl-0'"></div>
             </div>
           </div>
         </div>
         
         <!-- Mobile Timeline -->
-        <div class="md:hidden space-y-6">
-          <div v-for="event in timeline" :key="event.year" class="flex gap-4">
-            <div class="flex-shrink-0 w-12 h-12 bg-primary rounded-full flex-center text-white font-bold">{{ event.year.toString().slice(-2) }}</div>
-            <div class="flex-1 bg-white p-4 rounded-lg shadow-sm">
-              <span class="text-primary font-bold">{{ event.year }}</span>
-              <h3 class="font-semibold mt-1">{{ event.title }}</h3>
-              <p class="text-gray-500 text-sm mt-1">{{ event.desc }}</p>
+        <div class="md:hidden space-y-8">
+          <div v-for="event in timeline" :key="event.year" class="flex gap-6">
+            <div class="flex-shrink-0 flex flex-col items-center">
+              <div class="w-12 h-12 bg-[#ECFDF5] rounded-full flex items-center justify-center text-[#10B981] font-heading font-bold border border-[#10B981]/20">{{ event.year.toString().slice(-2) }}</div>
+              <div class="w-0.5 h-full bg-[#10B981]/20 mt-4"></div>
+            </div>
+            <div class="flex-1 bg-white p-6 rounded-sm shadow-sm border border-gray-100 pb-8">
+              <span class="text-[#10B981] font-heading font-bold text-xl">{{ event.year }}</span>
+              <h3 class="font-heading font-bold text-[#064E3B] text-lg mt-1">{{ event.title }}</h3>
+              <p class="text-[#064E3B]/70 mt-2">{{ event.desc }}</p>
             </div>
           </div>
         </div>
@@ -129,36 +105,43 @@
     </section>
 
     <!-- Qualifications Section -->
-    <section class="py-16 md:py-24 bg-white">
+    <section class="py-20 md:py-32 bg-white">
       <div class="container-base">
-        <h2 class="text-2xl md:text-3xl font-bold text-center mb-12">资质认证</h2>
+        <div class="text-center mb-16">
+          <h2 class="text-3xl md:text-4xl font-heading font-bold text-[#064E3B] mb-4">资质<span class="text-[#10B981]">认证</span></h2>
+          <p class="text-[#064E3B]/60 uppercase tracking-widest text-sm">Certifications & Awards</p>
+        </div>
         
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-          <div v-for="cert in certifications" :key="cert.name" class="bg-gray-50 rounded-xl p-6 text-center hover:shadow-lg transition-shadow">
-            <div class="bg-gray-200 border-2 border-dashed rounded-xl w-20 h-20 mx-auto mb-4 flex-center">
-              <span class="text-gray-400 text-xs">认证</span>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 lg:gap-10">
+          <div v-for="cert in certifications" :key="cert.name" class="bg-[#ECFDF5] rounded-sm p-8 text-center border border-[#10B981]/10 hover:border-[#10B981]/40 hover:shadow-lg transition-all duration-300 group">
+            <div class="w-20 h-20 mx-auto mb-6 flex items-center justify-center bg-white rounded-full shadow-sm group-hover:scale-110 transition-transform duration-300">
+              <span class="i-carbon-certificate text-4xl text-[#10B981]"></span>
             </div>
-            <h3 class="font-semibold text-sm">{{ cert.name }}</h3>
-            <p class="text-gray-500 text-xs mt-1">{{ cert.desc }}</p>
+            <h3 class="font-heading font-bold text-[#064E3B] text-lg">{{ cert.name }}</h3>
+            <p class="text-[#064E3B]/60 text-sm mt-2">{{ cert.desc }}</p>
           </div>
         </div>
       </div>
     </section>
 
     <!-- Team Section -->
-    <section class="py-16 md:py-24 bg-gray-50">
+    <section class="py-20 md:py-32 bg-[#064E3B]">
       <div class="container-base">
-        <h2 class="text-2xl md:text-3xl font-bold text-center mb-12">核心团队</h2>
+        <div class="text-center mb-16">
+          <h2 class="text-3xl md:text-4xl font-heading font-bold text-white mb-4">核心<span class="text-[#10B981]">团队</span></h2>
+          <p class="text-emerald-100/60 uppercase tracking-widest text-sm">Meet The Experts</p>
+        </div>
         
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          <div v-for="member in team" :key="member.name" class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
-            <div class="bg-gray-200 border-2 border-dashed h-48 flex-center">
-              <span class="text-gray-400">团队成员</span>
+          <div v-for="(member, index) in team" :key="member.name" class="bg-[#059669]/20 backdrop-blur border border-white/10 rounded-sm overflow-hidden hover:border-[#10B981]/50 hover:-translate-y-2 transition-all duration-300">
+            <div class="h-60 bg-[#059669]/40 flex items-center justify-center relative overflow-hidden">
+              <span class="i-carbon-user-avatar-filled-alt text-7xl text-white/20"></span>
+              <div class="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-[#064E3B] to-transparent"></div>
             </div>
-            <div class="p-6 text-center">
-              <h3 class="font-semibold text-lg">{{ member.name }}</h3>
-              <p class="text-primary text-sm mt-1">{{ member.title }}</p>
-              <p class="text-gray-500 text-xs mt-3">{{ member.desc }}</p>
+            <div class="p-6 text-center relative z-10 -mt-8">
+              <h3 class="font-heading font-bold text-white text-xl">{{ member.name }}</h3>
+              <p class="inline-block bg-[#10B981]/20 text-[#10B981] text-xs font-bold px-3 py-1 rounded-sm uppercase tracking-wider mt-2 mb-4">{{ member.title }}</p>
+              <p class="text-emerald-100/70 text-sm">{{ member.desc }}</p>
             </div>
           </div>
         </div>
@@ -166,12 +149,14 @@
     </section>
 
     <!-- CTA Section -->
-    <section class="py-16 md:py-20 bg-primary text-white">
-      <div class="container-base text-center">
-        <h2 class="text-2xl md:text-3xl font-bold mb-4">了解更多产品信息？</h2>
-        <p class="text-white/80 mb-6">我们的专家团队随时为您服务</p>
-        <NuxtLink to="/contact" class="inline-block bg-white text-primary px-8 py-3 rounded-lg font-medium hover:bg-gray-100 transition">
-          联系我们
+    <section class="py-20 bg-[#F97316] relative overflow-hidden">
+      <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
+      <div class="container-base text-center relative z-10">
+        <h2 class="text-3xl md:text-4xl font-heading font-bold mb-6 text-white tracking-tight">准备好提升您的包装品质了吗？</h2>
+        <p class="text-white/90 mb-10 text-lg max-w-2xl mx-auto">我们的专家团队随时为您提供专业的评估与定制化解决方案。</p>
+        <NuxtLink to="/contact" class="inline-flex items-center gap-2 bg-white text-[#F97316] px-10 py-4 rounded-sm font-heading font-bold text-lg uppercase tracking-wider hover:bg-gray-50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+          联系专家团队
+          <span class="i-carbon-arrow-right text-xl"></span>
         </NuxtLink>
       </div>
     </section>
@@ -211,3 +196,25 @@ useHead({
   ]
 })
 </script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&family=Source+Sans+3:wght@300;400;500;600;700&display=swap');
+
+.font-heading {
+  font-family: 'Lexend', sans-serif;
+}
+.font-sans {
+  font-family: 'Source Sans 3', sans-serif;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style>

@@ -1,0 +1,20 @@
+[Unit]
+Description=Certbot Renewal with Nginx Reload
+Documentation=https://certbot.eff.org/docs
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/certbot renew --quiet --agree-tos --no-self-upgrade
+ExecStartPost=/bin/sh -c 'if [ -f /etc/letsencrypt/live/suntaizh.cn/fullchain.pem ]; then /usr/sbin/nginx -t && /usr/sbin/nginx -s reload; fi'
+ExecStartPost=/bin/sh -c 'echo "[$(date)] Certbot renewal attempted" >> /var/log/certbot-renew.log'
+
+# 失败时重试
+Restart=on-failure
+RestartSec=300
+
+# 安全限制
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ReadWritePaths=/var/log/letsencrypt /var/lib/letsencrypt /etc/letsencrypt

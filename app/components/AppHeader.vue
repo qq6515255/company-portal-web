@@ -2,13 +2,14 @@
   <header class="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md shadow-sm">
     <nav class="container-base flex-between py-4">
       <!-- Logo -->
-      <NuxtLink to="/" class="text-xl font-bold text-gray-900">某某企业</NuxtLink>
+      <NuxtLink to="/" class="text-xl font-bold text-gray-900">珠海市顺泰包装材料有限公司</NuxtLink>
 
       <!-- Desktop Navigation -->
       <div class="hidden lg:flex items-center gap-8">
         <NuxtLink to="/" class="text-gray-600 hover:text-gray-900 transition-colors">首页</NuxtLink>
         <NuxtLink to="/products" class="text-gray-600 hover:text-gray-900 transition-colors">产品介绍</NuxtLink>
         <NuxtLink to="/about" class="text-gray-600 hover:text-gray-900 transition-colors">关于我们</NuxtLink>
+        <NuxtLink to="/news" class="text-gray-600 hover:text-gray-900 transition-colors">新闻资讯</NuxtLink>
         <NuxtLink to="/contact" class="text-gray-600 hover:text-gray-900 transition-colors">联系我们</NuxtLink>
       </div>
 
@@ -85,6 +86,13 @@
                 @click="mobileMenuOpen = false"
               >
                 关于我们
+              </NuxtLink>
+              <NuxtLink
+                to="/news"
+                class="block px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                @click="mobileMenuOpen = false"
+              >
+                新闻资讯
               </NuxtLink>
               <NuxtLink
                 to="/contact"

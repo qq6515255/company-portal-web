@@ -1,0 +1,55 @@
+# ============================================
+# SSL 证书有效期监控
+# 每天检查一次证书有效期，提前 14 天告警
+# ============================================
+name: Check SSL Certificate
+
+on:
+  schedule:
+    # 每天上午 9 点检查
+    - cron: '0 9 * * *'
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check certificate expiry
+        run: |
+          DOMAIN="${{ secrets.CDN_DOMAIN || 'suntaizh.cn' }}"
+          echo "Checking certificate for ${DOMAIN}..."
+
+          # 获取证书到期日期
+          EXPIRY=$(echo | openssl s_client -servername "$DOMAIN" -connect "$DOMAIN:443" 2>/dev/null | \
+            openssl x509 -noout -enddate | cut -d= -f2)
+
+          EXPIRY_EPOCH=$(date -d "$EXPIRY" +%s)
+          NOW_EPOCH=$(date +%s)
+          DAYS_LEFT=$(( (EXPIRY_EPOCH - NOW_EPOCH) / 86400 ))
+
+          echo "Certificate expires in: ${DAYS_LEFT} days"
+          echo "Expiry date: $(date -d "$EXPIRY" "+%Y-%m-%d")"
+
+          if [ "$DAYS_LEFT" -lt 3 ]; then
+            echo "::error::CRITICAL: Certificate expires in ${DAYS_LEFT} days!"
+            exit 2
+          elif [ "$DAYS_LEFT" -lt 14 ]; then
+            echo "::warning::Certificate expires in ${DAYS_LEFT} days"
+            exit 1
+          else
+            echo "::notice::Certificate is healthy (${DAYS_LEFT} days left)"
+          fi
+
+      # 可选：告警通知（需要配置 webhook）
+      # - name: Send alert
+      #   if: failure()
+      #   uses: slackapi/slack-github-action@v1
+      #   with:
+      #     payload: |
+      #       {"text": "SSL证书告警: ${{ secrets.CDN_DOMAIN }} 证书即将过期"}
+      #   env:
+      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

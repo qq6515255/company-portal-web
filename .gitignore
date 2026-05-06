@@ -12,11 +12,14 @@ node_modules
 # Logs
 logs
 *.log
+__pycache__/
+*.pyc
 
 # Misc
 .DS_Store
 .fleet
 .idea
+.omc
 
 # Local env files
 .env

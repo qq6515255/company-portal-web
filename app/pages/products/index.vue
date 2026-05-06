@@ -1,17 +1,23 @@
 <template>
-  <div class="min-h-screen">
+  <div class="min-h-screen bg-[#FAFAFA] font-sans text-[#064E3B]">
     <!-- Hero Section -->
-    <section class="bg-gradient-to-br from-primary to-secondary py-16 md:py-24">
-      <div class="container-base text-center text-white">
-        <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">包装材料产品中心</h1>
-        <p class="text-lg md:text-xl text-white/80 max-w-2xl mx-auto">
-          专业生产珍珠棉、泡沫棉、透明胶、双面胶、海绵胶、打包带、保护膜、制袋等包装材料
+    <section class="relative bg-[#064E3B] py-20 md:py-32 overflow-hidden">
+      <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+      <div class="absolute inset-0 bg-gradient-to-b from-[#064E3B] to-transparent"></div>
+      <div class="container-base relative z-10 text-center text-white">
+        <div class="inline-flex items-center gap-2 px-4 py-2 mb-6 bg-[#059669]/30 backdrop-blur-md border border-[#10B981]/50 text-white font-medium tracking-widest text-sm rounded-sm uppercase">
+          <span class="w-2 h-2 rounded-full bg-[#10B981] animate-pulse"></span>
+          INDUSTRIAL PACKAGING
+        </div>
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-6 tracking-tight">包装材料产品中心</h1>
+        <p class="text-lg md:text-xl text-emerald-100 max-w-2xl mx-auto font-light leading-relaxed">
+          专业生产珍珠棉、泡沫棉、透明胶、双面胶、海绵胶、打包带、保护膜、制袋等包装材料，满足各行业极限防护挑战。
         </p>
       </div>
     </section>
 
     <!-- Category Filter -->
-    <section class="py-8 bg-white border-b">
+    <section class="py-8 bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
       <div class="container-base">
         <div class="flex flex-wrap justify-center gap-3">
           <button 
@@ -19,10 +25,10 @@
             :key="cat"
             @click="activeCategory = cat"
             :class="[
-              'px-6 py-2 rounded-full font-medium transition',
+              'px-6 py-2.5 rounded-sm font-heading font-medium transition-all duration-300 uppercase tracking-wide text-sm',
               activeCategory === cat 
-                ? 'bg-primary text-white' 
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                ? 'bg-[#10B981] text-white shadow-md shadow-[#10B981]/30 -translate-y-0.5' 
+                : 'bg-[#ECFDF5] text-[#064E3B] hover:bg-[#D1FAE5] hover:text-[#059669]'
             ]"
           >
             {{ cat }}
@@ -32,31 +38,42 @@
     </section>
 
     <!-- Products Grid -->
-    <section class="py-16 md:py-24 bg-gray-50">
+    <section class="py-16 md:py-24 bg-[#FAFAFA]">
       <div class="container-base">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          <NuxtLink 
-            v-for="product in filteredProducts" 
-            :key="product.name"
-            to="/products"
-            class="group bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden"
+          <NuxtLink
+            v-for="(product, index) in filteredProducts"
+            :key="product.id"
+            :to="`/products/${product.id}`"
+            class="group bg-white rounded-lg shadow-sm hover:shadow-xl border border-gray-100 hover:border-[#10B981]/30 transition-all duration-500 overflow-hidden flex flex-col"
+            :style="{ animationDelay: `${index * 100}ms` }"
+            style="animation: fadeUp 0.6s ease-out forwards;"
           >
-            <div class="relative">
-              <div class="bg-gray-200 border-2 border-dashed w-full h-56 flex-center">
-                <span class="text-gray-400 text-lg">{{ product.name }}图片</span>
+            <div class="relative overflow-hidden">
+              <div class="bg-[#ECFDF5] w-full h-64 flex items-center justify-center group-hover:bg-[#D1FAE5] transition-colors duration-500 relative"
+              >
+                <img
+                  :src="product.image"
+                  :alt="product.name"
+                  class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 group-hover:scale-105 transition-all duration-700"
+                  loading="lazy"
+                />
+                <span class="i-carbon-package text-6xl text-[#10B981]/30 group-hover:scale-125 transition-all duration-500 relative z-10"></span>
               </div>
-              <span class="absolute top-4 left-4 bg-primary/90 text-white text-xs px-3 py-1 rounded-full">
+              <span class="absolute top-4 left-4 bg-[#064E3B]/90 backdrop-blur text-white text-xs px-3 py-1.5 rounded-sm font-heading uppercase tracking-wider z-10">
                 {{ product.category }}
               </span>
             </div>
-            <div class="p-6">
-              <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition">
+            <div class="p-8 flex-1 flex flex-col">
+              <h3 class="text-2xl font-heading font-bold text-[#064E3B] mb-3 group-hover:text-[#10B981] transition-colors duration-300">
                 {{ product.name }}
               </h3>
-              <p class="text-gray-600 mb-4 line-clamp-2">{{ product.desc }}</p>
-              <div class="flex items-center justify-between">
-                <span class="text-gray-500 text-sm">{{ product.spec }}</span>
-                <span class="text-primary font-medium group-hover:underline">查看详情 →</span>
+              <p class="text-[#064E3B]/70 mb-6 line-clamp-2 leading-relaxed flex-1">{{ product.desc }}</p>
+              <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+                <span class="text-gray-500 text-sm bg-gray-50 px-3 py-1 rounded-sm">{{ product.spec }}</span>
+                <span class="text-[#F97316] font-heading font-semibold text-sm uppercase tracking-wider flex items-center group-hover:translate-x-1 transition-transform duration-300">
+                  查看详情 <span class="i-carbon-arrow-right ml-1 text-lg"></span>
+                </span>
               </div>
             </div>
           </NuxtLink>
@@ -65,12 +82,14 @@
     </section>
 
     <!-- CTA Section -->
-    <section class="py-16 bg-primary text-white">
-      <div class="container-base text-center">
-        <h2 class="text-2xl md:text-3xl font-bold mb-4">需要定制包装材料？</h2>
-        <p class="text-white/80 mb-6">我们提供各种规格的定制服务，满足您的特殊需求</p>
-        <NuxtLink to="/contact" class="inline-block bg-white text-primary px-8 py-3 rounded-lg font-medium hover:bg-gray-100 transition">
-          联系我们
+    <section class="py-20 bg-[#F97316] relative overflow-hidden">
+      <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
+      <div class="container-base text-center relative z-10">
+        <h2 class="text-3xl md:text-5xl font-heading font-bold mb-6 text-white tracking-tight">需要定制专属包装方案？</h2>
+        <p class="text-white/90 mb-10 text-lg max-w-2xl mx-auto">我们提供从设计到生产的一站式服务，满足您的所有工业级特殊防护需求。</p>
+        <NuxtLink to="/contact" class="inline-flex items-center gap-2 bg-white text-[#F97316] px-10 py-4 rounded-sm font-heading font-bold text-lg uppercase tracking-wider hover:bg-gray-50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+          <span class="i-carbon-phone text-xl"></span>
+          立即联系专家团队
         </NuxtLink>
       </div>
     </section>
@@ -78,41 +97,8 @@
 </template>
 
 <script setup lang="ts">
-const categories = ['全部', '缓冲材料', '粘接材料', '捆扎材料', '防护材料', '定制制袋']
-
 const activeCategory = ref('全部')
-
-const products = [
-  // 缓冲材料
-  { name: '珍珠棉', category: '缓冲材料', desc: '高性能缓冲防震材料，柔韧性好，适合电子、家具、玻璃等产品的包装防护', spec: '厚度: 0.5-50mm' },
-  { name: '泡沫棉', category: '缓冲材料', desc: '轻质缓冲材料，隔音隔热防震，适用于多种产品的包装填充', spec: '密度: 10-50kg/m³' },
-  { name: 'EVA泡棉', category: '缓冲材料', desc: '高弹性EVA材料，防水防震，广泛用于鞋材、箱包、电子产品', spec: '硬度: 20-60度' },
-  
-  // 粘接材料
-  { name: '透明胶带', category: '粘接材料', desc: '高透明度胶带，粘性强不残胶，适用于包装封箱、办公等', spec: '宽度: 12-72mm' },
-  { name: '双面胶带', category: '粘接材料', desc: '强粘性双面胶，固定、拼接、修补多功能应用', spec: '粘性: 高/中/低' },
-  { name: '美纹纸胶带', category: '粘接材料', desc: '易撕不留痕，适用于喷漆遮蔽、墙面保护、办公等', spec: '耐温: 80-120℃' },
-  
-  // 捆扎材料
-  { name: 'PP打包带', category: '捆扎材料', desc: '韧性强、抗拉伸，适用于纸箱、货物捆扎打包', spec: '宽度: 9-19mm' },
-  { name: 'PET塑钢带', category: '捆扎材料', desc: '高强度打包带，替代钢带，环保耐用，适用于重货打包', spec: '拉伸强度: ≥250MPa' },
-  { name: '缠绕膜', category: '捆扎材料', desc: '拉伸缠绕膜，包装防潮防尘，适用于托盘包装', spec: '厚度: 15-50μm' },
-  
-  // 防护材料
-  { name: 'PE保护膜', category: '防护材料', desc: '表面防护专用膜，防止刮花、灰尘，适用于板材、型材', spec: '粘性: 低/中/高' },
-  { name: '海绵胶条', category: '防护材料', desc: '高密度海绵，密封减震，适用于门窗、电子电器', spec: '规格: 可定制' },
-  { name: '气泡膜', category: '防护材料', desc: '缓冲气泡膜，防震防压，保护易碎物品', spec: '卷装/片装' },
-  
-  // 定制制袋
-  { name: '复合袋', category: '定制制袋', desc: '多层复合材料袋，防潮阻氧，适用于食品、药品包装', spec: '尺寸: 按需定制' },
-  { name: '自立袋', category: '定制制袋', desc: '底部可站立，自封口袋，便于陈列和使用', spec: '材质: PE/复合' },
-  { name: '防静电袋', category: '定制制袋', desc: '防静电PE袋，保护电子元件免受静电损害', spec: '规格: 可定制' },
-]
-
-const filteredProducts = computed(() => {
-  if (activeCategory.value === '全部') return products
-  return products.filter(p => p.category === activeCategory.value)
-})
+const filteredProducts = computed(() => getProductsByCategory(activeCategory.value))
 
 useHead({
   title: '包装材料产品中心 - 珠海市顺泰包装材料有限公司',
@@ -125,3 +111,25 @@ useHead({
   ]
 })
 </script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&family=Source+Sans+3:wght@300;400;500;600;700&display=swap');
+
+.font-heading {
+  font-family: 'Lexend', sans-serif;
+}
+.font-sans {
+  font-family: 'Source Sans 3', sans-serif;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style>
