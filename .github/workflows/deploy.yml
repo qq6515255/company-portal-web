@@ -190,15 +190,7 @@ jobs:
           if [ -n "${ECS_SSH_PRIVATE_KEY}" ]; then
             raw_key="${ECS_SSH_PRIVATE_KEY}"
 
-            if printf '%s' "${raw_key}" | grep -q 'BEGIN .*PRIVATE KEY'; then
-              printf '%s\n' "${raw_key}" | tr -d '\r' > ~/.ssh/id_ed25519
-            elif printf '%s' "${raw_key}" | grep -q '\\n'; then
-              printf '%b' "${raw_key}" | tr -d '\r' > ~/.ssh/id_ed25519
-            else
-              if ! printf '%s' "${raw_key}" | base64 --decode > ~/.ssh/id_ed25519 2>/dev/null; then
-                rm -f ~/.ssh/id_ed25519
-              fi
-            fi
+            printf '%s' "${raw_key}" | sed 's/\\n/\n/g' | tr -d '\r' > ~/.ssh/id_ed25519
 
             if [ -f ~/.ssh/id_ed25519 ]; then
               chmod 600 ~/.ssh/id_ed25519
