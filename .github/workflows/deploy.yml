@@ -115,10 +115,13 @@ jobs:
         run: |
           ENDPOINT="${OSS_ENDPOINT:-oss-cn-hangzhou.aliyuncs.com}"
 
-          ./ossutil config \
-            -e "${ENDPOINT}" \
-            -i "${ALIYUN_ACCESS_KEY_ID}" \
-            -k "${ALIYUN_ACCESS_KEY_SECRET}"
+          cat > ~/.ossutilconfig <<CFGEOF
+          [Credentials]
+          provider = AK
+          accessKeyID = ${ALIYUN_ACCESS_KEY_ID}
+          accessKeySecret = ${ALIYUN_ACCESS_KEY_SECRET}
+          endpoint = ${ENDPOINT}
+          CFGEOF
 
           ./ossutil sync .output/public/ "oss://${OSS_BUCKET}/" \
             --delete \
