@@ -190,13 +190,12 @@ export function useProducts() {
 }
 
 export function getProductById(id: string): Product | undefined {
-  return useProducts().value.find(product => product.id === id)
+  return productDefinitions.find(product => product.id === id)
 }
 
 export function getProductsByCategory(category: string): Product[] {
-  const products = useProducts().value
-  if (category === '全部') return products
-  return products.filter(product => product.category === category)
+  if (category === '全部') return productDefinitions
+  return productDefinitions.filter(product => product.category === category)
 }
 
 export const categories = ['全部', '缓冲材料', '粘接材料', '捆扎材料', '防护材料', '定制制袋']

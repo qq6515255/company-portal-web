@@ -98,7 +98,15 @@
 
 <script setup lang="ts">
 const activeCategory = ref('全部')
-const filteredProducts = computed(() => getProductsByCategory(activeCategory.value))
+const products = useProducts()
+
+const filteredProducts = computed(() => {
+  if (activeCategory.value === '全部') {
+    return products.value
+  }
+
+  return products.value.filter(product => product.category === activeCategory.value)
+})
 
 useHead({
   title: '包装材料产品中心 - 珠海市顺泰包装材料有限公司',

@@ -205,7 +205,7 @@ const route = useRoute()
 const productId = route.params.id as string
 const products = useProducts()
 
-const product = computed(() => getProductById(productId))
+const product = computed(() => products.value.find(item => item.id === productId))
 
 const relatedProducts = computed(() => {
   if (!product.value) return []
