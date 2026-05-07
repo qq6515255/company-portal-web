@@ -127,14 +127,14 @@ jobs:
             --delete \
             -f \
             --acl public-read \
-            --meta "Cache-Control:no-cache"
+            --cache-control "no-cache"
 
           if [ -d .output/public/_nuxt ]; then
             ./ossutil sync .output/public/_nuxt/ "oss://${OSS_BUCKET}/_nuxt/" \
               --delete \
               -f \
               --acl public-read \
-              --meta "Cache-Control:public,max-age=31536000,immutable"
+              --cache-control "public,max-age=31536000,immutable"
           fi
 
           if [ -d .output/public/images ]; then
@@ -142,7 +142,7 @@ jobs:
               --delete \
               -f \
               --acl public-read \
-              --meta "Cache-Control:public,max-age=2592000"
+              --cache-control "public,max-age=2592000"
           fi
 
       - name: Refresh CDN cache
