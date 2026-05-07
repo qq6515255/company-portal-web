@@ -1,152 +1,269 @@
-# ============================================
-# 顺泰包装 - GitHub Actions 自动化部署
-# 构建 → 上传阿里云 OSS → 刷新 CDN
-# ============================================
-name: Deploy to OSS + CDN
+name: Deploy Production
 
 on:
   push:
-    branches: [main, master]
-    paths-ignore:
-      - 'README.md'
-      - '.env.example'
-      - 'scripts/**'
-      - '.github/**'
+    branches:
+      - master
   workflow_dispatch:
     inputs:
       invalidate_all:
-        description: '强制刷新全部 CDN 缓存'
+        description: Refresh the full CDN directory after deploy
         required: false
-        default: 'false'
-        type: choice
-        options:
-          - 'true'
-          - 'false'
+        default: false
+        type: boolean
+
+concurrency:
+  group: production-deploy
+  cancel-in-progress: true
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      id-token: write
 
     steps:
-      # ========== 1. 拉取代码 ==========
       - name: Checkout
         uses: actions/checkout@v4
 
-      # ========== 2. 安装 Node.js ==========
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
-          cache: 'npm'
+          node-version: 22
+          cache: npm
 
-      # ========== 3. 安装依赖 ==========
       - name: Install dependencies
         run: npm ci
 
-      # ========== 4. 构建静态站点 ==========
-      - name: Build static site
-        run: npm run generate
+      - name: Generate static site
         env:
-          NUXT_PUBLIC_AMAP_API_KEY: ${{ secrets.AMAP_API_KEY }}
-          NUXT_PUBLIC_AMAP_SECURITY_JS_CODE: ${{ secrets.AMAP_SECURITY_JS_CODE }}
+          NUXT_APP_CDN_URL: ${{ secrets.NUXT_APP_CDN_URL }}
+          NUXT_PUBLIC_AMAP_API_KEY: ${{ secrets.NUXT_PUBLIC_AMAP_API_KEY }}
+          NUXT_PUBLIC_AMAP_SECURITY_JS_CODE: ${{ secrets.NUXT_PUBLIC_AMAP_SECURITY_JS_CODE }}
+        run: npm run generate
 
-      # ========== 5. 预压缩静态资源 ==========
-      - name: Compress assets
+      - name: Pre-compress static assets
         run: |
-          # Gzip
           find .output/public -type f \( \
             -name "*.js" -o -name "*.css" -o -name "*.html" -o \
             -name "*.json" -o -name "*.xml" -o -name "*.svg" -o \
             -name "*.txt" \
           \) -exec gzip -kf9 {} \;
-          echo "Gzip done"
 
-          # Brotli (ubuntu-latest 已预装 brotli)
-          if command -v brotli &> /dev/null; then
+          if command -v brotli >/dev/null 2>&1; then
             find .output/public -type f \( \
               -name "*.js" -o -name "*.css" -o -name "*.html" -o \
               -name "*.json" -o -name "*.xml" -o -name "*.svg" -o \
               -name "*.txt" \
             \) -exec brotli -kfZ {} \;
-            echo "Brotli done"
           fi
 
-      # ========== 6. 安装阿里云 CLI ==========
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-output
+          path: .output/public
+          if-no-files-found: error
+          retention-days: 3
+
+  deploy-oss:
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      contents: read
+
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: site-output
+          path: .output/public
+
       - name: Install Aliyun CLI
         run: |
-          wget -q https://aliyuncli.alicdn.com/aliyun-cli-linux-latest-amd64.tgz
-          tar -xzf aliyun-cli-linux-latest-amd64.tgz
-          sudo mv aliyun /usr/local/bin/
-          aliyun --version
+          curl -fsSL https://aliyuncli.alicdn.com/aliyun-cli-linux-latest-amd64.tgz -o aliyun.tgz
+          tar -xzf aliyun.tgz
+          sudo mv aliyun /usr/local/bin/aliyun
+          aliyun version
 
-      # ========== 7. 配置阿里云凭证 ==========
+      - name: Install ossutil
+        run: |
+          curl -fsSL https://gosspublic.alicdn.com/ossutil/1.7.19/ossutil64 -o ossutil
+          chmod +x ossutil
+
       - name: Configure Aliyun credentials
+        env:
+          ALIYUN_REGION: ${{ secrets.ALIYUN_REGION }}
         run: |
           aliyun configure set \
             --profile default \
             --mode AK \
-            --access-key-id ${{ secrets.ALIYUN_ACCESS_KEY_ID }} \
-            --access-key-secret ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }} \
-            --region ${{ secrets.ALIYUN_REGION || 'cn-hangzhou' }}
+            --access-key-id "${{ secrets.ALIYUN_ACCESS_KEY_ID }}" \
+            --access-key-secret "${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}" \
+            --region "${ALIYUN_REGION:-cn-hangzhou}"
 
-      # ========== 8. 上传 OSS (增量同步) ==========
-      - name: Upload to OSS
+      - name: Sync static files to OSS
+        env:
+          OSS_BUCKET: ${{ secrets.OSS_BUCKET }}
+          OSS_ENDPOINT: ${{ secrets.OSS_ENDPOINT }}
+          ALIYUN_ACCESS_KEY_ID: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
+          ALIYUN_ACCESS_KEY_SECRET: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
         run: |
-          BUCKET="${{ secrets.OSS_BUCKET }}"
-          ENDPOINT="${{ secrets.OSS_ENDPOINT || 'oss-cn-hangzhou.aliyuncs.com' }}"
+          ENDPOINT="${OSS_ENDPOINT:-oss-cn-hangzhou.aliyuncs.com}"
 
-          echo "Uploading to oss://${BUCKET}/ ..."
+          ./ossutil config \
+            -e "${ENDPOINT}" \
+            -i "${ALIYUN_ACCESS_KEY_ID}" \
+            -k "${ALIYUN_ACCESS_KEY_SECRET}" \
+            --loglevel error
 
-          # 使用 ossutil 方式（通过 aliyun CLI 安装）
-          # 先安装 ossutil
-          wget -q https://gosspublic.alicdn.com/ossutil/1.7.19/ossutil64
-          chmod +x ossutil64
-
-          # 配置 ossutil
-          ./ossutil64 config -e ${ENDPOINT} -i ${{ secrets.ALIYUN_ACCESS_KEY_ID }} -k ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
-
-          # 上传（覆盖式，.output/public 下所有文件）
-          ./ossutil64 cp -r -f \
+          ./ossutil sync .output/public/ "oss://${OSS_BUCKET}/" \
+            --delete \
+            -f \
             --acl public-read \
-            --jobs 10 \
-            .output/public/ \
-            oss://${BUCKET}/
+            --meta "Cache-Control:no-cache"
 
-          echo "Upload complete"
+          if [ -d .output/public/_nuxt ]; then
+            ./ossutil sync .output/public/_nuxt/ "oss://${OSS_BUCKET}/_nuxt/" \
+              --delete \
+              -f \
+              --acl public-read \
+              --meta "Cache-Control:public,max-age=31536000,immutable"
+          fi
 
-      # ========== 9. 刷新 CDN 缓存 ==========
-      - name: Purge CDN cache
+          if [ -d .output/public/images ]; then
+            ./ossutil sync .output/public/images/ "oss://${OSS_BUCKET}/images/" \
+              --delete \
+              -f \
+              --acl public-read \
+              --meta "Cache-Control:public,max-age=2592000"
+          fi
+
+      - name: Refresh CDN cache
+        env:
+          CDN_DOMAIN: ${{ secrets.CDN_DOMAIN }}
+          INVALIDATE_ALL: ${{ github.event.inputs.invalidate_all || 'false' }}
         run: |
-          DOMAIN="${{ secrets.CDN_DOMAIN }}"
-          if [ -z "$DOMAIN" ]; then
-            echo "CDN_DOMAIN not set, skipping CDN purge"
+          if [ -z "${CDN_DOMAIN}" ]; then
+            echo "CDN_DOMAIN is empty, skipping CDN refresh"
             exit 0
           fi
 
-          echo "Purging CDN cache for ${DOMAIN} ..."
+          TARGET="https://${CDN_DOMAIN}/"
 
-          # 调用阿里云 CDN PushObjectCache API 刷新目录
-          aliyun cdn PushObjectCache \
-            --ObjectPath "https://${DOMAIN}/" \
-            --ObjectType Directory \
-            --region cn-hangzhou || true
+          aliyun cdn RefreshObjectCaches \
+            --ObjectPath "${TARGET}" \
+            --ObjectType Directory || true
 
-          # 如果勾选了强制刷新，额外刷新所有 URL
-          if [ "${{ github.event.inputs.invalidate_all }}" = "true" ]; then
-            echo "Force invalidating all..."
+          if [ "${INVALIDATE_ALL}" = "true" ]; then
             aliyun cdn RefreshObjectCaches \
-              --ObjectPath "https://${DOMAIN}/" \
-              --ObjectType Directory \
-              --region cn-hangzhou || true
+              --ObjectPath "${TARGET}" \
+              --ObjectType Directory || true
           fi
 
-          echo "CDN purge done"
+  deploy-ecs:
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      contents: read
 
-      # ========== 10. 部署结果通知 ==========
-      - name: Notify deploy result
-        if: always()
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: site-output
+          path: .output/public
+
+      - name: Prepare ECS auth
+        env:
+          ECS_SSH_PRIVATE_KEY: ${{ secrets.ECS_SSH_PRIVATE_KEY }}
+          ECS_DEPLOY_PASSWORD: ${{ secrets.ECS_DEPLOY_PASSWORD }}
         run: |
-          echo "::notice:: Deploy ${{ job.status }} at $(date)"
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+
+          if [ -n "${ECS_SSH_PRIVATE_KEY}" ]; then
+            printf '%s\n' "${ECS_SSH_PRIVATE_KEY}" > ~/.ssh/id_ed25519
+            chmod 600 ~/.ssh/id_ed25519
+            echo "ECS_AUTH_MODE=key" >> "$GITHUB_ENV"
+            exit 0
+          fi
+
+          if [ -n "${ECS_DEPLOY_PASSWORD}" ]; then
+            sudo apt-get update
+            sudo apt-get install -y sshpass
+            echo "ECS_AUTH_MODE=password" >> "$GITHUB_ENV"
+            exit 0
+          fi
+
+          echo "Either ECS_SSH_PRIVATE_KEY or ECS_DEPLOY_PASSWORD must be configured"
+          exit 1
+
+      - name: Package release
+        run: tar -C .output/public -czf site-output.tgz .
+
+      - name: Upload release package
+        env:
+          ECS_HOST: ${{ secrets.ECS_HOST }}
+          ECS_DEPLOY_USER: ${{ secrets.ECS_DEPLOY_USER }}
+          ECS_DEPLOY_PASSWORD: ${{ secrets.ECS_DEPLOY_PASSWORD }}
+          ECS_SSH_PORT: ${{ secrets.ECS_SSH_PORT }}
+        run: |
+          PORT="${ECS_SSH_PORT:-22}"
+          if [ "${ECS_AUTH_MODE}" = "password" ]; then
+            SSHPASS="${ECS_DEPLOY_PASSWORD}" sshpass -e scp -P "${PORT}" -o StrictHostKeyChecking=no \
+              site-output.tgz \
+              "${ECS_DEPLOY_USER}@${ECS_HOST}:/tmp/site-output-${GITHUB_SHA}.tgz"
+          else
+            scp -P "${PORT}" -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no \
+              site-output.tgz \
+              "${ECS_DEPLOY_USER}@${ECS_HOST}:/tmp/site-output-${GITHUB_SHA}.tgz"
+          fi
+
+      - name: Activate release on ECS
+        env:
+          ECS_HOST: ${{ secrets.ECS_HOST }}
+          ECS_DEPLOY_USER: ${{ secrets.ECS_DEPLOY_USER }}
+          ECS_DEPLOY_PASSWORD: ${{ secrets.ECS_DEPLOY_PASSWORD }}
+          ECS_SSH_PORT: ${{ secrets.ECS_SSH_PORT }}
+          ECS_SITE_ROOT: ${{ secrets.ECS_SITE_ROOT }}
+          ECS_NGINX_SERVICE: ${{ secrets.ECS_NGINX_SERVICE }}
+        run: |
+          PORT="${ECS_SSH_PORT:-22}"
+          SITE_ROOT="${ECS_SITE_ROOT:-/var/www/company-portal}"
+          NGINX_SERVICE="${ECS_NGINX_SERVICE:-nginx}"
+
+          if [ "${ECS_AUTH_MODE}" = "password" ]; then
+            SSHPASS="${ECS_DEPLOY_PASSWORD}" sshpass -e ssh -p "${PORT}" -o StrictHostKeyChecking=no \
+              "${ECS_DEPLOY_USER}@${ECS_HOST}" \
+              "SITE_ROOT='${SITE_ROOT}' RELEASE_ID='${GITHUB_SHA}' NGINX_SERVICE='${NGINX_SERVICE}' bash -s" <<'REMOTE'
+          else
+            ssh -p "${PORT}" -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no \
+              "${ECS_DEPLOY_USER}@${ECS_HOST}" \
+              "SITE_ROOT='${SITE_ROOT}' RELEASE_ID='${GITHUB_SHA}' NGINX_SERVICE='${NGINX_SERVICE}' bash -s" <<'REMOTE'
+          fi
+          set -euo pipefail
+
+          release_dir="${SITE_ROOT}/releases/${RELEASE_ID}"
+          archive="/tmp/site-output-${RELEASE_ID}.tgz"
+
+          sudo mkdir -p "${SITE_ROOT}/releases"
+          sudo rm -rf "${release_dir}"
+          sudo mkdir -p "${release_dir}"
+          sudo tar -xzf "${archive}" -C "${release_dir}"
+          sudo ln -sfn "${release_dir}" "${SITE_ROOT}/current"
+
+          if id www-data >/dev/null 2>&1; then
+            sudo chown -R www-data:www-data "${SITE_ROOT}"
+          fi
+
+          sudo find "${SITE_ROOT}" -type d -exec chmod 755 {} \;
+          sudo find "${SITE_ROOT}" -type f -exec chmod 644 {} \;
+
+          if command -v nginx >/dev/null 2>&1; then
+            sudo nginx -t
+            sudo systemctl reload "${NGINX_SERVICE}" || sudo nginx -s reload
+          fi
+
+          rm -f "${archive}"
+          REMOTE

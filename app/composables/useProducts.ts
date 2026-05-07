@@ -10,7 +10,7 @@ export interface Product {
   applications: string[]
 }
 
-export const products: Product[] = [
+const productDefinitions: Product[] = [
   {
     id: 'zhenzhumian',
     name: '珍珠棉',
@@ -178,13 +178,25 @@ export const products: Product[] = [
   }
 ]
 
+export function useProducts() {
+  const config = useRuntimeConfig()
+
+  return computed(() =>
+    productDefinitions.map(product => ({
+      ...product,
+      image: resolvePublicAssetUrl(product.image, config.app.cdnURL)
+    }))
+  )
+}
+
 export function getProductById(id: string): Product | undefined {
-  return products.find(p => p.id === id)
+  return useProducts().value.find(product => product.id === id)
 }
 
 export function getProductsByCategory(category: string): Product[] {
+  const products = useProducts().value
   if (category === '全部') return products
-  return products.filter(p => p.category === category)
+  return products.filter(product => product.category === category)
 }
 
 export const categories = ['全部', '缓冲材料', '粘接材料', '捆扎材料', '防护材料', '定制制袋']

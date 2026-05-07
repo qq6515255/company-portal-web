@@ -11,7 +11,7 @@
           muted
           playsinline
           class="w-full h-full object-cover object-center opacity-50 mix-blend-luminosity"
-          poster="/images/products/hero-factory.jpg"
+          :poster="publicAsset('/images/products/hero-factory.jpg')"
         >
           <!-- Using a sample stock video of an industrial machine/factory process -->
           <source src="https://cdn.pixabay.com/video/2019/04/10/22699-330456185_large.mp4" type="video/mp4" />
@@ -76,7 +76,7 @@
             <!-- Creative UI: Transparent Tape Piece -->
             <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-24 h-8 bg-white/50 backdrop-blur-md border border-white/40 shadow-[0_2px_5px_rgba(0,0,0,0.05)] -rotate-2 z-30 transition-all duration-500 group-hover:rotate-1 group-hover:bg-white/70 group-hover:w-28 group-hover:shadow-[0_5px_15px_rgba(0,0,0,0.1)]"></div>
             <div class="w-full sm:w-2/5 bg-[#064E3B] relative overflow-hidden flex items-center justify-center">
-              <img src="/images/products/pearl-cotton.jpg" alt="珍珠棉/泡沫棉" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500" />
+              <img :src="publicAsset('/images/products/pearl-cotton.jpg')" alt="珍珠棉/泡沫棉" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500" />
             </div>
             <div class="p-8 w-full sm:w-3/5 flex flex-col justify-center relative z-20">
               <h3 class="text-2xl font-heading font-bold text-[#064E3B] mb-3">珍珠棉 / 泡沫棉</h3>
@@ -92,7 +92,7 @@
             <!-- Creative UI: Transparent Tape Piece -->
             <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-24 h-8 bg-white/50 backdrop-blur-md border border-white/40 shadow-[0_2px_5px_rgba(0,0,0,0.05)] rotate-2 z-30 transition-all duration-500 group-hover:-rotate-1 group-hover:bg-white/70 group-hover:w-28 group-hover:shadow-[0_5px_15px_rgba(0,0,0,0.1)]"></div>
             <div class="w-full sm:w-2/5 bg-[#064E3B] relative overflow-hidden flex items-center justify-center">
-              <img src="/images/products/adhesive-tape.jpg" alt="透明胶/双面胶" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500" />
+              <img :src="publicAsset('/images/products/adhesive-tape.jpg')" alt="透明胶/双面胶" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500" />
             </div>
             <div class="p-8 w-full sm:w-3/5 flex flex-col justify-center relative z-20">
               <h3 class="text-2xl font-heading font-bold text-[#064E3B] mb-3">透明胶 / 双面胶</h3>
@@ -108,7 +108,7 @@
             <!-- Creative UI: Transparent Tape Piece -->
             <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-24 h-8 bg-white/50 backdrop-blur-md border border-white/40 shadow-[0_2px_5px_rgba(0,0,0,0.05)] -rotate-1 z-30 transition-all duration-500 group-hover:rotate-2 group-hover:bg-white/70 group-hover:w-28 group-hover:shadow-[0_5px_15px_rgba(0,0,0,0.1)]"></div>
             <div class="w-full sm:w-2/5 bg-[#064E3B] relative overflow-hidden flex items-center justify-center">
-              <img src="/images/products/protective-film.jpg" alt="海绵胶/保护膜" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500" />
+              <img :src="publicAsset('/images/products/protective-film.jpg')" alt="海绵胶/保护膜" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500" />
             </div>
             <div class="p-8 w-full sm:w-3/5 flex flex-col justify-center relative z-20">
               <h3 class="text-2xl font-heading font-bold text-[#064E3B] mb-3">海绵胶 / 保护膜</h3>
@@ -124,7 +124,7 @@
             <!-- Creative UI: Transparent Tape Piece -->
             <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-24 h-8 bg-white/50 backdrop-blur-md border border-white/40 shadow-[0_2px_5px_rgba(0,0,0,0.05)] rotate-1 z-30 transition-all duration-500 group-hover:-rotate-2 group-hover:bg-white/70 group-hover:w-28 group-hover:shadow-[0_5px_15px_rgba(0,0,0,0.1)]"></div>
             <div class="w-full sm:w-2/5 bg-[#064E3B] relative overflow-hidden flex items-center justify-center">
-              <img src="/images/products/packaging-boxes.jpg" alt="打包带/定制制袋" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500" />
+              <img :src="publicAsset('/images/products/packaging-boxes.jpg')" alt="打包带/定制制袋" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500" />
             </div>
             <div class="p-8 w-full sm:w-3/5 flex flex-col justify-center relative z-20">
               <h3 class="text-2xl font-heading font-bold text-[#064E3B] mb-3">打包带 / 定制制袋</h3>
@@ -211,6 +211,9 @@
 </template>
 
 <script setup lang="ts">
+const config = useRuntimeConfig()
+const publicAsset = (path: string) => resolvePublicAssetUrl(path, config.app.cdnURL)
+
 // SEO Structured Data - use useHead for JSON-LD
 const organizationSchema = JSON.stringify({
   "@context": "https://schema.org",
@@ -218,7 +221,7 @@ const organizationSchema = JSON.stringify({
   "name": "珠海市顺泰包装材料有限公司",
   "alternateName": "顺泰包装",
   "url": "https://suntaizh.cn",
-  "logo": "https://suntaizh.cn/favicon.ico",
+  "logo": publicAsset('/favicon.ico'),
   "description": "专业生产珍珠棉、泡沫棉、透明胶、双面胶、海绵胶、打包带、保护膜、制袋等包装材料，厂家直销",
   "areaServed": {
     "@type": "Place",
@@ -236,7 +239,7 @@ const localBusinessSchema = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
   "name": "珠海市顺泰包装材料有限公司",
-  "image": "https://suntaizh.cn/images/logo.png",
+  "image": publicAsset('/images/products/hero-factory.jpg'),
   "url": "https://suntaizh.cn",
   "telephone": "400-888-8888",
   "email": "info@suntaizh.cn",

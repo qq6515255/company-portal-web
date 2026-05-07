@@ -203,12 +203,13 @@
 <script setup lang="ts">
 const route = useRoute()
 const productId = route.params.id as string
+const products = useProducts()
 
 const product = computed(() => getProductById(productId))
 
 const relatedProducts = computed(() => {
   if (!product.value) return []
-  return products
+  return products.value
     .filter(p => p.category === product.value!.category && p.id !== product.value!.id)
     .slice(0, 3)
 })

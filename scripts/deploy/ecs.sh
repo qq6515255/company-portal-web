@@ -18,13 +18,15 @@ log_error() { echo -e "${RED}❌ $1${NC}"; }
 log_step() { echo -e "${BLUE}▶ $1${NC}"; }
 
 # ========== 配置 ==========
-PROJECT_NAME="suntai-portal"
+PROJECT_NAME="company-portal"
 LOCAL_BUILD=".output/public"
 REMOTE_USER="${ECS_USER:-root}"
 REMOTE_HOST="${ECS_HOST:-}"
-REMOTE_DIR="/var/www/${PROJECT_NAME}"
+SITE_ROOT="${ECS_SITE_ROOT:-/var/www/${PROJECT_NAME}}"
+REMOTE_DIR="${SITE_ROOT}/current"
 NGINX_CONF="/etc/nginx/sites-enabled/${PROJECT_NAME}"
 SSH_KEY="${SSH_KEY:-~/.ssh/id_rsa}"
+ECS_PASSWORD="${ECS_PASSWORD:-}"
 
 # ========== 前置检查 ==========
 if [ -z "$REMOTE_HOST" ]; then
@@ -33,14 +35,26 @@ if [ -z "$REMOTE_HOST" ]; then
     exit 1
 fi
 
-if [ ! -f "$SSH_KEY" ]; then
+if [ -n "$ECS_PASSWORD" ]; then
+    if ! command -v sshpass &> /dev/null; then
+        log_error "当前使用密码登录，但本机未安装 sshpass"
+        echo "macOS: brew install hudochenkov/sshpass/sshpass"
+        echo "Ubuntu: sudo apt install -y sshpass"
+        exit 1
+    fi
+    SSH_PREFIX="sshpass -e"
+    export SSHPASS="$ECS_PASSWORD"
+    SSH_OPTS="-o StrictHostKeyChecking=no -o ConnectTimeout=10"
+elif [ -f "$SSH_KEY" ]; then
+    SSH_PREFIX=""
+    SSH_OPTS="-i ${SSH_KEY} -o StrictHostKeyChecking=no -o ConnectTimeout=10"
+else
     log_warn "SSH 密钥不存在: $SSH_KEY"
     echo "建议配置 SSH Key 免密登录:"
     echo "  ssh-copy-id -i ~/.ssh/id_rsa.pub ${REMOTE_USER}@${REMOTE_HOST}"
+    echo "或者临时使用: ECS_PASSWORD=你的密码 bash scripts/deploy/ecs.sh"
     exit 1
 fi
-
-SSH_OPTS="-i ${SSH_KEY} -o StrictHostKeyChecking=no -o ConnectTimeout=10"
 
 # ========== Step 1: 构建 ==========
 log_step "[1/5] 构建生产版本"
@@ -51,10 +65,10 @@ rm -rf .output
 # 使用 pnpm 如果可用，否则 npm
 if command -v pnpm &> /dev/null; then
     pnpm install --frozen-lockfile
-    pnpm generate
+    NUXT_APP_CDN_URL="${NUXT_APP_CDN_URL:-}" pnpm generate
 else
     npm ci
-    npm run generate
+    NUXT_APP_CDN_URL="${NUXT_APP_CDN_URL:-}" npm run generate
 fi
 
 if [ ! -d "$LOCAL_BUILD" ]; then
@@ -86,10 +100,11 @@ fi
 # ========== Step 3: 服务器环境检查 ==========
 log_step "[3/5] 检查服务器环境"
 
-ssh $SSH_OPTS ${REMOTE_USER}@${REMOTE_HOST} "
+${SSH_PREFIX} ssh $SSH_OPTS ${REMOTE_USER}@${REMOTE_HOST} "
     # 创建目录
+    sudo mkdir -p ${SITE_ROOT}
     sudo mkdir -p ${REMOTE_DIR}
-    sudo chown -R \${USER}:\${USER} ${REMOTE_DIR}
+    sudo chown -R \${USER}:\${USER} ${SITE_ROOT}
 
     # 检查 Nginx
     if ! command -v nginx &> /dev/null; then
@@ -114,20 +129,30 @@ log_step "[4/5] 同步文件到 ECS"
 # -z 传输时压缩
 # --delete 删除远程多余文件
 # --exclude 排除不需要的文件
-rsync -az --delete \
-    -e "ssh ${SSH_OPTS}" \
-    --exclude='.DS_Store' \
-    --exclude='Thumbs.db' \
-    --exclude='*.map' \
-    "$LOCAL_BUILD/" \
-    ${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_DIR}/
+if [ -n "$ECS_PASSWORD" ]; then
+    ${SSH_PREFIX} rsync -az --delete \
+        -e "ssh ${SSH_OPTS}" \
+        --exclude='.DS_Store' \
+        --exclude='Thumbs.db' \
+        --exclude='*.map' \
+        "$LOCAL_BUILD/" \
+        ${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_DIR}/
+else
+    rsync -az --delete \
+        -e "ssh ${SSH_OPTS}" \
+        --exclude='.DS_Store' \
+        --exclude='Thumbs.db' \
+        --exclude='*.map' \
+        "$LOCAL_BUILD/" \
+        ${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_DIR}/
+fi
 
 log_info "文件同步完成"
 
 # ========== Step 5: 设置权限 & 检查 Nginx ==========
 log_step "[5/5] 设置权限并验证"
 
-ssh $SSH_OPTS ${REMOTE_USER}@${REMOTE_HOST} "
+${SSH_PREFIX} ssh $SSH_OPTS ${REMOTE_USER}@${REMOTE_HOST} "
     # 设置正确权限（nginx 用户可读）
     sudo chown -R www-data:www-data ${REMOTE_DIR}
     sudo chmod -R 755 ${REMOTE_DIR}

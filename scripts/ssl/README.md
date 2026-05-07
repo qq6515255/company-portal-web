@@ -1,189 +1,168 @@
-# SSL 证书自动续签配置
+# SSL 证书配置
 
-## 方案选择
+## 先说结论
 
-| 部署方式 | 证书来源 | 续签方式 | 操作复杂度 |
-|---|---|---|---|
-| **OSS + CDN** | 阿里云免费证书 | **全自动，无需操作** | 零 |
-| **OSS + CDN** | Let's Encrypt | 需脚本自动上传 CDN | 中 |
-| **ECS + Nginx** | Let's Encrypt / Certbot | 需配置 cron 自动续签 + reload | 低 |
+按你现在的架构，建议这样做：
 
-> **推荐**：如果你用 OSS + CDN 方案，直接用阿里云免费证书，完全零维护。
->
-> 以下文档覆盖所有场景的完整配置。
+- `suntaizh.cn` 和 `www.suntaizh.cn`：部署在 ECS + Nginx，使用 `Let's Encrypt + certbot` 自动续期
+- `cdn.suntaizh.cn`：部署在阿里云 CDN，先挂证书，后续再决定是否升级到支持托管的证书
 
----
+重要说明：
 
-## 方案一：OSS + CDN + 阿里云免费证书（推荐，零维护）
+- 阿里云 CDN 历史免费证书已经不再适合依赖“自动续签”能力
+- 阿里云数字证书管理里的个人测试证书（免费版）也不支持托管自动续期
+- 所以真正能稳定做到“自动续期”的，是 ECS 上的 `certbot`
 
-阿里云 CDN 控制台提供 **免费 DV SSL 证书**，申请后自动部署到 CDN 节点，**到期前 30 天自动续签**，完全无需人工干预。
+## 你的当前环境
 
-### 配置步骤
+我已经按你现网确认过这些信息：
 
-1. 登录 [阿里云 CDN 控制台](https://cdn.console.aliyun.com/)
-2. 进入域名管理 → 选择你的加速域名
-3. 点击「HTTPS 配置」→「修改配置」
-4. 开启 HTTPS，选择「免费证书」
-5. 点击「申请免费证书」，按提示验证域名所有权
-6. 等待证书签发（通常 1-5 分钟）
-7. 开启「强制跳转 HTTPS」
-8. 开启「HTTP/2」
+- 系统：`Alibaba Cloud Linux 4`
+- Nginx 配置目录：`/etc/nginx/conf.d/`
+- 当前站点配置文件：`/etc/nginx/conf.d/company-portal-web.conf`
+- 当前线上配置里还在用旧域名：`shuntaizh.com` / `www.shuntaizh.com`
 
-### 自动续签
+这意味着在申请证书前，你需要先把 Nginx 里的域名改成：
 
-✅ **已完成。阿里云会自动处理。**
+- `suntaizh.cn`
+- `www.suntaizh.cn`
 
-证书到期前 30 天，系统会自动申请新证书并部署到所有 CDN 节点，无需任何操作。
+## 方案一：主站 ECS 自动续期
 
----
+这是你现在最推荐先做的部分。
 
-## 方案二：OSS + CDN + Let's Encrypt（自定义证书）
+### 1. 把域名先解析到 ECS
 
-如果你需要用 Let's Encrypt 证书（比如通配符证书 `*.suntaizh.cn`），需要配合脚本自动上传到阿里云 CDN。
+先确保：
 
-### 前置要求
+- `suntaizh.cn` -> `8.138.194.144`
+- `www.suntaizh.cn` -> `8.138.194.144` 或 CNAME 到 `suntaizh.cn`
 
-- 一台可以运行 certbot 的服务器（可以是本地 Mac、CI 服务器、或最便宜的 ECS）
-- 域名 DNS 解析在阿里云（支持 DNS-01 挑战）
+证书签发前，`80` 端口必须能从公网访问。
 
-### 配置步骤
+### 2. 修改 Nginx 域名
 
-#### 1. 安装 certbot 和阿里云 DNS 插件
+你当前线上文件是：
+
+`/etc/nginx/conf.d/company-portal-web.conf`
+
+把里面的：
+
+```nginx
+server_name www.shuntaizh.com shuntaizh.com;
+```
+
+改成：
+
+```nginx
+server_name suntaizh.cn www.suntaizh.cn;
+```
+
+如果你要切到新版发布目录结构，`root` 建议也改成：
+
+```nginx
+root /var/www/company-portal/current;
+```
+
+### 3. 安装 certbot
+
+Alibaba Cloud Linux 4 建议用：
 
 ```bash
-# macOS
-brew install certbot
-pip3 install certbot-dns-aliyun
-
-# Ubuntu/Debian
-sudo apt update
-sudo apt install -y certbot python3-certbot-dns-aliyun
+sudo dnf install -y certbot python3-certbot-nginx
 ```
 
-#### 2. 配置阿里云 DNS API 凭证
-
-创建 `/etc/letsencrypt/aliyun-dns.ini`：
-
-```ini
-dns_aliyun_access_key = 你的AccessKeyID
-dns_aliyun_access_key_secret = 你的AccessKeySecret
-```
-
-设置权限：
-
-```bash
-sudo chmod 600 /etc/letsencrypt/aliyun-dns.ini
-```
-
-#### 3. 申请证书
-
-```bash
-sudo certbot certonly \
-  --dns-dns_aliyun \
-  --dns-dns_aliyun-credentials /etc/letsencrypt/aliyun-dns.ini \
-  -d suntaizh.cn \
-  -d www.suntaizh.cn \
-  -d *.suntaizh.cn
-```
-
-#### 4. 配置自动上传到 CDN（见下方脚本）
-
----
-
-## 方案三：ECS + Nginx + Let's Encrypt
-
-### 1. 安装 certbot
-
-```bash
-# Ubuntu/Debian
-sudo apt update
-sudo apt install -y certbot python3-certbot-nginx
-
-# CentOS/RHEL
-sudo yum install -y certbot python3-certbot-nginx
-```
-
-### 2. 申请证书
+### 4. 申请证书
 
 ```bash
 sudo certbot --nginx -d suntaizh.cn -d www.suntaizh.cn
 ```
 
-按提示选择：
-- 是否重定向 HTTP 到 HTTPS → 选择 2（全部重定向）
+如果提示是否跳转 HTTPS：
 
-### 3. 验证自动续签
+- 选 `2`，强制跳转到 HTTPS
+
+### 5. 验证自动续期
 
 ```bash
-# 测试续签（模拟，不会真的续签）
 sudo certbot renew --dry-run
 ```
 
-如果显示 `Congratulations, all renewals succeeded`，说明配置正确。
+看到成功信息，就说明自动续期链路正常。
 
-### 4. 配置强化版自动续签脚本
+### 6. 安装强化版续期 timer
 
-certbot 默认安装了 systemd timer 或 cron 任务，但**默认不会 reload Nginx**，导致续签后新证书不生效。
+仓库里已经有 systemd timer：
 
-使用我们提供的强化脚本（见 `ssl/renew.sh`）：
+- [certbot-renew.service](/Users/xian/jx/code/company-portal-web/scripts/ssl/certbot-renew.service)
+- [certbot-renew.timer](/Users/xian/jx/code/company-portal-web/scripts/ssl/certbot-renew.timer)
+
+在 ECS 上执行：
 
 ```bash
-sudo cp scripts/ssl/certbot-renew.service /etc/systemd/system/
-sudo cp scripts/ssl/certbot-renew.timer /etc/systemd/system/
+sudo cp /var/www/company-portal/current/scripts/ssl/certbot-renew.service /etc/systemd/system/
+sudo cp /var/www/company-portal/current/scripts/ssl/certbot-renew.timer /etc/systemd/system/
 sudo systemctl daemon-reload
 sudo systemctl enable certbot-renew.timer
 sudo systemctl start certbot-renew.timer
+sudo systemctl status certbot-renew.timer
 ```
 
----
+这套 timer 会每天跑两次续期检查，并在成功后 reload Nginx。
 
-## 证书监控与告警
+## 方案二：CDN 域名 HTTPS
 
-建议配置证书到期监控，提前 7 天收到告警：
+等你把 `cdn.suntaizh.cn` 配到阿里云 CDN 后，再处理这一层。
 
-### 方法一：阿里云云监控（推荐）
+推荐顺序：
 
-在阿里云 CDN 控制台开启「证书过期提醒」，到期前 30/15/7 天自动短信/邮件通知。
+1. 先把 `cdn.suntaizh.cn -> CDN -> OSS` 跑通
+2. 再去 CDN 控制台给 `cdn.suntaizh.cn` 开 HTTPS
+3. 短期可以先手动申请/上传证书
+4. 长期如果你想完全省心，再换成支持托管自动部署的证书
 
-### 方法二：自定义脚本监控
+### CDN 证书要点
 
-见 `scripts/ssl/check-cert.sh`，可集成到 GitHub Actions 或服务器 cron：
+- `CDN_DOMAIN` 应填：`cdn.suntaizh.cn`
+- `NUXT_APP_CDN_URL` 应填：`https://cdn.suntaizh.cn`
+- 不要把 OSS Endpoint 当成 CDN 域名
 
-```bash
-# 每周一检查证书有效期
-0 9 * * 1 /var/www/suntai-portal/scripts/ssl/check-cert.sh suntaizh.cn 7
-```
+## 推荐操作顺序
 
----
+按你当前阶段，建议这样走：
+
+1. 先改 ECS 的 Nginx 域名为 `suntaizh.cn` / `www.suntaizh.cn`
+2. 给主站申请 `certbot` 证书并验证自动续期
+3. 再配置 `cdn.suntaizh.cn`
+4. 最后把 GitHub Secrets 里的 `CDN_DOMAIN` 和 `NUXT_APP_CDN_URL` 配进去
 
 ## 常见问题
 
-### Q: 阿里云免费证书和 Let's Encrypt 有什么区别？
+### Q: 为什么不建议直接用阿里云免费证书做全自动？
 
-| 对比项 | 阿里云免费证书 | Let's Encrypt |
-|---|---|---|
-| 价格 | 免费 | 免费 |
-| 有效期 | 1年 | 90天 |
-| 续签 | 自动 | 需配置 |
-| 通配符 | 不支持 | 支持 |
-| 多域名 | 支持 | 支持 |
-| 信任度 | 主流浏览器都信任 | 主流浏览器都信任 |
+因为阿里云官方当前策略下：
 
-**建议**：单域名/双域名用阿里云免费证书；需要通配符用 Let's Encrypt。
+- CDN 历史免费证书不适合继续依赖自动续签
+- 免费个人测试证书也不支持托管自动续期
 
-### Q: 续签失败了怎么办？
+所以“真正稳定的自动续期”应该放在 ECS 上，用 `certbot` 解决。
 
-1. 检查 certbot 日志：`sudo cat /var/log/letsencrypt/letsencrypt.log`
-2. 手动测试：`sudo certbot renew --dry-run --verbose`
-3. 检查 80 端口是否被占用
-4. 检查域名 DNS 解析是否正常
+### Q: certbot 申请失败通常是什么原因？
 
-### Q: 如何查看证书有效期？
+- `suntaizh.cn` 还没解析到 ECS
+- `www.suntaizh.cn` 没解析
+- Nginx `server_name` 还是旧域名
+- 80 端口没放通
+- 站点配置语法有误，`nginx -t` 没通过
+
+### Q: 怎么检查证书是否快过期？
+
+仓库里有脚本：
+
+- [check-cert.sh](/Users/xian/jx/code/company-portal-web/scripts/ssl/check-cert.sh)
+
+示例：
 
 ```bash
-# 查看本地证书
-sudo openssl x509 -in /etc/letsencrypt/live/suntaizh.cn/fullchain.pem -noout -dates
-
-# 查看线上证书（任意机器）
-echo | openssl s_client -servername suntaizh.cn -connect suntaizh.cn:443 2>/dev/null | openssl x509 -noout -dates
+/var/www/company-portal/current/scripts/ssl/check-cert.sh suntaizh.cn 7
 ```

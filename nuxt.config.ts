@@ -1,4 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+const cdnURL = (process.env.NUXT_APP_CDN_URL || '').replace(/\/$/, '')
+const publicAsset = (path: string) => (cdnURL ? `${cdnURL}${path}` : path)
+
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: false },
@@ -15,13 +18,14 @@ export default defineNuxtConfig({
   // Runtime config for public keys
   runtimeConfig: {
     public: {
-      amapApiKey: process.env.AMAP_API_KEY || '',
-      amapSecurityJsCode: process.env.AMAP_SECURITY_JS_CODE || ''
+      amapApiKey: process.env.NUXT_PUBLIC_AMAP_API_KEY || process.env.AMAP_API_KEY || '',
+      amapSecurityJsCode: process.env.NUXT_PUBLIC_AMAP_SECURITY_JS_CODE || process.env.AMAP_SECURITY_JS_CODE || ''
     }
   },
 
   // App configuration
   app: {
+    cdnURL: process.env.NUXT_APP_CDN_URL || '',
     head: {
       htmlAttrs: {
         lang: 'zh-CN'
@@ -60,9 +64,7 @@ export default defineNuxtConfig({
       ],
       link: [
         { rel: 'canonical', href: 'https://www.suntaizh.cn' },
-        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-        { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/images/favicon-32x32.png' },
-        { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/images/favicon-16x16.png' },
+        { rel: 'icon', type: 'image/x-icon', href: publicAsset('/favicon.ico') },
         { rel: 'sitemap', type: 'application/xml', title: 'Sitemap', href: '/sitemap.xml' }
       ]
     }

@@ -26,13 +26,15 @@ BUCKET="${OSS_BUCKET:-}"
 REGION="${OSS_REGION:-oss-cn-hangzhou}"
 ENDPOINT="${OSS_ENDPOINT:-${BUCKET}.${REGION}.aliyuncs.com}"
 CDN_DOMAIN="${CDN_DOMAIN:-}"
+ACCESS_KEY_ID="${ALIYUN_ACCESS_KEY_ID:-${OSS_ACCESS_KEY_ID:-}}"
+ACCESS_KEY_SECRET="${ALIYUN_ACCESS_KEY_SECRET:-${OSS_ACCESS_KEY_SECRET:-}}"
 
 # 检查必要配置
-if [ -z "$BUCKET" ] || [ -z "$OSS_ACCESS_KEY_ID" ] || [ -z "$OSS_ACCESS_KEY_SECRET" ]; then
+if [ -z "$BUCKET" ] || [ -z "$ACCESS_KEY_ID" ] || [ -z "$ACCESS_KEY_SECRET" ]; then
     log_error "缺少 OSS 配置，请检查 .env 文件："
     echo "  OSS_BUCKET=your-bucket"
-    echo "  OSS_ACCESS_KEY_ID=your-key"
-    echo "  OSS_ACCESS_KEY_SECRET=your-secret"
+    echo "  ALIYUN_ACCESS_KEY_ID=your-key"
+    echo "  ALIYUN_ACCESS_KEY_SECRET=your-secret"
     exit 1
 fi
 
@@ -43,10 +45,10 @@ rm -rf .output
 
 if command -v pnpm &> /dev/null; then
     pnpm install --frozen-lockfile
-    pnpm generate
+    NUXT_APP_CDN_URL="${NUXT_APP_CDN_URL:-}" pnpm generate
 else
     npm ci
-    npm run generate
+    NUXT_APP_CDN_URL="${NUXT_APP_CDN_URL:-}" npm run generate
 fi
 
 if [ ! -d ".output/public" ]; then
@@ -86,7 +88,7 @@ if [ ! -f "$OSSUTIL" ]; then
 fi
 
 # 配置并上传
-$OSSUTIL config -e "$ENDPOINT" -i "$OSS_ACCESS_KEY_ID" -k "$OSS_ACCESS_KEY_SECRET" --loglevel error
+$OSSUTIL config -e "$ENDPOINT" -i "$ACCESS_KEY_ID" -k "$ACCESS_KEY_SECRET" --loglevel error
 
 log_info "上传到 oss://${BUCKET}/ ..."
 $OSSUTIL cp -r -f \
@@ -109,8 +111,8 @@ if [ -n "$CDN_DOMAIN" ]; then
         log_info "安装方式: brew install aliyun-cli"
     else
         aliyun configure set --profile default --mode AK \
-            --access-key-id "$OSS_ACCESS_KEY_ID" \
-            --access-key-secret "$OSS_ACCESS_KEY_SECRET" \
+            --access-key-id "$ACCESS_KEY_ID" \
+            --access-key-secret "$ACCESS_KEY_SECRET" \
             --region cn-hangzhou
 
         aliyun cdn PushObjectCache \
