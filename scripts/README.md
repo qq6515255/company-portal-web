@@ -85,8 +85,9 @@
 | `ALIYUN_REGION` | 如 `cn-shenzhen` |
 | `OSS_BUCKET` | 如 `zhshuntai-static` |
 | `OSS_ENDPOINT` | 如 `oss-cn-shenzhen.aliyuncs.com` |
+| `OSS_PREFIX` | 如 `company-portal` |
 | `CDN_DOMAIN` | 如 `cdn.suntaizh.cn` |
-| `NUXT_APP_CDN_URL` | 如 `https://cdn.suntaizh.cn` |
+| `NUXT_APP_CDN_URL` | 如 `https://cdn.suntaizh.cn/company-portal` |
 | `NUXT_PUBLIC_AMAP_API_KEY` | 高德地图 Web Key |
 | `NUXT_PUBLIC_AMAP_SECURITY_JS_CODE` | 高德安全密钥 |
 | `ECS_HOST` | ECS 公网 IP 或域名 |
@@ -209,6 +210,7 @@ OSS + CDN 方案下，所有静态资源自动走 CDN，首次访问后全球节
 - CDN 静态域名：`cdn.suntaizh.cn`
 - OSS Bucket：`zhshuntai-static`
 - OSS Endpoint：`oss-cn-shenzhen.aliyuncs.com`
+- OSS 子目录前缀：`company-portal`
 - ECS 部署目录：`/var/www/company-portal`
 - ECS 用户：`root`
 - ECS IP：`8.138.194.144`
@@ -218,12 +220,13 @@ GitHub Secrets 建议填写为：
 - `ALIYUN_REGION=cn-shenzhen`
 - `OSS_BUCKET=zhshuntai-static`
 - `OSS_ENDPOINT=oss-cn-shenzhen.aliyuncs.com`
+- `OSS_PREFIX=company-portal`
 - `ECS_HOST=8.138.194.144`
 - `ECS_DEPLOY_USER=root`
 - `ECS_SSH_PORT=22`
 - `ECS_SITE_ROOT=/var/www/company-portal`
 - `CDN_DOMAIN=cdn.suntaizh.cn`
-- `NUXT_APP_CDN_URL=https://cdn.suntaizh.cn`
+- `NUXT_APP_CDN_URL=https://cdn.suntaizh.cn/company-portal`
 
 ### Q: 可以两个方案同时用吗？
 

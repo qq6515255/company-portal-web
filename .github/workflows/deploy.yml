@@ -117,15 +117,24 @@ jobs:
         env:
           OSS_BUCKET: ${{ secrets.OSS_BUCKET }}
           OSS_ENDPOINT: ${{ secrets.OSS_ENDPOINT }}
+          OSS_PREFIX: ${{ secrets.OSS_PREFIX }}
           ALIYUN_REGION: ${{ secrets.ALIYUN_REGION }}
           ALIYUN_ACCESS_KEY_ID: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
           ALIYUN_ACCESS_KEY_SECRET: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
         run: |
           ENDPOINT="${OSS_ENDPOINT:-oss-cn-hangzhou.aliyuncs.com}"
+          PREFIX="${OSS_PREFIX:-company-portal}"
           REGION="${ALIYUN_REGION:-}"
 
           if [ -z "${REGION}" ]; then
             REGION="$(printf '%s' "${ENDPOINT}" | sed -E 's#^https?://##; s#^oss-##; s#\\..*$##')"
+          fi
+
+          PREFIX="${PREFIX#/}"
+          PREFIX="${PREFIX%/}"
+          OSS_BASE="oss://${OSS_BUCKET}"
+          if [ -n "${PREFIX}" ]; then
+            OSS_BASE="${OSS_BASE}/${PREFIX}"
           fi
 
           cat > ~/.ossutilconfig <<CFGEOF
@@ -137,14 +146,14 @@ jobs:
           endpoint = ${ENDPOINT}
           CFGEOF
 
-          ./ossutil sync .output/public/ "oss://${OSS_BUCKET}/" \
+          ./ossutil sync .output/public/ "${OSS_BASE}/" \
             --delete \
             -f \
             --acl public-read \
             --cache-control "no-cache"
 
           if [ -d .output/public/_nuxt ]; then
-            ./ossutil sync .output/public/_nuxt/ "oss://${OSS_BUCKET}/_nuxt/" \
+            ./ossutil sync .output/public/_nuxt/ "${OSS_BASE}/_nuxt/" \
               --delete \
               -f \
               --acl public-read \
@@ -152,7 +161,7 @@ jobs:
           fi
 
           if [ -d .output/public/images ]; then
-            ./ossutil sync .output/public/images/ "oss://${OSS_BUCKET}/images/" \
+            ./ossutil sync .output/public/images/ "${OSS_BASE}/images/" \
               --delete \
               -f \
               --acl public-read \
@@ -162,6 +171,7 @@ jobs:
       - name: Refresh CDN cache
         env:
           CDN_DOMAIN: ${{ secrets.CDN_DOMAIN }}
+          OSS_PREFIX: ${{ secrets.OSS_PREFIX }}
           INVALIDATE_ALL: ${{ github.event.inputs.invalidate_all || 'false' }}
         run: |
           if [ -z "${CDN_DOMAIN}" ]; then
@@ -169,7 +179,13 @@ jobs:
             exit 0
           fi
 
+          PREFIX="${OSS_PREFIX:-company-portal}"
+          PREFIX="${PREFIX#/}"
+          PREFIX="${PREFIX%/}"
           TARGET="https://${CDN_DOMAIN}/"
+          if [ -n "${PREFIX}" ]; then
+            TARGET="${TARGET}${PREFIX}/"
+          fi
 
           aliyun cdn RefreshObjectCaches \
             --ObjectPath "${TARGET}" \

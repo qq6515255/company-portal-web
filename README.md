@@ -38,6 +38,7 @@ npm run generate
 - `ALIYUN_REGION`
 - `OSS_BUCKET`
 - `OSS_ENDPOINT`
+- `OSS_PREFIX`
 - `CDN_DOMAIN`
 - `NUXT_APP_CDN_URL`
 - `NUXT_PUBLIC_AMAP_API_KEY`
@@ -74,4 +75,5 @@ git push origin v1.0.0
 - 主站域名：`suntaizh.cn`
 - 静态资源 CDN 域名：`cdn.suntaizh.cn`
 - `CDN_DOMAIN` 填 `cdn.suntaizh.cn`
-- `NUXT_APP_CDN_URL` 填 `https://cdn.suntaizh.cn`
+- `OSS_PREFIX` 填 `company-portal`
+- `NUXT_APP_CDN_URL` 填 `https://cdn.suntaizh.cn/company-portal`

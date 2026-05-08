@@ -26,6 +26,7 @@ BUCKET="${OSS_BUCKET:-}"
 REGION="${OSS_REGION:-oss-cn-hangzhou}"
 ENDPOINT="${OSS_ENDPOINT:-${BUCKET}.${REGION}.aliyuncs.com}"
 CDN_DOMAIN="${CDN_DOMAIN:-}"
+OSS_PREFIX="${OSS_PREFIX:-company-portal}"
 ACCESS_KEY_ID="${ALIYUN_ACCESS_KEY_ID:-${OSS_ACCESS_KEY_ID:-}}"
 ACCESS_KEY_SECRET="${ALIYUN_ACCESS_KEY_SECRET:-${OSS_ACCESS_KEY_SECRET:-}}"
 
@@ -36,6 +37,13 @@ if [ -z "$BUCKET" ] || [ -z "$ACCESS_KEY_ID" ] || [ -z "$ACCESS_KEY_SECRET" ]; t
     echo "  ALIYUN_ACCESS_KEY_ID=your-key"
     echo "  ALIYUN_ACCESS_KEY_SECRET=your-secret"
     exit 1
+fi
+
+OSS_PREFIX="${OSS_PREFIX#/}"
+OSS_PREFIX="${OSS_PREFIX%/}"
+OSS_BASE="oss://${BUCKET}"
+if [ -n "$OSS_PREFIX" ]; then
+    OSS_BASE="${OSS_BASE}/${OSS_PREFIX}"
 fi
 
 # ========== Step 1: 构建 ==========
@@ -80,22 +88,24 @@ fi
 # ========== Step 3: 安装/检查 ossutil ==========
 log_step "[3/4] 上传 OSS"
 
-OSSUTIL="./ossutil64"
+OSSUTIL="./ossutil"
 if [ ! -f "$OSSUTIL" ]; then
     log_info "下载 ossutil..."
-    curl -sL -o ossutil64 "https://gosspublic.alicdn.com/ossutil/1.7.19/ossutil64"
-    chmod +x ossutil64
+    curl -sL -o ossutil.zip "https://gosspublic.alicdn.com/ossutil/v2/2.2.2/ossutil-2.2.2-linux-amd64.zip"
+    unzip -q ossutil.zip
+    mv ossutil-2.2.2-linux-amd64/ossutil ./ossutil
+    chmod +x ossutil
 fi
 
 # 配置并上传
-$OSSUTIL config -e "$ENDPOINT" -i "$ACCESS_KEY_ID" -k "$ACCESS_KEY_SECRET" --loglevel error
+$OSSUTIL config -e "$ENDPOINT" --region "${ALIYUN_REGION:-${REGION#oss-}}" -i "$ACCESS_KEY_ID" -k "$ACCESS_KEY_SECRET" --loglevel error
 
-log_info "上传到 oss://${BUCKET}/ ..."
+log_info "上传到 ${OSS_BASE}/ ..."
 $OSSUTIL cp -r -f \
     --acl public-read \
     --jobs 10 \
     .output/public/ \
-    "oss://${BUCKET}/"
+    "${OSS_BASE}/"
 
 log_info "OSS 上传完成"
 
@@ -115,8 +125,13 @@ if [ -n "$CDN_DOMAIN" ]; then
             --access-key-secret "$ACCESS_KEY_SECRET" \
             --region cn-hangzhou
 
+        CDN_TARGET="https://${CDN_DOMAIN}/"
+        if [ -n "$OSS_PREFIX" ]; then
+            CDN_TARGET="${CDN_TARGET}${OSS_PREFIX}/"
+        fi
+
         aliyun cdn PushObjectCache \
-            --ObjectPath "https://${CDN_DOMAIN}/" \
+            --ObjectPath "${CDN_TARGET}" \
             --ObjectType Directory || true
 
         log_info "CDN 刷新已提交"
@@ -132,14 +147,18 @@ echo -e "${GREEN}  ✅ 部署完成！${NC}"
 echo -e "${GREEN}========================================${NC}"
 echo ""
 echo -e "  站点:   https://${CDN_DOMAIN:-${ENDPOINT}}"
-echo -e "  OSS:    oss://${BUCKET}/"
+echo -e "  OSS:    ${OSS_BASE}/"
 echo -e "  大小:   ${BUILD_SIZE}"
 echo ""
 
 # 可选：测速
 if command -v curl &> /dev/null && [ -n "$CDN_DOMAIN" ]; then
     log_info "测试首页..."
-    HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "https://${CDN_DOMAIN}/" || echo "000")
+    TARGET_URL="https://${CDN_DOMAIN}/"
+    if [ -n "$OSS_PREFIX" ]; then
+        TARGET_URL="${TARGET_URL}${OSS_PREFIX}/"
+    fi
+    HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "${TARGET_URL}" || echo "000")
     if [ "$HTTP_CODE" = "200" ]; then
         log_info "首页正常 (HTTP 200)"
     else
