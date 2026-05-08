@@ -11,7 +11,7 @@
 
 这套模式的好处是：
 
-- ECS 保留完整站点入口，切换简单
+- ECS 只保留一个线上目录，维护更简单
 - `_nuxt` 产物、图片和 `public` 资源走 OSS/CDN，能明显减少 ECS 带宽消耗
 - GitHub Actions 只构建一次，再分别发布到 OSS 和 ECS，部署速度更稳
 
@@ -100,6 +100,7 @@
 | `ECS_SSH_PORT` | 默认 `22` |
 | `ECS_SITE_ROOT` | 默认 `/var/www/company-portal` |
 | `ECS_NGINX_SERVICE` | 默认 `nginx` |
+| `ECS_DEPLOY_PASSWORD` / `ECS_PASSWORD` | SSH 密码登录兜底 |
 
 #### 2. 触发部署
 
@@ -109,6 +110,8 @@ git add .
 git commit -m "feat: update content"
 git push origin master
 ```
+
+如果你要按 tag 回滚或补发，去 GitHub Actions 手动触发 `Deploy Production`，把 `deploy_ref` 填成目标 tag，例如 `v1.0.0`。
 
 #### 3. 查看部署状态
 
@@ -138,7 +141,7 @@ bash scripts/deploy/oss-cdn.sh
 ```bash
 # 1. 服务器初始化（SSH 到 ECS）
 sudo apt update && sudo apt install -y nginx
-sudo mkdir -p /var/www/company-portal/releases
+sudo mkdir -p /var/www/company-portal
 
 # 2. 复制 Nginx 配置
 sudo cp scripts/server-config/nginx.conf /etc/nginx/conf.d/company-portal.conf
@@ -151,12 +154,11 @@ ssh-copy-id -i ~/.ssh/id_rsa.pub root@你的ECS公网IP
 ECS_HOST=你的ECS公网IP bash scripts/deploy/ecs.sh
 ```
 
-现在 GitHub Actions 会把发布目录切成：
+现在 GitHub Actions 会直接覆盖发布到：
 
-- `/var/www/company-portal/releases/<git-sha>`
-- `/var/www/company-portal/current`
+- `/var/www/company-portal`
 
-因此 Nginx 的 `root` 也需要指向 `current`，仓库里的模板已经按这个结构更新。
+因此 Nginx 的 `root` 也应该直接指向 `/var/www/company-portal`。
 
 ---
 

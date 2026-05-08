@@ -25,7 +25,7 @@ npm run generate
 - 统一构建一次静态站点
 - 同步静态资源到阿里云 OSS
 - 刷新阿里云 CDN 缓存
-- 将完整站点发布到阿里云 ECS 的版本目录，并切换 `current` 软链接
+- 将完整站点直接覆盖发布到阿里云 ECS 的站点目录
 
 关键配置说明见 [scripts/README.md](/Users/xian/jx/code/company-portal-web/scripts/README.md)。
 
@@ -51,14 +51,23 @@ npm run generate
 - `ECS_SSH_PORT`
 - `ECS_SITE_ROOT`
 - `ECS_NGINX_SERVICE`
+- `ECS_DEPLOY_PASSWORD` 或 `ECS_PASSWORD`
 
 ## ECS 目录约定
 
 - 站点根目录：`/var/www/company-portal`
-- 版本目录：`/var/www/company-portal/releases/<git-sha>`
-- 当前线上版本：`/var/www/company-portal/current`
+- Nginx `root`：`/var/www/company-portal`
 
-Nginx `root` 需要指向 `current`，参考 [scripts/server-config/nginx.conf](/Users/xian/jx/code/company-portal-web/scripts/server-config/nginx.conf)。
+推荐用 Git tag 做版本点管理，需要回滚时，重新部署指定 tag 即可。参考 [scripts/server-config/nginx.conf](/Users/xian/jx/code/company-portal-web/scripts/server-config/nginx.conf)。
+
+## Tag 版本管理
+
+```bash
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+需要回滚时，去 GitHub Actions 手动触发 `Deploy Production`，把 `deploy_ref` 填成目标 tag，例如 `v1.0.0`。
 
 ## 当前域名建议
 

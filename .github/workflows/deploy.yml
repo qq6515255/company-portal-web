@@ -6,6 +6,11 @@ on:
       - master
   workflow_dispatch:
     inputs:
+      deploy_ref:
+        description: Branch, tag, or commit to deploy
+        required: false
+        default: master
+        type: string
       invalidate_all:
         description: Refresh the full CDN directory after deploy
         required: false
@@ -25,6 +30,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.deploy_ref || github.ref_name }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -276,11 +283,13 @@ jobs:
           ECS_HOST: ${{ secrets.ECS_HOST }}
           ECS_DEPLOY_USER: ${{ secrets.ECS_DEPLOY_USER }}
           ECS_DEPLOY_PASSWORD: ${{ secrets.ECS_DEPLOY_PASSWORD }}
+          ECS_PASSWORD: ${{ secrets.ECS_PASSWORD }}
           ECS_SSH_PORT: ${{ secrets.ECS_SSH_PORT }}
         run: |
           PORT="${ECS_SSH_PORT:-22}"
+          DEPLOY_PASSWORD="${ECS_DEPLOY_PASSWORD:-${ECS_PASSWORD:-}}"
           if [ "${ECS_AUTH_MODE}" = "password" ]; then
-            SSHPASS="${ECS_DEPLOY_PASSWORD}" sshpass -e scp -P "${PORT}" -o StrictHostKeyChecking=no \
+            SSHPASS="${DEPLOY_PASSWORD}" sshpass -e scp -P "${PORT}" -o StrictHostKeyChecking=no \
               site-output.tgz \
               "${ECS_DEPLOY_USER}@${ECS_HOST}:/tmp/site-output-${GITHUB_SHA}.tgz"
           else
@@ -315,14 +324,16 @@ jobs:
           "${SSH_CMD[@]}" \
             "${ECS_DEPLOY_USER}@${ECS_HOST}" \
             "SITE_ROOT='${SITE_ROOT}' RELEASE_ID='${GITHUB_SHA}' NGINX_SERVICE='${NGINX_SERVICE}' bash -s" <<'REMOTE'
-          release_dir="${SITE_ROOT}/releases/${RELEASE_ID}"
+          deploy_dir="/tmp/company-portal-${RELEASE_ID}"
           archive="/tmp/site-output-${RELEASE_ID}.tgz"
 
-          sudo mkdir -p "${SITE_ROOT}/releases"
-          sudo rm -rf "${release_dir}"
-          sudo mkdir -p "${release_dir}"
-          sudo tar -xzf "${archive}" -C "${release_dir}"
-          sudo ln -sfn "${release_dir}" "${SITE_ROOT}/current"
+          sudo rm -rf "${deploy_dir}"
+          sudo mkdir -p "${deploy_dir}"
+          sudo tar -xzf "${archive}" -C "${deploy_dir}"
+
+          sudo mkdir -p "${SITE_ROOT}"
+          sudo find "${SITE_ROOT}" -mindepth 1 -maxdepth 1 -exec rm -rf {} +
+          sudo cp -a "${deploy_dir}/." "${SITE_ROOT}/"
 
           if id www-data >/dev/null 2>&1; then
             sudo chown -R www-data:www-data "${SITE_ROOT}"
@@ -336,5 +347,6 @@ jobs:
             sudo systemctl reload "${NGINX_SERVICE}" || sudo nginx -s reload
           fi
 
+          rm -rf "${deploy_dir}"
           rm -f "${archive}"
           REMOTE

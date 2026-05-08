@@ -58,10 +58,10 @@ server_name www.shuntaizh.com shuntaizh.com;
 server_name suntaizh.cn www.suntaizh.cn;
 ```
 
-如果你要切到新版发布目录结构，`root` 建议也改成：
+现在推荐直接这样配置：
 
 ```nginx
-root /var/www/company-portal/current;
+root /var/www/company-portal;
 ```
 
 ### 3. 安装 certbot
@@ -100,8 +100,8 @@ sudo certbot renew --dry-run
 在 ECS 上执行：
 
 ```bash
-sudo cp /var/www/company-portal/current/scripts/ssl/certbot-renew.service /etc/systemd/system/
-sudo cp /var/www/company-portal/current/scripts/ssl/certbot-renew.timer /etc/systemd/system/
+sudo cp /var/www/company-portal/scripts/ssl/certbot-renew.service /etc/systemd/system/
+sudo cp /var/www/company-portal/scripts/ssl/certbot-renew.timer /etc/systemd/system/
 sudo systemctl daemon-reload
 sudo systemctl enable certbot-renew.timer
 sudo systemctl start certbot-renew.timer
@@ -164,5 +164,5 @@ sudo systemctl status certbot-renew.timer
 示例：
 
 ```bash
-/var/www/company-portal/current/scripts/ssl/check-cert.sh suntaizh.cn 7
+/var/www/company-portal/scripts/ssl/check-cert.sh suntaizh.cn 7
 ```
