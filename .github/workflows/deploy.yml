@@ -110,16 +110,23 @@ jobs:
         env:
           OSS_BUCKET: ${{ secrets.OSS_BUCKET }}
           OSS_ENDPOINT: ${{ secrets.OSS_ENDPOINT }}
+          ALIYUN_REGION: ${{ secrets.ALIYUN_REGION }}
           ALIYUN_ACCESS_KEY_ID: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
           ALIYUN_ACCESS_KEY_SECRET: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
         run: |
           ENDPOINT="${OSS_ENDPOINT:-oss-cn-hangzhou.aliyuncs.com}"
+          REGION="${ALIYUN_REGION:-}"
+
+          if [ -z "${REGION}" ]; then
+            REGION="$(printf '%s' "${ENDPOINT}" | sed -E 's#^https?://##; s#^oss-##; s#\\..*$##')"
+          fi
 
           cat > ~/.ossutilconfig <<CFGEOF
           [Credentials]
           provider = AK
           accessKeyID = ${ALIYUN_ACCESS_KEY_ID}
           accessKeySecret = ${ALIYUN_ACCESS_KEY_SECRET}
+          region = ${REGION}
           endpoint = ${ENDPOINT}
           CFGEOF
 
@@ -184,13 +191,18 @@ jobs:
         env:
           ECS_SSH_PRIVATE_KEY: ${{ secrets.ECS_SSH_PRIVATE_KEY }}
           ECS_DEPLOY_PASSWORD: ${{ secrets.ECS_DEPLOY_PASSWORD }}
+          ECS_PASSWORD: ${{ secrets.ECS_PASSWORD }}
         run: |
           set -euo pipefail
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
+          deploy_password="${ECS_DEPLOY_PASSWORD:-${ECS_PASSWORD:-}}"
 
           if [ -n "${ECS_SSH_PRIVATE_KEY}" ]; then
-            raw_key="${ECS_SSH_PRIVATE_KEY}"
+            raw_key="${ECS_SSH_PRIVATE_KEY%\"}"
+            raw_key="${raw_key#\"}"
+            raw_key="${raw_key%\'}"
+            raw_key="${raw_key#\'}"
 
             echo "::group::Debug key format"
             echo "Key length: ${#raw_key}"
@@ -230,14 +242,15 @@ jobs:
             echo "ECS_SSH_PRIVATE_KEY is present but could not be parsed by ssh-keygen" >&2
           fi
 
-          if [ -n "${ECS_DEPLOY_PASSWORD}" ]; then
+          if [ -n "${deploy_password}" ]; then
             sudo apt-get update
             sudo apt-get install -y sshpass
+            echo "ECS_DEPLOY_PASSWORD=${deploy_password}" >> "$GITHUB_ENV"
             echo "ECS_AUTH_MODE=password" >> "$GITHUB_ENV"
             exit 0
           fi
 
-          echo "Either ECS_SSH_PRIVATE_KEY or ECS_DEPLOY_PASSWORD must be configured"
+          echo "Either ECS_SSH_PRIVATE_KEY or ECS_DEPLOY_PASSWORD/ECS_PASSWORD must be configured"
           exit 1
 
       - name: Package release
