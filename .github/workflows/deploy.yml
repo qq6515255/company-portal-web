@@ -294,25 +294,27 @@ jobs:
           ECS_HOST: ${{ secrets.ECS_HOST }}
           ECS_DEPLOY_USER: ${{ secrets.ECS_DEPLOY_USER }}
           ECS_DEPLOY_PASSWORD: ${{ secrets.ECS_DEPLOY_PASSWORD }}
+          ECS_PASSWORD: ${{ secrets.ECS_PASSWORD }}
           ECS_SSH_PORT: ${{ secrets.ECS_SSH_PORT }}
           ECS_SITE_ROOT: ${{ secrets.ECS_SITE_ROOT }}
           ECS_NGINX_SERVICE: ${{ secrets.ECS_NGINX_SERVICE }}
         run: |
+          set -euo pipefail
           PORT="${ECS_SSH_PORT:-22}"
           SITE_ROOT="${ECS_SITE_ROOT:-/var/www/company-portal}"
           NGINX_SERVICE="${ECS_NGINX_SERVICE:-nginx}"
+          DEPLOY_PASSWORD="${ECS_DEPLOY_PASSWORD:-${ECS_PASSWORD:-}}"
 
           if [ "${ECS_AUTH_MODE}" = "password" ]; then
-            SSHPASS="${ECS_DEPLOY_PASSWORD}" sshpass -e ssh -p "${PORT}" -o StrictHostKeyChecking=no \
-              "${ECS_DEPLOY_USER}@${ECS_HOST}" \
-              "SITE_ROOT='${SITE_ROOT}' RELEASE_ID='${GITHUB_SHA}' NGINX_SERVICE='${NGINX_SERVICE}' bash -s" <<'REMOTE'
+            export SSHPASS="${DEPLOY_PASSWORD}"
+            SSH_CMD=(sshpass -e ssh -p "${PORT}" -o StrictHostKeyChecking=no)
           else
-            ssh -p "${PORT}" -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no \
-              "${ECS_DEPLOY_USER}@${ECS_HOST}" \
-              "SITE_ROOT='${SITE_ROOT}' RELEASE_ID='${GITHUB_SHA}' NGINX_SERVICE='${NGINX_SERVICE}' bash -s" <<'REMOTE'
+            SSH_CMD=(ssh -p "${PORT}" -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no)
           fi
-          set -euo pipefail
 
+          "${SSH_CMD[@]}" \
+            "${ECS_DEPLOY_USER}@${ECS_HOST}" \
+            "SITE_ROOT='${SITE_ROOT}' RELEASE_ID='${GITHUB_SHA}' NGINX_SERVICE='${NGINX_SERVICE}' bash -s" <<'REMOTE'
           release_dir="${SITE_ROOT}/releases/${RELEASE_ID}"
           archive="/tmp/site-output-${RELEASE_ID}.tgz"
 
