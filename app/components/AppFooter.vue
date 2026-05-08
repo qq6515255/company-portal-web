@@ -7,11 +7,16 @@
           <h3 class="text-xl font-bold mb-4">珠海市顺泰包装材料有限公司</h3>
           <p class="text-gray-400 mb-4">专业生产珍珠棉、泡沫棉、透明胶、双面胶、海绵胶、打包带、保护膜、制袋等包装材料，15年行业经验。</p>
           <div class="flex gap-4">
-            <a href="#" class="text-gray-400 hover:text-white transition-colors" aria-label="QQ">
+            <a
+              :href="qqWebChatUrl"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-gray-400 hover:text-white transition-colors"
+              aria-label="QQ咨询"
+              title="QQ咨询"
+              @click.prevent="openQqChat"
+            >
               <span class="i-carbon-logo-qq text-2xl" />
-            </a>
-            <a href="#" class="text-gray-400 hover:text-white transition-colors" aria-label="微信">
-              <span class="i-carbon-logo-wechat text-2xl" />
             </a>
             <a href="#" class="text-gray-400 hover:text-white transition-colors" aria-label="邮箱">
               <span class="i-carbon-email text-2xl" />
@@ -47,11 +52,11 @@
           <ul class="space-y-3 text-gray-400">
             <li class="flex items-center gap-3">
               <span class="i-carbon-phone text-lg" />
-              <span>电话: 400-888-8888</span>
+               <span>电话: 0756-8677810</span>
             </li>
             <li class="flex items-center gap-3">
               <span class="i-carbon-email text-lg" />
-              <span>邮箱: info@suntaizh.cn</span>
+              <span>邮箱: 1322805852@qq.com</span>
             </li>
             <li class="flex items-start gap-3">
               <span class="i-carbon-location text-lg mt-1" />
@@ -84,5 +89,8 @@
 </template>
 
 <script setup lang="ts">
+import { QQ_WEB_CHAT_URL, openQqChat } from '~/utils/qqContact'
+
 const currentYear = new Date().getFullYear()
+const qqWebChatUrl = QQ_WEB_CHAT_URL
 </script>

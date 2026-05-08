@@ -15,14 +15,16 @@
 
       <!-- Desktop Contact Buttons -->
       <div class="hidden lg:flex items-center gap-3">
-        <button class="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+        <a
+          :href="qqWebChatUrl"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+          @click.prevent="openQqChat"
+        >
           <span class="i-carbon-logo-qq text-lg" />
-          <span>QQ咨询</span>
-        </button>
-        <button class="flex items-center gap-2 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors">
-          <span class="i-carbon-logo-wechat text-lg" />
-          <span>微信咨询</span>
-        </button>
+          <span>QQ：1322805852</span>
+        </a>
       </div>
 
       <!-- Mobile Hamburger Button -->
@@ -105,14 +107,16 @@
 
             <!-- Drawer Footer -->
             <div class="p-4 border-t space-y-3">
-              <button class="w-full flex items-center justify-center gap-2 px-4 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+              <a
+                :href="qqWebChatUrl"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="w-full flex items-center justify-center gap-2 px-4 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                @click.prevent="handleQqClick"
+              >
                 <span class="i-carbon-logo-qq text-lg" />
-                <span>QQ咨询</span>
-              </button>
-              <button class="w-full flex items-center justify-center gap-2 px-4 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors">
-                <span class="i-carbon-logo-wechat text-lg" />
-                <span>微信咨询</span>
-              </button>
+                <span>QQ：1322805852</span>
+              </a>
             </div>
           </div>
         </div>
@@ -122,7 +126,15 @@
 </template>
 
 <script setup lang="ts">
+import { QQ_WEB_CHAT_URL, openQqChat } from '~/utils/qqContact'
+
 const mobileMenuOpen = ref(false)
+const qqWebChatUrl = QQ_WEB_CHAT_URL
+
+const handleQqClick = () => {
+  mobileMenuOpen.value = false
+  openQqChat()
+}
 
 // Close mobile menu on route change
 const route = useRoute()

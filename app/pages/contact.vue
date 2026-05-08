@@ -83,10 +83,9 @@
               <h2 class="text-xl font-heading font-bold text-[#064E3B] mb-6 border-l-4 border-[#10B981] pl-4">即时在线客服</h2>
               <div class="flex flex-wrap gap-4">
                 <QqChat />
-                <WxQrcode />
               </div>
               <p class="text-[#064E3B]/50 text-sm mt-6 bg-[#ECFDF5] p-3 rounded-sm border border-[#10B981]/20">
-                <span class="i-carbon-idea text-[#10B981] mr-1"></span>扫描二维码添加微信/QQ咨询，获取最新产品画册及免费打样服务。
+                <span class="i-carbon-idea text-[#10B981] mr-1"></span>点击 QQ 咨询可直接联系在线客服，获取最新产品画册及免费打样服务。
               </p>
             </div>
           </div>
