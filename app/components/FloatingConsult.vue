@@ -1,16 +1,16 @@
 <template>
-  <div class="fixed right-4 bottom-20 z-40 flex flex-col gap-3">
+  <div class="fixed right-4 bottom-20 z-40 flex flex-col gap-3 items-end">
     <!-- QQ咨询 -->
     <a
       :href="qqWebChatUrl"
       target="_blank"
       rel="noopener noreferrer"
-      class="flex items-center justify-center w-12 h-12 bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-600 hover:scale-110 transition-all"
+      class="flex h-12 w-12 items-center justify-center rounded-full bg-blue-500 text-white shadow-lg shadow-blue-500/25 hover:bg-blue-600 hover:scale-105 transition-all"
       aria-label="QQ咨询"
       title="QQ咨询"
       @click.prevent="openQqChat"
     >
-      <span class="i-carbon-logo-qq text-2xl" />
+      <img src="/icon/QQ.svg" alt="QQ咨询" class="h-6 w-6" />
     </a>
 
     <!-- 回到顶部 -->

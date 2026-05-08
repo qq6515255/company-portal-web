@@ -11,14 +11,15 @@
               :href="qqWebChatUrl"
               target="_blank"
               rel="noopener noreferrer"
-              class="text-gray-400 hover:text-white transition-colors"
+              class="inline-flex items-center gap-2 rounded-full border border-gray-800 px-3 py-1.5 text-gray-400 hover:border-gray-700 hover:text-white transition-colors"
               aria-label="QQ咨询"
               title="QQ咨询"
               @click.prevent="openQqChat"
             >
               <span class="i-carbon-logo-qq text-2xl" />
+              <span class="text-sm">QQ咨询</span>
             </a>
-            <a href="#" class="text-gray-400 hover:text-white transition-colors" aria-label="邮箱">
+            <a :href="`mailto:${companyEmail}`" class="text-gray-400 hover:text-white transition-colors" aria-label="邮箱">
               <span class="i-carbon-email text-2xl" />
             </a>
           </div>
@@ -52,15 +53,15 @@
           <ul class="space-y-3 text-gray-400">
             <li class="flex items-center gap-3">
               <span class="i-carbon-phone text-lg" />
-               <span>电话: 0756-8677810</span>
+              <span>电话: {{ companyPhone }}</span>
             </li>
             <li class="flex items-center gap-3">
               <span class="i-carbon-email text-lg" />
-              <span>邮箱: 1322805852@qq.com</span>
+              <span>邮箱: {{ companyEmail }}</span>
             </li>
             <li class="flex items-start gap-3">
               <span class="i-carbon-location text-lg mt-1" />
-              <span>地址: 广东省珠海市金湾区创业北路20号厂房(三期)2层</span>
+              <span>地址: {{ companyAddress }}</span>
             </li>
           </ul>
         </div>
@@ -89,8 +90,12 @@
 </template>
 
 <script setup lang="ts">
+import { COMPANY_ADDRESS, COMPANY_EMAIL, COMPANY_PHONE } from '~/utils/contactInfo'
 import { QQ_WEB_CHAT_URL, openQqChat } from '~/utils/qqContact'
 
 const currentYear = new Date().getFullYear()
 const qqWebChatUrl = QQ_WEB_CHAT_URL
+const companyPhone = COMPANY_PHONE
+const companyEmail = COMPANY_EMAIL
+const companyAddress = COMPANY_ADDRESS
 </script>

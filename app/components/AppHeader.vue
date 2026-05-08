@@ -19,11 +19,13 @@
           :href="qqWebChatUrl"
           target="_blank"
           rel="noopener noreferrer"
-          class="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+          class="flex items-center gap-3 px-3 py-2 bg-blue-500 text-white rounded-xl shadow-md shadow-blue-500/20 hover:bg-blue-600 transition-colors"
           @click.prevent="openQqChat"
         >
-          <span class="i-carbon-logo-qq text-lg" />
-          <span>QQ：1322805852</span>
+          <span class="flex h-9 w-9 items-center justify-center rounded-full bg-white/18">
+            <img src="/icon/QQ.svg" alt="QQ" class="h-5 w-5" />
+          </span>
+          <span class="font-medium tracking-wide">QQ咨询</span>
         </a>
       </div>
 
@@ -111,11 +113,13 @@
                 :href="qqWebChatUrl"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="w-full flex items-center justify-center gap-2 px-4 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                class="w-full flex items-center justify-center gap-3 px-4 py-3 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition-colors"
                 @click.prevent="handleQqClick"
               >
-                <span class="i-carbon-logo-qq text-lg" />
-                <span>QQ：1322805852</span>
+                <span class="flex h-9 w-9 items-center justify-center rounded-full bg-white/18">
+                  <img src="/icon/QQ.svg" alt="QQ" class="h-5 w-5" />
+                </span>
+                <span class="font-medium tracking-wide">QQ咨询</span>
               </a>
             </div>
           </div>

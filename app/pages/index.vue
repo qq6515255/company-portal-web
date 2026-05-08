@@ -38,7 +38,7 @@
         <div class="max-w-4xl">
           <div class="inline-flex items-center gap-2 px-4 py-2 mb-8 bg-[#059669]/30 backdrop-blur-md border border-[#10B981]/50 text-white font-medium tracking-widest text-sm rounded-sm uppercase">
             <span class="w-2 h-2 rounded-full bg-[#F97316] animate-pulse"></span>
-            15年源头实力工厂 · 占地 5000㎡
+            15年源头实力工厂
           </div>
           <h1 class="text-5xl md:text-7xl lg:text-[80px] font-heading font-bold leading-tight text-white mb-8 tracking-tight">
             打造工业级<br/>
@@ -170,7 +170,7 @@
                 </div>
                 <div>
                   <h4 class="text-xl font-heading font-bold text-[#064E3B] mb-1">工厂地址</h4>
-                  <p class="text-[#064E3B]/70">广东省珠海市[详细地址待补充]</p>
+                  <p class="text-[#064E3B]/70">广东省珠海市金湾区创业北路20号厂房(三期)2层</p>
                 </div>
               </div>
               
@@ -181,7 +181,7 @@
                 </div>
                 <div>
                   <h4 class="text-xl font-heading font-bold text-[#064E3B] mb-1">服务热线</h4>
-                  <p class="text-[#064E3B]/70">400-888-8888 <span class="text-sm ml-2 bg-[#F97316]/10 text-[#F97316] px-2 py-0.5 rounded">24/7 响应</span></p>
+                  <p class="text-[#064E3B]/70">0756-8677810<span class="text-sm ml-2 bg-[#F97316]/10 text-[#F97316] px-2 py-0.5 rounded">24/7 响应</span></p>
                 </div>
               </div>
               
@@ -211,6 +211,8 @@
 </template>
 
 <script setup lang="ts">
+import { COMPANY_EMAIL, COMPANY_PHONE } from '~/utils/contactInfo'
+
 const config = useRuntimeConfig()
 const publicAsset = (path: string) => resolvePublicAssetUrl(path, config.app.cdnURL)
 
@@ -229,7 +231,7 @@ const organizationSchema = JSON.stringify({
   },
   "contactPoint": {
     "@type": "ContactPoint",
-    "telephone": "400-888-8888",
+    "telephone": COMPANY_PHONE,
     "contactType": "customer service",
     "availableLanguage": ["Chinese", "Mandarin"]
   }
@@ -241,8 +243,8 @@ const localBusinessSchema = JSON.stringify({
   "name": "珠海市顺泰包装材料有限公司",
   "image": publicAsset('/images/products/hero-factory.jpg'),
   "url": "https://suntaizh.cn",
-  "telephone": "400-888-8888",
-  "email": "info@suntaizh.cn",
+  "telephone": COMPANY_PHONE,
+  "email": COMPANY_EMAIL,
   "address": {
     "@type": "PostalAddress",
     "streetAddress": "创业北路20号厂房(三期)2层",

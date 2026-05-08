@@ -32,8 +32,8 @@
                   </div>
                   <div>
                     <h3 class="font-heading font-bold text-[#064E3B] mb-1">工厂地址</h3>
-                    <p class="text-[#064E3B]/70 leading-relaxed">广东省珠海市金湾区创业北路20号厂房(三期)2层</p>
-                    <p class="text-[#10B981] text-sm mt-2 font-medium">导航搜索"顺泰包装"即可到达</p>
+                    <p class="text-[#064E3B]/70 leading-relaxed">{{ companyAddress }}</p>
+                    <p class="text-[#10B981] text-sm mt-2 font-medium">导航搜索"珠海市顺泰包装"即可到达</p>
                   </div>
                 </div>
                 
@@ -45,8 +45,8 @@
                   </div>
                   <div>
                     <h3 class="font-heading font-bold text-[#064E3B] mb-1">联系电话</h3>
-                    <p class="text-[#064E3B]/70 font-bold text-lg">400-888-8888</p>
-                    <p class="text-[#064E3B]/60 text-sm mt-1">手机: 138-0013-8000（张经理）</p>
+                    <p class="text-[#064E3B]/70 font-bold text-lg">{{ companyPhone }}</p>
+                    <p class="text-[#064E3B]/60 text-sm mt-1">工作时间内快速响应，支持报价与打样咨询</p>
                   </div>
                 </div>
                 
@@ -58,8 +58,8 @@
                   </div>
                   <div>
                     <h3 class="font-heading font-bold text-[#064E3B] mb-1">电子邮箱</h3>
-                    <p class="text-[#064E3B]/70">info@suntaizh.cn</p>
-                    <p class="text-[#064E3B]/60 text-sm mt-1">Sales@suntaizh.cn（销售部）</p>
+                    <p class="text-[#064E3B]/70">{{ companyEmail }}</p>
+                    <p class="text-[#064E3B]/60 text-sm mt-1">欢迎通过邮箱发送图纸、规格和采购需求</p>
                   </div>
                 </div>
                 
@@ -117,13 +117,19 @@
 </template>
 
 <script setup lang="ts">
+import { COMPANY_ADDRESS, COMPANY_EMAIL, COMPANY_PHONE } from '~/utils/contactInfo'
+
+const companyPhone = COMPANY_PHONE
+const companyEmail = COMPANY_EMAIL
+const companyAddress = COMPANY_ADDRESS
+
 useHead({
   title: '联系我们 - 珠海市顺泰包装材料有限公司',
   meta: [
-    { name: 'description', content: '珠海市顺泰包装材料有限公司联系方式：电话400-888-8888，地址珠海市金湾区创业北路20号。支持在线咨询、包装材料报价、定制服务。' },
+    { name: 'description', content: `珠海市顺泰包装材料有限公司联系方式：电话${companyPhone}，地址${companyAddress}。支持在线咨询、包装材料报价、定制服务。` },
     { name: 'keywords', content: '珠海包装材料厂家,顺泰包装联系方式,珠海包装材料电话,珠海包装厂家地址,包装材料报价' },
     { property: 'og:title', content: '联系我们 - 珠海市顺泰包装材料有限公司' },
-    { property: 'og:description', content: '联系我们获取包装材料报价、定制服务。电话：400-888-8888，地址：珠海市金湾区' },
+    { property: 'og:description', content: `联系我们获取包装材料报价、定制服务。电话：${companyPhone}，地址：珠海市金湾区` },
     { property: 'og:url', content: 'https://suntaizh.cn/contact' }
   ]
 })
