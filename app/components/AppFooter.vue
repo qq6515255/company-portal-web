@@ -63,12 +63,26 @@
 
       <!-- Copyright -->
       <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-        <p>© 2026 珠海市顺泰包装材料有限公司 版权所有</p>
+        <p class="text-sm md:text-base">© {{ currentYear }} 珠海市顺泰包装材料有限公司 版权所有</p>
+        <p class="mt-3 flex items-center justify-center gap-2 text-xs md:text-sm text-gray-500">
+          <span class="h-px w-8 bg-gray-800" />
+          <a
+            href="https://beian.miit.gov.cn/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 rounded-full border border-gray-800 px-4 py-1.5 transition-colors hover:border-gray-700 hover:text-white"
+            aria-label="工信部备案信息"
+          >
+            <span class="i-carbon-document text-sm" />
+            <span>粤ICP备2026038180号-1</span>
+          </a>
+          <span class="h-px w-8 bg-gray-800" />
+        </p>
       </div>
     </div>
   </footer>
 </template>
 
 <script setup lang="ts">
-// App Footer Component
+const currentYear = new Date().getFullYear()
 </script>
