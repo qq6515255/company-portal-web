@@ -1,5 +1,5 @@
 <template>
-  <div class="map-embed-wrapper">
+  <div class="map-embed-wrapper h-full">
     <div
       ref="mapContainerRef"
       :style="{

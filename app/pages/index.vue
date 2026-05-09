@@ -21,7 +21,7 @@
       </div>
 
       <!-- Creative UI: Industrial Tape Animation -->
-      <div class="absolute bottom-52 -right-40 w-[120%] max-w-5xl h-20 bg-[#F97316]/90 backdrop-blur-md z-20 animate-tape-seal-right origin-right border-y border-white/30 shadow-[0_10px_30px_rgba(249,115,22,0.3)] flex items-center overflow-hidden mix-blend-overlay transform -rotate-45">
+      <div class="absolute bottom-48 -right-24 w-[135%] max-w-6xl h-24 bg-[#F97316]/90 backdrop-blur-md z-20 animate-tape-seal-right origin-right border-y border-white/30 shadow-[0_10px_30px_rgba(249,115,22,0.3)] flex items-center overflow-hidden mix-blend-overlay transform -rotate-45">
         <div class="animate-marquee whitespace-nowrap text-white font-heading font-black tracking-[0.3em] uppercase text-4xl flex items-center gap-8">
           <span><span class="i-carbon-warning-alt mr-2"></span>STRONG ADHESION</span>
           <span><span class="i-carbon-warning-alt mr-2"></span>INDUSTRIAL TAPE</span>
@@ -73,8 +73,6 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
           <!-- Card 1 -->
           <NuxtLink to="/products" class="group flex flex-col sm:flex-row overflow-hidden bg-[#ECFDF5] rounded-lg shadow-sm border border-[#10B981]/20 transition-all duration-300 hover:shadow-xl hover:-translate-y-2 relative">
-            <!-- Creative UI: Transparent Tape Piece -->
-            <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-24 h-8 bg-white/50 backdrop-blur-md border border-white/40 shadow-[0_2px_5px_rgba(0,0,0,0.05)] -rotate-2 z-30 transition-all duration-500 group-hover:rotate-1 group-hover:bg-white/70 group-hover:w-28 group-hover:shadow-[0_5px_15px_rgba(0,0,0,0.1)]"></div>
             <div class="w-full sm:w-2/5 bg-[#064E3B] relative overflow-hidden flex items-center justify-center">
               <img :src="publicAsset('/images/products/pearl-cotton.jpg')" alt="珍珠棉/泡沫棉" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500" />
             </div>
@@ -89,8 +87,6 @@
           
           <!-- Card 2 -->
           <NuxtLink to="/products" class="group flex flex-col sm:flex-row overflow-hidden bg-[#ECFDF5] rounded-lg shadow-sm border border-[#10B981]/20 transition-all duration-300 hover:shadow-xl hover:-translate-y-2 relative">
-            <!-- Creative UI: Transparent Tape Piece -->
-            <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-24 h-8 bg-white/50 backdrop-blur-md border border-white/40 shadow-[0_2px_5px_rgba(0,0,0,0.05)] rotate-2 z-30 transition-all duration-500 group-hover:-rotate-1 group-hover:bg-white/70 group-hover:w-28 group-hover:shadow-[0_5px_15px_rgba(0,0,0,0.1)]"></div>
             <div class="w-full sm:w-2/5 bg-[#064E3B] relative overflow-hidden flex items-center justify-center">
               <img :src="publicAsset('/images/products/adhesive-tape.jpg')" alt="透明胶/双面胶" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500" />
             </div>
@@ -105,10 +101,8 @@
           
           <!-- Card 3 -->
           <NuxtLink to="/products" class="group flex flex-col sm:flex-row overflow-hidden bg-[#ECFDF5] rounded-lg shadow-sm border border-[#10B981]/20 transition-all duration-300 hover:shadow-xl hover:-translate-y-2 relative">
-            <!-- Creative UI: Transparent Tape Piece -->
-            <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-24 h-8 bg-white/50 backdrop-blur-md border border-white/40 shadow-[0_2px_5px_rgba(0,0,0,0.05)] -rotate-1 z-30 transition-all duration-500 group-hover:rotate-2 group-hover:bg-white/70 group-hover:w-28 group-hover:shadow-[0_5px_15px_rgba(0,0,0,0.1)]"></div>
             <div class="w-full sm:w-2/5 bg-[#064E3B] relative overflow-hidden flex items-center justify-center">
-              <img :src="publicAsset('/images/products/protective-film.jpg')" alt="海绵胶/保护膜" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500" />
+              <img :src="publicAsset('/images/products/pe-protective-film.jpg')" alt="海绵胶/保护膜" class="w-full h-full object-cover object-center scale-[1.2] group-hover:scale-[1.28] transition-transform duration-500" />
             </div>
             <div class="p-8 w-full sm:w-3/5 flex flex-col justify-center relative z-20">
               <h3 class="text-2xl font-heading font-bold text-[#064E3B] mb-3">海绵胶 / 保护膜</h3>
@@ -121,10 +115,8 @@
           
           <!-- Card 4 -->
           <NuxtLink to="/products" class="group flex flex-col sm:flex-row overflow-hidden bg-[#ECFDF5] rounded-lg shadow-sm border border-[#10B981]/20 transition-all duration-300 hover:shadow-xl hover:-translate-y-2 relative">
-            <!-- Creative UI: Transparent Tape Piece -->
-            <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-24 h-8 bg-white/50 backdrop-blur-md border border-white/40 shadow-[0_2px_5px_rgba(0,0,0,0.05)] rotate-1 z-30 transition-all duration-500 group-hover:-rotate-2 group-hover:bg-white/70 group-hover:w-28 group-hover:shadow-[0_5px_15px_rgba(0,0,0,0.1)]"></div>
             <div class="w-full sm:w-2/5 bg-[#064E3B] relative overflow-hidden flex items-center justify-center">
-              <img :src="publicAsset('/images/products/packaging-boxes.jpg')" alt="打包带/定制制袋" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500" />
+              <img :src="publicAsset('/images/products/strapping-bags-generated.png')" alt="打包带/定制制袋" class="w-full h-full object-cover object-center scale-110 group-hover:scale-[1.16] transition-transform duration-500" />
             </div>
             <div class="p-8 w-full sm:w-3/5 flex flex-col justify-center relative z-20">
               <h3 class="text-2xl font-heading font-bold text-[#064E3B] mb-3">打包带 / 定制制袋</h3>
@@ -142,19 +134,9 @@
     <section id="location" class="py-24 bg-[#ECFDF5] relative">
       <div class="container-base relative z-10">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          <div class="order-2 lg:order-1 bg-white p-2 rounded-xl shadow-lg border border-[#10B981]/20">
-            <!-- Simulated Map Area -->
-            <div class="aspect-video bg-gray-100 rounded-lg relative overflow-hidden flex items-center justify-center">
-              <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
-              <div class="absolute inset-0 bg-gradient-to-br from-[#059669]/10 to-transparent"></div>
-              <div class="text-center relative z-10">
-                <div class="w-16 h-16 bg-[#F97316] rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg shadow-[#F97316]/40 animate-bounce">
-                  <span class="i-carbon-location text-3xl text-white"></span>
-                </div>
-                <p class="font-heading font-bold text-[#064E3B] text-lg">珠海市顺泰包装材料有限公司</p>
-                <p class="text-[#064E3B]/60 text-sm mt-1">立足珠海，辐射珠三角</p>
-              </div>
-            </div>
+          <div class="order-2 lg:order-1 bg-white p-2 rounded-xl shadow-lg border border-[#10B981]/20 overflow-hidden relative group h-[320px] md:h-[400px]">
+            <div class="absolute inset-0 bg-[#064E3B]/5 group-hover:opacity-0 transition-opacity duration-500 z-10 pointer-events-none"></div>
+            <MapEmbed height="100%" address="广东省珠海市金湾区创业北路20号厂房(三期)2层" />
           </div>
           
           <div class="order-1 lg:order-2">

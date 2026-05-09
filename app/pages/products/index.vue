@@ -50,15 +50,13 @@
             style="animation: fadeUp 0.6s ease-out forwards;"
           >
             <div class="relative overflow-hidden">
-              <div class="bg-[#ECFDF5] w-full h-64 flex items-center justify-center group-hover:bg-[#D1FAE5] transition-colors duration-500 relative"
-              >
+              <div class="bg-[#ECFDF5] w-full h-64 group-hover:bg-[#D1FAE5] transition-colors duration-500 relative overflow-hidden">
                 <img
                   :src="product.image"
                   :alt="product.name"
-                  class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 group-hover:scale-105 transition-all duration-700"
+                  class="absolute inset-0 w-full h-full object-cover object-center scale-110 group-hover:scale-115 transition-transform duration-700"
                   loading="lazy"
                 />
-                <span class="i-carbon-package text-6xl text-[#10B981]/30 group-hover:scale-125 transition-all duration-500 relative z-10"></span>
               </div>
               <span class="absolute top-4 left-4 bg-[#064E3B]/90 backdrop-blur text-white text-xs px-3 py-1.5 rounded-sm font-heading uppercase tracking-wider z-10">
                 {{ product.category }}

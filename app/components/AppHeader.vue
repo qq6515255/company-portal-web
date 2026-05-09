@@ -25,7 +25,7 @@
           <span class="flex h-9 w-9 items-center justify-center rounded-full bg-white/18">
             <img src="/icon/QQ.svg" alt="QQ" class="h-5 w-5" />
           </span>
-          <span class="font-medium tracking-wide">QQ咨询</span>
+          <span class="font-medium tracking-wide">QQ {{ qqNumber }}</span>
         </a>
       </div>
 
@@ -119,7 +119,7 @@
                 <span class="flex h-9 w-9 items-center justify-center rounded-full bg-white/18">
                   <img src="/icon/QQ.svg" alt="QQ" class="h-5 w-5" />
                 </span>
-                <span class="font-medium tracking-wide">QQ咨询</span>
+                <span class="font-medium tracking-wide">QQ {{ qqNumber }}</span>
               </a>
             </div>
           </div>
@@ -130,9 +130,10 @@
 </template>
 
 <script setup lang="ts">
-import { QQ_WEB_CHAT_URL, openQqChat } from '~/utils/qqContact'
+import { QQ_NUMBER, QQ_WEB_CHAT_URL, openQqChat } from '~/utils/qqContact'
 
 const mobileMenuOpen = ref(false)
+const qqNumber = QQ_NUMBER
 const qqWebChatUrl = QQ_WEB_CHAT_URL
 
 const handleQqClick = () => {
