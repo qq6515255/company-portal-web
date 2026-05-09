@@ -16,6 +16,8 @@
 </template>
 
 <script setup lang="ts">
+let amapLoaderPromise: Promise<any> | null = null
+
 interface Props {
   lng?: number
   lat?: number
@@ -41,87 +43,77 @@ const loadError = ref('')
 
 let mapInstance: any = null
 
+const loadAMap = async (apiKey: string, securityJsCode: string) => {
+  if (securityJsCode) {
+    ;(window as any)._AMapSecurityConfig = {
+      securityJsCode
+    }
+  }
+
+  if (!(window as any).AMapLoader) {
+    const loaderScript = document.createElement('script')
+    loaderScript.src = 'https://webapi.amap.com/loader.js'
+    loaderScript.async = true
+
+    await new Promise<void>((resolve, reject) => {
+      loaderScript.onload = () => resolve()
+      loaderScript.onerror = () => reject(new Error('高德地图加载器加载失败'))
+      document.head.appendChild(loaderScript)
+    })
+  }
+
+  return (window as any).AMapLoader.load({
+    key: apiKey,
+    version: '2.0'
+  })
+}
+
 onMounted(async () => {
   // 等待 DOM 渲染完成
   await nextTick()
   
   if (!mapContainerRef.value) {
     loadError.value = '地图容器未找到'
-    console.error('地图容器未找到')
     return
   }
-
-  console.log('开始初始化地图，容器:', mapContainerRef.value)
-  console.log('目标经纬度:', props.lng, props.lat)
 
   try {
     const apiKey = (config.public as any).amapApiKey || ''
     const securityJsCode = (config.public as any).amapSecurityJsCode || ''
 
     if (!apiKey) {
-      throw new Error('AMap API Key 未配置')
+      throw new Error('高德地图 Key 未配置')
     }
 
-    // 设置安全密钥
-    if (securityJsCode) {
-      ;(window as any)._AMapSecurityConfig = {
-        securityJsCode
-      }
-      console.log('安全密钥已设置')
+    if (!amapLoaderPromise) {
+      amapLoaderPromise = loadAMap(apiKey, securityJsCode)
     }
 
-    // 检查是否已加载
-    if (!(window as any).AMapLoader) {
-      console.log('加载 AMap Loader...')
-      const loaderScript = document.createElement('script')
-      loaderScript.src = 'https://webapi.amap.com/loader.js'
-      loaderScript.async = true
+    const AMap = await amapLoaderPromise
 
-      await new Promise<void>((resolve, reject) => {
-        loaderScript.onload = () => resolve()
-        loaderScript.onerror = () => reject(new Error('AMap Loader 加载失败'))
-        document.head.appendChild(loaderScript)
-      })
-      console.log('AMap Loader 加载完成')
-    }
-
-    // 初始化 AMap
-    console.log('调用 AMapLoader.load，Key:', apiKey)
-    const AMap = await (window as any).AMapLoader.load({
-      key: apiKey,
-      version: '2.0'
-    })
-    console.log('AMap 对象获取成功:', AMap)
-
-    // 创建地图 - center 直接用数组格式
     mapInstance = new AMap.Map(mapContainerRef.value, {
       zoom: props.zoom,
       center: [props.lng, props.lat],
       viewMode: '2D'
     })
-    console.log('地图实例创建成功')
 
-    // 添加标记
     const marker = new AMap.Marker({
       position: [props.lng, props.lat]
     })
     mapInstance.add(marker)
 
-    // 如果有地址，显示信息窗体
     if (props.address) {
       const infoWindow = new AMap.InfoWindow({
         content: `<div style="padding:8px;font-size:14px;">${props.address}</div>`,
         offset: new AMap.Pixel(0, -30)
       })
-      // infoWindow.open 的第二个参数需要是 LngLat 对象
       infoWindow.open(mapInstance, new AMap.LngLat(props.lng, props.lat))
     }
 
     mapLoaded.value = true
-    console.log('地图加载完成')
   } catch (error: any) {
-    console.error('地图初始化失败:', error)
-    loadError.value = error.message || '未知错误'
+    loadError.value = error?.message || '未知错误'
+    amapLoaderPromise = null
   }
 })
 

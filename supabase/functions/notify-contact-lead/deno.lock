@@ -1,0 +1,17 @@
+{
+  "version": "5",
+  "specifiers": {
+    "npm:nodemailer@6.10.1": "6.10.1"
+  },
+  "npm": {
+    "nodemailer@6.10.1": {
+      "integrity": "sha512-Z+iLaBGVaSjbIzQ4pX6XV41HrooLsQ10ZWPUehGmuantvzWoDVBnmsdUcOIDM1t+yPor5pDhVlDESgOMEGxhHA==",
+      "tarball": "https://registry.npmmirror.com/nodemailer/-/nodemailer-6.10.1.tgz"
+    }
+  },
+  "workspace": {
+    "dependencies": [
+      "npm:nodemailer@6.10.1"
+    ]
+  }
+}

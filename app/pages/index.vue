@@ -24,11 +24,11 @@
       <div class="absolute bottom-48 -right-24 w-[135%] max-w-6xl h-24 bg-[#F97316]/90 backdrop-blur-md z-20 animate-tape-seal-right origin-right border-y border-white/30 shadow-[0_10px_30px_rgba(249,115,22,0.3)] flex items-center overflow-hidden mix-blend-overlay transform -rotate-45">
         <div class="animate-marquee whitespace-nowrap text-white font-heading font-black tracking-[0.3em] uppercase text-4xl flex items-center gap-8">
           <span><span class="i-carbon-warning-alt mr-2"></span>STRONG ADHESION</span>
-          <span><span class="i-carbon-warning-alt mr-2"></span>INDUSTRIAL TAPE</span>
+          <span><span class="i-carbon-warning-alt mr-2"></span>SHUNTAI</span>
           <span><span class="i-carbon-warning-alt mr-2"></span>SUNTAI PACKAGING</span>
           <span><span class="i-carbon-warning-alt mr-2"></span>MAXIMUM SECURITY</span>
           <span><span class="i-carbon-warning-alt mr-2"></span>STRONG ADHESION</span>
-          <span><span class="i-carbon-warning-alt mr-2"></span>INDUSTRIAL TAPE</span>
+          <span><span class="i-carbon-warning-alt mr-2"></span>SHUNTAI</span>
           <span><span class="i-carbon-warning-alt mr-2"></span>SUNTAI PACKAGING</span>
           <span><span class="i-carbon-warning-alt mr-2"></span>MAXIMUM SECURITY</span>
         </div>
@@ -38,7 +38,7 @@
         <div class="max-w-4xl">
           <div class="inline-flex items-center gap-2 px-4 py-2 mb-8 bg-[#059669]/30 backdrop-blur-md border border-[#10B981]/50 text-white font-medium tracking-widest text-sm rounded-sm uppercase">
             <span class="w-2 h-2 rounded-full bg-[#F97316] animate-pulse"></span>
-            15年源头实力工厂
+            30年源头实力工厂
           </div>
           <h1 class="text-5xl md:text-7xl lg:text-[80px] font-heading font-bold leading-tight text-white mb-8 tracking-tight">
             打造工业级<br/>
@@ -74,7 +74,7 @@
           <!-- Card 1 -->
           <NuxtLink to="/products" class="group flex flex-col sm:flex-row overflow-hidden bg-[#ECFDF5] rounded-lg shadow-sm border border-[#10B981]/20 transition-all duration-300 hover:shadow-xl hover:-translate-y-2 relative">
             <div class="w-full sm:w-2/5 bg-[#064E3B] relative overflow-hidden flex items-center justify-center">
-              <img :src="publicAsset('/images/products/pearl-cotton.jpg')" alt="珍珠棉/泡沫棉" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500" />
+              <img :src="publicAsset('/images/products/pearl-cotton.jpg')" alt="珍珠棉/泡沫棉" class="w-full h-full object-cover object-center opacity-85 scale-105 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500" />
             </div>
             <div class="p-8 w-full sm:w-3/5 flex flex-col justify-center relative z-20">
               <h3 class="text-2xl font-heading font-bold text-[#064E3B] mb-3">珍珠棉 / 泡沫棉</h3>
@@ -88,7 +88,7 @@
           <!-- Card 2 -->
           <NuxtLink to="/products" class="group flex flex-col sm:flex-row overflow-hidden bg-[#ECFDF5] rounded-lg shadow-sm border border-[#10B981]/20 transition-all duration-300 hover:shadow-xl hover:-translate-y-2 relative">
             <div class="w-full sm:w-2/5 bg-[#064E3B] relative overflow-hidden flex items-center justify-center">
-              <img :src="publicAsset('/images/products/adhesive-tape.jpg')" alt="透明胶/双面胶" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500" />
+              <img :src="publicAsset('/images/products/adhesive-tape.jpg')" alt="透明胶/双面胶" class="w-full h-full object-cover object-center opacity-85 scale-105 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500" />
             </div>
             <div class="p-8 w-full sm:w-3/5 flex flex-col justify-center relative z-20">
               <h3 class="text-2xl font-heading font-bold text-[#064E3B] mb-3">透明胶 / 双面胶</h3>
@@ -102,7 +102,7 @@
           <!-- Card 3 -->
           <NuxtLink to="/products" class="group flex flex-col sm:flex-row overflow-hidden bg-[#ECFDF5] rounded-lg shadow-sm border border-[#10B981]/20 transition-all duration-300 hover:shadow-xl hover:-translate-y-2 relative">
             <div class="w-full sm:w-2/5 bg-[#064E3B] relative overflow-hidden flex items-center justify-center">
-              <img :src="publicAsset('/images/products/pe-protective-film.jpg')" alt="海绵胶/保护膜" class="w-full h-full object-cover object-center scale-[1.2] group-hover:scale-[1.28] transition-transform duration-500" />
+              <img :src="publicAsset('/images/products/pe-protective-film.jpg')" alt="海绵胶/保护膜" class="w-full h-full object-cover object-center opacity-85 scale-[1.16] group-hover:opacity-100 group-hover:scale-[1.24] transition-all duration-500" />
             </div>
             <div class="p-8 w-full sm:w-3/5 flex flex-col justify-center relative z-20">
               <h3 class="text-2xl font-heading font-bold text-[#064E3B] mb-3">海绵胶 / 保护膜</h3>
@@ -116,7 +116,7 @@
           <!-- Card 4 -->
           <NuxtLink to="/products" class="group flex flex-col sm:flex-row overflow-hidden bg-[#ECFDF5] rounded-lg shadow-sm border border-[#10B981]/20 transition-all duration-300 hover:shadow-xl hover:-translate-y-2 relative">
             <div class="w-full sm:w-2/5 bg-[#064E3B] relative overflow-hidden flex items-center justify-center">
-              <img :src="publicAsset('/images/products/strapping-bags-generated.png')" alt="打包带/定制制袋" class="w-full h-full object-cover object-center scale-110 group-hover:scale-[1.16] transition-transform duration-500" />
+              <img :src="publicAsset('/images/products/strapping-bags-generated.png')" alt="打包带/定制制袋" class="w-full h-full object-cover object-center opacity-85 scale-105 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500" />
             </div>
             <div class="p-8 w-full sm:w-3/5 flex flex-col justify-center relative z-20">
               <h3 class="text-2xl font-heading font-bold text-[#064E3B] mb-3">打包带 / 定制制袋</h3>
@@ -136,7 +136,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           <div class="order-2 lg:order-1 bg-white p-2 rounded-xl shadow-lg border border-[#10B981]/20 overflow-hidden relative group h-[320px] md:h-[400px]">
             <div class="absolute inset-0 bg-[#064E3B]/5 group-hover:opacity-0 transition-opacity duration-500 z-10 pointer-events-none"></div>
-            <MapEmbed height="100%" address="广东省珠海市金湾区创业北路20号厂房(三期)2层" />
+            <MapEmbed height="100%" :address="COMPANY_ADDRESS" />
           </div>
           
           <div class="order-1 lg:order-2">
@@ -152,7 +152,7 @@
                 </div>
                 <div>
                   <h4 class="text-xl font-heading font-bold text-[#064E3B] mb-1">工厂地址</h4>
-                  <p class="text-[#064E3B]/70">广东省珠海市金湾区创业北路20号厂房(三期)2层</p>
+                  <p class="text-[#064E3B]/70">{{ COMPANY_ADDRESS }}</p>
                 </div>
               </div>
               
@@ -193,7 +193,7 @@
 </template>
 
 <script setup lang="ts">
-import { COMPANY_EMAIL, COMPANY_PHONE } from '~/utils/contactInfo'
+import { COMPANY_ADDRESS, COMPANY_EMAIL, COMPANY_PHONE } from '~/utils/contactInfo'
 
 const config = useRuntimeConfig()
 const publicAsset = (path: string) => resolvePublicAssetUrl(path, config.app.cdnURL)
@@ -229,7 +229,7 @@ const localBusinessSchema = JSON.stringify({
   "email": COMPANY_EMAIL,
   "address": {
     "@type": "PostalAddress",
-    "streetAddress": "创业北路20号厂房(三期)2层",
+    "streetAddress": "创业北路20号厂房(三期)",
     "addressLocality": "金湾区",
     "addressRegion": "珠海市",
     "postalCode": "519000",
@@ -257,7 +257,7 @@ const localBusinessSchema = JSON.stringify({
 useHead({
   title: '珠海包装材料厂家_专业生产珍珠棉_透明胶_打包带_保护膜-顺泰包装',
   meta: [
-    { name: 'description', content: '珠海市顺泰包装材料有限公司专业生产珍珠棉、泡沫棉、透明胶、双面胶、海绵胶、打包带、保护膜、制袋等包装材料，15年行业经验，厂家直销，价格优惠，服务珠海、中山、江门等珠三角地区。' },
+    { name: 'description', content: '珠海市顺泰包装材料有限公司专业生产珍珠棉、泡沫棉、透明胶、双面胶、海绵胶、打包带、保护膜、制袋等包装材料，30年行业经验，厂家直销，价格优惠，服务珠海、中山、江门等珠三角地区。' },
     { name: 'keywords', content: '珠海包装材料,珍珠棉厂家,泡沫棉,透明胶,双面胶,海绵胶,打包带,保护膜,制袋,珠海包装厂家,中山包装材料,江门包装' },
     { property: 'og:title', content: '珠海市顺泰包装材料有限公司 - 专业包装材料生产厂家' },
     { property: 'og:description', content: '专业生产珍珠棉、泡沫棉、透明胶、双面胶、海绵胶、打包带、保护膜、制袋等包装材料，厂家直销，品质保障' },

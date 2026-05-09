@@ -9,7 +9,6 @@
         <NuxtLink to="/" class="text-gray-600 hover:text-gray-900 transition-colors">首页</NuxtLink>
         <NuxtLink to="/products" class="text-gray-600 hover:text-gray-900 transition-colors">产品介绍</NuxtLink>
         <NuxtLink to="/about" class="text-gray-600 hover:text-gray-900 transition-colors">关于我们</NuxtLink>
-        <NuxtLink to="/news" class="text-gray-600 hover:text-gray-900 transition-colors">新闻资讯</NuxtLink>
         <NuxtLink to="/contact" class="text-gray-600 hover:text-gray-900 transition-colors">联系我们</NuxtLink>
       </div>
 
@@ -35,7 +34,16 @@
         aria-label="菜单"
         @click="mobileMenuOpen = true"
       >
-        <span class="i-carbon-menu text-2xl" />
+        <svg viewBox="0 0 24 24" aria-hidden="true" class="h-7 w-7">
+          <path
+            d="M4 7h16M4 12h16M4 17h16"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+          />
+        </svg>
       </button>
     </nav>
 
@@ -64,7 +72,16 @@
                 aria-label="关闭"
                 @click="mobileMenuOpen = false"
               >
-                <span class="i-carbon-close text-xl" />
+                <svg viewBox="0 0 24 24" aria-hidden="true" class="h-6 w-6">
+                  <path
+                    d="M6 6l12 12M18 6l-12 12"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                  />
+                </svg>
               </button>
             </div>
 
@@ -90,13 +107,6 @@
                 @click="mobileMenuOpen = false"
               >
                 关于我们
-              </NuxtLink>
-              <NuxtLink
-                to="/news"
-                class="block px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
-                @click="mobileMenuOpen = false"
-              >
-                新闻资讯
               </NuxtLink>
               <NuxtLink
                 to="/contact"

@@ -11,7 +11,7 @@
         </div>
         <h1 class="text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-6 tracking-tight">关于顺泰包装</h1>
         <p class="text-lg md:text-xl text-emerald-100 max-w-2xl mx-auto font-light leading-relaxed">
-          15年专业包装材料生产厂家，为珠三角企业提供工业级优质包装解决方案。
+          30年专业包装材料生产厂家，为珠三角企业提供工业级优质包装解决方案。
         </p>
       </div>
     </section>
@@ -33,7 +33,7 @@
           <div>
             <h2 class="text-3xl md:text-4xl font-heading font-bold text-[#064E3B] mb-8">企业<span class="text-[#10B981]">简介</span></h2>
             <p class="text-[#064E3B]/80 leading-relaxed text-lg mb-6">
-              <strong>珠海市顺泰包装材料有限公司</strong>成立于2010年，是一家专业从事包装材料生产、销售的企业。公司位于广东省珠海市金湾区，拥有标准化的生产车间和完善的检测设备。
+              <strong>珠海市顺泰包装材料有限公司</strong>成立于1996年，是一家专业从事包装材料生产、销售的企业。公司位于广东省珠海市金湾区，拥有标准化的生产车间和完善的检测设备。
             </p>
             <p class="text-[#064E3B]/80 leading-relaxed text-lg mb-6">
               我们主要产品包括：<strong>珍珠棉、泡沫棉</strong>（缓冲防震材料）、<strong>透明胶、双面胶、海绵胶</strong>（粘接密封材料）、<strong>打包带、保护膜</strong>（捆扎防护材料）以及<strong>各种规格制袋</strong>等。广泛应用于电子、家具、建材、食品、医药等行业的包装需求。
@@ -43,11 +43,11 @@
             </p>
             <div class="flex flex-wrap gap-4 mt-10">
               <div class="px-6 py-5 bg-[#ECFDF5] rounded-sm flex-1 min-w-[120px] border-l-4 border-[#10B981]">
-                <div class="text-3xl font-heading font-bold text-[#064E3B]">1000<span class="text-[#10B981]">+</span></div>
+                <div class="text-3xl font-heading font-bold text-[#064E3B]">500<span class="text-[#10B981]">+</span></div>
                 <div class="text-[#064E3B]/60 text-sm mt-1 uppercase tracking-wider">服务企业</div>
               </div>
               <div class="px-6 py-5 bg-[#ECFDF5] rounded-sm flex-1 min-w-[120px] border-l-4 border-[#F97316]">
-                <div class="text-3xl font-heading font-bold text-[#064E3B]">15<span class="text-[#F97316]">Y</span></div>
+                <div class="text-3xl font-heading font-bold text-[#064E3B]">30<span class="text-[#F97316]">Y</span></div>
                 <div class="text-[#064E3B]/60 text-sm mt-1 uppercase tracking-wider">行业经验</div>
               </div>
               <div class="px-6 py-5 bg-[#ECFDF5] rounded-sm flex-1 min-w-[120px] border-l-4 border-[#059669]">
@@ -105,7 +105,7 @@
     </section>
 
     <!-- Qualifications Section -->
-    <section class="py-20 md:py-32 bg-white">
+    <!-- <section class="py-20 md:py-32 bg-white">
       <div class="container-base">
         <div class="text-center mb-16">
           <h2 class="text-3xl md:text-4xl font-heading font-bold text-[#064E3B] mb-4">资质<span class="text-[#10B981]">认证</span></h2>
@@ -122,10 +122,10 @@
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
 
     <!-- Team Section -->
-    <section class="py-20 md:py-32 bg-[#064E3B]">
+    <!-- <section class="py-20 md:py-32 bg-[#064E3B]">
       <div class="container-base">
         <div class="text-center mb-16">
           <h2 class="text-3xl md:text-4xl font-heading font-bold text-white mb-4">核心<span class="text-[#10B981]">团队</span></h2>
@@ -146,16 +146,16 @@
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
 
     <!-- CTA Section -->
     <section class="py-20 bg-[#F97316] relative overflow-hidden">
       <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
       <div class="container-base text-center relative z-10">
         <h2 class="text-3xl md:text-4xl font-heading font-bold mb-6 text-white tracking-tight">准备好提升您的包装品质了吗？</h2>
-        <p class="text-white/90 mb-10 text-lg max-w-2xl mx-auto">我们的专家团队随时为您提供专业的评估与定制化解决方案。</p>
+        <p class="text-white/90 mb-10 text-lg max-w-2xl mx-auto">我们的团队随时为您提供专业的评估与定制化解决方案。</p>
         <NuxtLink to="/contact" class="inline-flex items-center gap-2 bg-white text-[#F97316] px-10 py-4 rounded-sm font-heading font-bold text-lg uppercase tracking-wider hover:bg-gray-50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-          联系专家团队
+          联系我们
           <span class="i-carbon-arrow-right text-xl"></span>
         </NuxtLink>
       </div>
@@ -165,10 +165,10 @@
 
 <script setup lang="ts">
 const timeline = [
-  { year: 2010, title: '企业成立', desc: '珠海市顺泰包装材料有限公司正式成立' },
-  { year: 2015, title: '规模扩张', desc: '新建厂房，扩大产能' },
-  { year: 2018, title: '产品升级', desc: '新增珍珠棉生产线，产品线更加丰富' },
-  { year: 2021, title: '服务深化', desc: '为珠三角1000+企业提供包装解决方案' },
+  { year: 1996, title: '企业成立', desc: '珠海市顺泰包装材料有限公司正式成立' },
+  { year: 2015, title: '规模扩张', desc: '更换产房，扩大产能' },
+  { year: 2023, title: '产品升级', desc: '新增珍珠棉生产线，产品线更加丰富' },
+  { year: 2025, title: '服务深化', desc: '为珠三角500+企业提供包装解决方案' },
 ]
 
 const certifications = [
@@ -181,17 +181,17 @@ const certifications = [
 const team = [
   { name: '张经理', title: '总经理', desc: '20年包装行业经验' },
   { name: '李工', title: '技术总监', desc: '资深包装工程师' },
-  { name: '王主管', title: '生产主管', desc: '专注品质管理15年' },
+  { name: '王主管', title: '生产主管', desc: '专注品质管理30年' },
   { name: '陈小姐', title: '销售经理', desc: '专业服务珠三角客户' },
 ]
 
 useHead({
   title: '关于我们 - 珠海市顺泰包装材料有限公司',
   meta: [
-    { name: 'description', content: '了解珠海市顺泰包装材料有限公司的发展历程、资质认证和核心团队。15年专业生产珍珠棉、泡沫棉、透明胶、双面胶、打包带等包装材料厂家。' },
+    { name: 'description', content: '了解珠海市顺泰包装材料有限公司的发展历程、资质认证和核心团队。30年专业生产珍珠棉、泡沫棉、透明胶、双面胶、打包带等包装材料厂家。' },
     { name: 'keywords', content: '珠海包装厂家,顺泰包装,包装材料公司,珠海包装材料,关于我们' },
     { property: 'og:title', content: '关于我们 - 珠海市顺泰包装材料有限公司' },
-    { property: 'og:description', content: '15年专业包装材料生产厂家，为珠三角企业提供优质包装解决方案' },
+    { property: 'og:description', content: '30年专业包装材料生产厂家，为珠三角企业提供优质包装解决方案' },
     { property: 'og:url', content: 'https://suntaizh.cn/about' }
   ]
 })

@@ -18,7 +18,7 @@ const productDefinitions: Product[] = [
     desc: '高性能缓冲防震材料，柔韧性好，适合电子、家具、玻璃等产品的包装防护',
     spec: '厚度: 0.5-50mm',
     image: '/images/products/pearl-cotton.jpg',
-    detailDesc: '珍珠棉（EPE）是一种新型环保的包装材料，由低密度聚乙烯脂经物理发泡产生无数的独立气泡构成。具有隔水防潮、防震、隔音、保温、可塑性能佳、韧性强、循环再造、环保、抗撞力强等诸多优点，是传统包装材料的理想替代品。',
+    detailDesc: '珍珠棉（EPE）是一种新型环保的包装材料，由低密度聚乙烯脂经物理发泡产生无数的独立气泡构成。具有隔水防潮、防静电、防震、隔音、保温、可塑性能佳、韧性强、循环再造、环保、抗撞力强等诸多优点，是传统包装材料的理想替代品。',
     features: ['优异的缓冲防震性能', '柔韧性强，不易断裂', '可反复回收利用', '防静电处理可选', '无毒无味，环保安全'],
     applications: ['电子产品包装', '家具运输防护', '玻璃制品缓冲', '工艺品包装', '医疗器械防护']
   },
@@ -28,7 +28,7 @@ const productDefinitions: Product[] = [
     category: '缓冲材料',
     desc: '轻质缓冲材料，隔音隔热防震，适用于多种产品的包装填充',
     spec: '密度: 10-50kg/m³',
-    image: '/images/products/foam-material.jpg',
+    image: '/images/products/eva-foam.jpg',
     detailDesc: '泡沫棉采用聚苯乙烯（EPS）或聚氨酯（PU）为原料，具有质轻、隔热、吸音、减震等特性。广泛应用于建筑、家电、冷链物流等领域的缓冲包装和保温隔热。',
     features: ['超轻质，降低运输成本', '优异的隔热保温性能', '良好的吸音降噪效果', '抗压强度高', '成本经济实用'],
     applications: ['家电产品包装', '冷链物流保温箱', '建筑保温材料', '精密仪器缓冲', '易碎品填充保护']
@@ -83,7 +83,7 @@ const productDefinitions: Product[] = [
     category: '捆扎材料',
     desc: '韧性强、抗拉伸，适用于纸箱、货物捆扎打包',
     spec: '宽度: 9-19mm',
-    image: '/images/products/strapping.jpg',
+    image: '/images/products/pet-strapping.jpg',
     detailDesc: 'PP（聚丙烯）打包带以聚丙烯为原料，经挤出拉伸成型。具有韧性强、抗拉伸、比重轻、颜色鲜艳等特点。配合打包机使用，广泛应用于纸箱、货物、托盘等的捆扎固定。',
     features: ['韧性强，抗拉断', '比重轻，降低运输成本', '颜色多样可定制', '配合打包机使用效率高', '环保可回收'],
     applications: ['纸箱捆扎打包', '货物托盘固定', '物流运输包装', '仓储货物整理', '家电产品固定']
@@ -105,7 +105,7 @@ const productDefinitions: Product[] = [
     category: '捆扎材料',
     desc: '拉伸缠绕膜，包装防潮防尘，适用于托盘包装',
     spec: '厚度: 15-50μm',
-    image: '/images/products/protective-film.jpg',
+    image: '/images/products/stretch-film.jpg',
     detailDesc: '缠绕膜（ stretch film ）以LLDPE为主要原料，具有优异的拉伸性能和自粘性。包装后货物紧密缠绕，防潮防尘、防散落、防偷盗，是托盘包装和物流运输的必备材料。',
     features: ['高拉伸率，省膜', '自粘性强，无需胶带', '透明度高，识别方便', '防潮防尘防散落', '可手用或机用'],
     applications: ['托盘货物缠绕', '物流运输包装', '仓储货物防尘', '产品集合包装', '防偷盗保护']
@@ -116,7 +116,7 @@ const productDefinitions: Product[] = [
     category: '防护材料',
     desc: '表面防护专用膜，防止刮花、灰尘，适用于板材、型材',
     spec: '粘性: 低/中/高',
-    image: '/images/products/protective-film.jpg',
+    image: '/images/products/pe-protective-film.jpg',
     detailDesc: 'PE保护膜以聚乙烯薄膜为基材，涂覆压敏胶制成。具有透明度高、粘性稳定、易撕除不残胶等特点。广泛应用于不锈钢板、铝板、塑料板、型材等产品的表面防护。',
     features: ['透明度高，不影响外观', '粘性稳定，不脱落', '撕除不残胶', '耐老化，保质期长', '低中高粘性可选'],
     applications: ['不锈钢板防护', '铝型材表面保护', '塑料板材贴膜', '玻璃表面防护', '电子产品屏幕保护']
@@ -127,7 +127,7 @@ const productDefinitions: Product[] = [
     category: '防护材料',
     desc: '高密度海绵，密封减震，适用于门窗、电子电器',
     spec: '规格: 可定制',
-    image: '/images/products/foam-material.jpg',
+    image: '/images/products/sponge-seal-strip.jpg',
     detailDesc: '海绵胶条以EVA、CR、EPDM等海绵材料为基材，单面或双面涂覆压敏胶。具有优异的密封性、减震性、隔音性和耐候性。广泛应用于门窗密封、电子电器减震、汽车隔音等领域。',
     features: ['优异的密封防水性能', '良好的减震缓冲效果', '隔音降噪', '耐候耐老化', '规格形状可定制'],
     applications: ['门窗密封条', '电子电器减震', '汽车隔音降噪', '空调管道密封', '机械设备密封']
@@ -149,7 +149,7 @@ const productDefinitions: Product[] = [
     category: '定制制袋',
     desc: '多层复合材料袋，防潮阻氧，适用于食品、药品包装',
     spec: '尺寸: 按需定制',
-    image: '/images/products/packaging-bags.jpg',
+    image: '/images/products/composite-bag.jpg',
     detailDesc: '复合袋采用多层不同性能的薄膜材料复合而成，具有优异的阻隔性能。可根据产品需求组合PE、PET、AL、NY等材料，实现防潮、阻氧、避光、耐高温等功能，是食品、药品、化工产品包装的理想选择。',
     features: ['多层复合，阻隔性能优异', '防潮阻氧，保鲜保质', '耐高温，可蒸煮杀菌', '印刷精美，提升档次', '尺寸规格可定制'],
     applications: ['食品包装袋', '药品铝箔袋', '化工原料袋', '宠物食品袋', '调味品包装袋']
@@ -160,7 +160,7 @@ const productDefinitions: Product[] = [
     category: '定制制袋',
     desc: '底部可站立，自封口袋，便于陈列和使用',
     spec: '材质: PE/复合',
-    image: '/images/products/packaging-bags.jpg',
+    image: '/images/products/stand-up-pouch.jpg',
     detailDesc: '自立袋底部有特殊结构设计，可使袋子站立不倒。配合自封拉链，开合方便，可重复使用。具有展示效果好、储存方便、密封性强等特点。广泛应用于零食、干果、调味品、宠物食品等包装。',
     features: ['底部站立设计，展示效果好', '自封拉链，可重复使用', '透明窗口，展示内容', '多种材质可选', '印刷精美，提升品牌'],
     applications: ['零食坚果包装', '干果蜜饯袋', '调味品包装袋', '宠物食品袋', '茶叶咖啡袋']
@@ -171,7 +171,7 @@ const productDefinitions: Product[] = [
     category: '定制制袋',
     desc: '防静电PE袋，保护电子元件免受静电损害',
     spec: '规格: 可定制',
-    image: '/images/products/packaging-bags.jpg',
+    image: '/images/products/anti-static-bag.jpg',
     detailDesc: '防静电袋采用特殊配方的PE材料制成，表面电阻控制在10^6~10^11Ω之间，能有效防止静电积累和放电。适用于IC、PCB、电子元器件、精密仪器等对静电敏感产品的包装和运输。',
     features: ['防静电，保护敏感元件', '表面电阻稳定', '透明度高，识别方便', '无尘洁净，适合洁净室', '可印刷标识'],
     applications: ['IC芯片包装', 'PCB板防护', '电子元器件包装', '精密仪器防护', '硬盘存储包装']

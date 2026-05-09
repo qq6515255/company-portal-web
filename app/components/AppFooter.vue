@@ -5,7 +5,7 @@
         <!-- Company Info Column -->
         <div>
           <h3 class="text-xl font-bold mb-4">珠海市顺泰包装材料有限公司</h3>
-          <p class="text-gray-400 mb-4">专业生产珍珠棉、泡沫棉、透明胶、双面胶、海绵胶、打包带、保护膜、制袋等包装材料，15年行业经验。</p>
+          <p class="text-gray-400 mb-4">专业生产珍珠棉、泡沫棉、透明胶、双面胶、海绵胶、打包带、保护膜、制袋等包装材料，30年行业经验。</p>
           <div class="flex gap-4">
             <a
               :href="qqWebChatUrl"
@@ -37,9 +37,6 @@
             </li>
             <li>
               <NuxtLink to="/about" class="text-gray-400 hover:text-white transition-colors">关于我们</NuxtLink>
-            </li>
-            <li>
-              <NuxtLink to="/news" class="text-gray-400 hover:text-white transition-colors">新闻资讯</NuxtLink>
             </li>
             <li>
               <NuxtLink to="/contact" class="text-gray-400 hover:text-white transition-colors">联系我们</NuxtLink>
