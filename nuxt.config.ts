@@ -1,5 +1,21 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-const cdnURL = (process.env.NUXT_APP_CDN_URL || '').replace(/\/$/, '')
+const normalizePrefix = (value: string) => value.replace(/^\/+|\/+$/g, '')
+
+const appendPrefixIfNeeded = (baseURL: string, prefix: string) => {
+  const normalizedBaseURL = baseURL.replace(/\/$/, '')
+  const normalizedPrefix = normalizePrefix(prefix)
+
+  if (!normalizedBaseURL || !normalizedPrefix) {
+    return normalizedBaseURL
+  }
+
+  return normalizedBaseURL.endsWith(`/${normalizedPrefix}`)
+    ? normalizedBaseURL
+    : `${normalizedBaseURL}/${normalizedPrefix}`
+}
+
+const cdnPrefix = process.env.NUXT_APP_CDN_PREFIX || process.env.OSS_PREFIX || ''
+const cdnURL = appendPrefixIfNeeded(process.env.NUXT_APP_CDN_URL || '', cdnPrefix)
 const publicAsset = (path: string) => (cdnURL ? `${cdnURL}${path}` : path)
 
 export default defineNuxtConfig({
@@ -25,7 +41,7 @@ export default defineNuxtConfig({
 
   // App configuration
   app: {
-    cdnURL: process.env.NUXT_APP_CDN_URL || '',
+    cdnURL,
     head: {
       htmlAttrs: {
         lang: 'zh-CN'

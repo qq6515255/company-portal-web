@@ -46,6 +46,22 @@ if [ -n "$OSS_PREFIX" ]; then
     OSS_BASE="${OSS_BASE}/${OSS_PREFIX}"
 fi
 
+NUXT_APP_CDN_URL="${NUXT_APP_CDN_URL:-}"
+NUXT_APP_CDN_URL="${NUXT_APP_CDN_URL%/}"
+
+if [ -z "$NUXT_APP_CDN_URL" ] && [ -n "$CDN_DOMAIN" ]; then
+    NUXT_APP_CDN_URL="https://${CDN_DOMAIN}"
+fi
+
+if [ -n "$NUXT_APP_CDN_URL" ] && [ -n "$OSS_PREFIX" ]; then
+    case "$NUXT_APP_CDN_URL" in
+        */"$OSS_PREFIX") ;;
+        *)
+            NUXT_APP_CDN_URL="${NUXT_APP_CDN_URL}/${OSS_PREFIX}"
+            ;;
+    esac
+fi
+
 # ========== Step 1: 构建 ==========
 log_step "[1/4] 构建静态站点"
 
@@ -53,10 +69,10 @@ rm -rf .output
 
 if command -v pnpm &> /dev/null; then
     pnpm install --frozen-lockfile
-    NUXT_APP_CDN_URL="${NUXT_APP_CDN_URL:-}" pnpm generate
+    NUXT_APP_CDN_URL="${NUXT_APP_CDN_URL}" pnpm generate
 else
     npm ci
-    NUXT_APP_CDN_URL="${NUXT_APP_CDN_URL:-}" npm run generate
+    NUXT_APP_CDN_URL="${NUXT_APP_CDN_URL}" npm run generate
 fi
 
 if [ ! -d ".output/public" ]; then

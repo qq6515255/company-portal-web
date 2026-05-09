@@ -42,9 +42,40 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Resolve CDN URL
+        env:
+          CDN_DOMAIN: ${{ secrets.CDN_DOMAIN }}
+          OSS_PREFIX: ${{ secrets.OSS_PREFIX }}
+          NUXT_APP_CDN_URL: ${{ secrets.NUXT_APP_CDN_URL }}
+        run: |
+          set -euo pipefail
+
+          prefix="${OSS_PREFIX:-company-portal}"
+          prefix="${prefix#/}"
+          prefix="${prefix%/}"
+
+          cdn_url="${NUXT_APP_CDN_URL:-}"
+          cdn_url="${cdn_url%/}"
+
+          if [ -z "${cdn_url}" ] && [ -n "${CDN_DOMAIN:-}" ]; then
+            cdn_url="https://${CDN_DOMAIN}"
+          fi
+
+          if [ -n "${cdn_url}" ] && [ -n "${prefix}" ]; then
+            case "${cdn_url}" in
+              */"${prefix}") ;;
+              *)
+                cdn_url="${cdn_url}/${prefix}"
+                ;;
+            esac
+          fi
+
+          echo "NUXT_APP_CDN_URL_EFFECTIVE=${cdn_url}" >> "${GITHUB_ENV}"
+          echo "Resolved CDN URL: ${cdn_url:-<empty>}"
+
       - name: Generate static site
         env:
-          NUXT_APP_CDN_URL: ${{ secrets.NUXT_APP_CDN_URL }}
+          NUXT_APP_CDN_URL: ${{ env.NUXT_APP_CDN_URL_EFFECTIVE }}
           NUXT_PUBLIC_AMAP_API_KEY: ${{ secrets.NUXT_PUBLIC_AMAP_API_KEY }}
           NUXT_PUBLIC_AMAP_SECURITY_JS_CODE: ${{ secrets.NUXT_PUBLIC_AMAP_SECURITY_JS_CODE }}
         run: npm run generate
