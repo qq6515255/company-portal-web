@@ -78,6 +78,8 @@ jobs:
           NUXT_APP_CDN_URL: ${{ env.NUXT_APP_CDN_URL_EFFECTIVE }}
           NUXT_PUBLIC_AMAP_API_KEY: ${{ secrets.NUXT_PUBLIC_AMAP_API_KEY }}
           NUXT_PUBLIC_AMAP_SECURITY_JS_CODE: ${{ secrets.NUXT_PUBLIC_AMAP_SECURITY_JS_CODE }}
+          NUXT_PUBLIC_SUPABASE_URL: ${{ secrets.NUXT_PUBLIC_SUPABASE_URL }}
+          NUXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NUXT_PUBLIC_SUPABASE_ANON_KEY }}
         run: npm run generate
 
       - name: Pre-compress static assets

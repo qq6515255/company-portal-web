@@ -111,12 +111,26 @@
           <p class="text-sm">感谢您的咨询，我们将在24小时内与您联系。</p>
         </div>
       </transition>
+
+      <transition
+        enter-active-class="transition duration-300 ease-out"
+        enter-from-class="transform -translate-y-2 opacity-0"
+        enter-to-class="transform translate-y-0 opacity-100"
+        leave-active-class="transition duration-200 ease-in"
+        leave-from-class="transform translate-y-0 opacity-100"
+        leave-to-class="transform -translate-y-2 opacity-0"
+      >
+        <div v-if="submitError" class="bg-red-50 border border-red-200 text-red-700 p-4 rounded">
+          <p class="font-medium">提交失败</p>
+          <p class="text-sm">{{ submitError }}</p>
+        </div>
+      </transition>
     </form>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 
 interface FormData {
   name: string
@@ -134,6 +148,22 @@ interface FormErrors {
   message?: string
 }
 
+interface ContactLeadLocation {
+  lat?: number
+  lng?: number
+  accuracy?: number
+  source?: string
+  collectedAt?: string
+  address?: string
+}
+
+interface ContactLeadResponse {
+  success?: boolean
+  leadId?: string
+  message?: string
+  fieldErrors?: FormErrors
+}
+
 const form = reactive<FormData>({
   name: '',
   company: '',
@@ -145,6 +175,10 @@ const form = reactive<FormData>({
 const errors = reactive<FormErrors>({})
 const loading = ref(false)
 const showSuccess = ref(false)
+const submitError = ref('')
+const runtimeConfig = useRuntimeConfig()
+const contactLocation = ref<ContactLeadLocation | null>(null)
+const hasRequestedGeolocation = ref(false)
 
 const validateEmail = (email: string): boolean => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -204,23 +238,99 @@ const resetForm = () => {
   form.message = ''
 }
 
+const requestGeolocation = () => {
+  if (hasRequestedGeolocation.value || !import.meta.client) {
+    return
+  }
+
+  hasRequestedGeolocation.value = true
+
+  if (!('geolocation' in navigator)) {
+    return
+  }
+
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      contactLocation.value = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+        accuracy: position.coords.accuracy,
+        source: 'browser_geolocation',
+        collectedAt: new Date(position.timestamp).toISOString()
+      }
+    },
+    () => {
+      contactLocation.value = null
+    },
+    {
+      enableHighAccuracy: false,
+      timeout: 8000,
+      maximumAge: 5 * 60 * 1000
+    }
+  )
+}
+
+onMounted(() => {
+  requestGeolocation()
+})
+
 const handleSubmit = async () => {
   if (!validateForm()) {
     return
   }
 
+  showSuccess.value = false
+  submitError.value = ''
   loading.value = true
 
-  // Simulate API call
-  await new Promise(resolve => setTimeout(resolve, 1500))
+  try {
+    const supabaseUrl = runtimeConfig.public.supabaseUrl?.trim()
+    const supabaseAnonKey = runtimeConfig.public.supabaseAnonKey?.trim()
 
-  loading.value = false
-  showSuccess.value = true
-  resetForm()
+    if (!supabaseUrl || !supabaseAnonKey) {
+      throw new Error('提交服务未配置，请先完善 Supabase 环境变量。')
+    }
 
-  // Hide success message after 5 seconds
-  setTimeout(() => {
-    showSuccess.value = false
-  }, 5000)
+    const payload = {
+      name: form.name.trim(),
+      company: form.company.trim(),
+      phone: form.phone.trim(),
+      email: form.email.trim(),
+      message: form.message.trim(),
+      source_page: '/contact',
+      location: contactLocation.value ?? undefined
+    }
+
+    const response = await fetch(`${supabaseUrl.replace(/\/$/, '')}/functions/v1/quick-responder`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        apikey: supabaseAnonKey,
+        Authorization: `Bearer ${supabaseAnonKey}`
+      },
+      body: JSON.stringify(payload)
+    })
+
+    const result = await response.json().catch(() => ({} as ContactLeadResponse))
+
+    if (!response.ok || !result.success) {
+      if (result.fieldErrors) {
+        Object.assign(errors, result.fieldErrors)
+      }
+
+      throw new Error(result.message || '提交失败，请稍后重试。')
+    }
+
+    showSuccess.value = true
+    resetForm()
+
+    setTimeout(() => {
+      showSuccess.value = false
+    }, 5000)
+  } catch (error) {
+    submitError.value = error instanceof Error ? error.message : '提交失败，请稍后重试。'
+  } finally {
+    loading.value = false
+  }
 }
 </script>

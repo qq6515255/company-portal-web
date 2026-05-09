@@ -34,6 +34,8 @@ export default defineNuxtConfig({
   // Runtime config for public keys
   runtimeConfig: {
     public: {
+      supabaseUrl: process.env.NUXT_PUBLIC_SUPABASE_URL || '',
+      supabaseAnonKey: process.env.NUXT_PUBLIC_SUPABASE_ANON_KEY || '',
       amapApiKey: process.env.NUXT_PUBLIC_AMAP_API_KEY || process.env.AMAP_API_KEY || '',
       amapSecurityJsCode: process.env.NUXT_PUBLIC_AMAP_SECURITY_JS_CODE || process.env.AMAP_SECURITY_JS_CODE || ''
     }
