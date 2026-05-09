@@ -118,7 +118,6 @@ $OSSUTIL config -e "$ENDPOINT" --region "${ALIYUN_REGION:-${REGION#oss-}}" -i "$
 
 log_info "上传到 ${OSS_BASE}/ ..."
 $OSSUTIL cp -r -f \
-    --acl public-read \
     --jobs 10 \
     .output/public/ \
     "${OSS_BASE}/"
